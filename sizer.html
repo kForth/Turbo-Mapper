@@ -1,0 +1,55 @@
+---
+layout: default
+js_file: sizer
+---
+<div class="container-fluid p-2 m-0 row h100">
+    <div class="p-2 h100 scrollable">
+        <div class="p-5 mb-4 bg-light rounded-3 row">
+            <div class="py-5 col-8">
+                <canvas id="map">
+            </div>
+            <div class="py-5 col-4">
+                <button id="load_map_img">Load New Map Image</button>
+                <br><br>
+
+                <h3>Turbo</h3>
+                <label for="name">Name:</label>
+                <input type="text" id="name" />
+                <br><br>
+
+                <h3>Bounding Box</h3>
+                <label for="bbox_xmin">X Min:</label>
+                <input type="number" id="bbox_xmin" value="0" step="1" min="0" />
+                <br>
+                <label for="bbox_xmax">X Max:</label>
+                <input type="number" id="bbox_xmax" value="100" step="1" min="0" />
+                <br>
+                <label for="bbox_ymin">Y Min:</label>
+                <input type="number" id="bbox_ymin" value="0" step="1" min="0" />
+                <br>
+                <label for="bbox_ymax">Y Max:</label>
+                <input type="number" id="bbox_ymax" value="100" step="1" min="0" />
+                <br><br>
+
+                <h3>Values</h3>
+                <label for="flow_type">X Axis Type:</label>
+                <br>
+                <label for="val_xmin">X Min:</label>
+                <input type="number" id="val_xmin" value="0" step="1" min="0" />
+                <br>
+                <label for="val_xmax">X Max:</label>
+                <input type="number" id="val_xmax" value="300" step="1" min="0" />
+                <br>
+                <label for="val_ymin">Y Min:</label>
+                <input type="number" id="val_ymin" value="1" step="1" min="0" />
+                <br>
+                <label for="val_ymax">Y Max:</label>
+                <input type="number" id="val_ymax" value="3" step="1" min="0" />
+                <br><br>
+                
+                <h3>Output</h3>
+                <textarea id="output" rows=5 readonly></textarea>
+            </div>
+        </div>
+    </div>
+</div>

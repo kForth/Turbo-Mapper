@@ -1,0 +1,133 @@
+---
+layout: default
+js_file: main
+---
+<div class="container-fluid p-2 m-0 row h100">
+    <div class="p-2 col-lg-5 col-md-7 col-sm-12 h100 scrollable">
+        <div class="p-4 mb-3 bg-light rounded-3">
+            <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#engine-specs-collapse">Engine Specs</h3>
+            <div class="collapse show" id="engine-specs-collapse">
+                <label for="engDispl">Displacement:</label>
+                <span class="input-group">
+                    <input class="form-control" type="number" id="es-displacement" min="0.1" step="0.1" value="2.5">
+                    <select class="input-group-text btn-secondary" id="es-displacement-unit">
+                        <option value="1">L</option>
+                        <option value="0.0164">Cu.In</option>
+                    </select>
+                </span>
+                <label for="engVE">Volumetric Efficieny:</label>
+                <div class="input-group">
+                    <input class="form-control" type="number" id="engVE" min="1" step="1" value="75" />
+                    <span class="input-group-text">%</span>
+                    <button class="btn btn-secondary input-group-text" id="estimateVE">Calc</button>
+                </div>
+                <div class="mt-2">
+                    <label for="mapSelect">Turbo:</label>
+                    <select class="form-control" id="mapSelect">
+                        {% for turbo in site.data.turbos %}
+                            <option value="{{ turbo.name }}">{{ turbo.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 mb-3 bg-light rounded-3">
+            <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#boost-curve-collapse">Boost Curve</h3>
+            <div id="boost-curve-collapse" class="collapse show">
+                <label for="boostRange">Boost Range:</label>
+                <span class="input-group" id="boostRange">
+                    <input class="form-control" type="number" value="2" min="0" id="boost-min"/>
+                    <span class="input-group-text">To</span>
+                    <input class="form-control" type="number" value="20" min="0" id="boost-max"/>
+                    <select class="input-group-text btn-secondary" id="boost-unit">
+                        <option value="1">Psi</option>
+                        <option value="0.06894757">Bar</option>
+                        <option value="6894.757">Pa</option>
+                    </select>
+                </span>
+
+                <label for="rpmRange">RPM Range:</label>
+                <span class="input-group" id="rpmRange">
+                    <input class="form-control" type="number" value="1000" min="0" step="100" id="rpm-min"/>
+                    <span class="input-group-text">To</span>
+                    <input class="form-control" type="number" value="8000" min="1" step="100" id="rpm-max"/>
+                </span>
+
+                <label for="boost-curve">Shape:</label>
+                <select class="form-control" id="boost-curve">
+                    <option>Linear</option>
+                    <option>Curved</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="p-4 mb-3 bg-light rounded-3">
+            <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#environment-collapse">Environment</h3>
+            <div class="collapse show" id="environment-collapse">
+                <label for="altitude">Altitude:</label>
+                <span class="input-group" id="altitude-input-group">
+                    <input type="number" class="form-control" id="altitude" step="100" value="0" />
+                    <select class="input-group-text btn-secondary" id="altitude-unit">
+                        <option value="1">m</option>
+                        <option value="0.3048">ft</option>
+                    </select>
+                </span>
+                <!-- <select class="form-control" id="altitude" value="2000">
+                    <option value="0" selected>0ft / 0m</option>
+                    <option value="2000">2000ft / 600m</option>
+                    <option value="4000">4000ft / 1200m</option>
+                    <option value="6000">6000ft / 1800m</option>
+                    <option value="8000">8000ft / 2400m</option>
+                    <option value="10000">10000ft / 3000m</option>
+                    <option value="12000">12000ft / 3600m</option>
+                    <option value="14000">14000ft / 4200m</option>
+                    <option value="16000">16000ft / 4800m</option>
+                </select> -->
+
+                <label for="temp-input-group">Temperature Range:</label>
+                <span class="input-group" id="temp-input-group">
+                    <input class="form-control" type="number" id="temp-min" value="0"/>
+                    <span class="input-group-text">To</span>
+                    <input class="form-control" type="number" id="temp-max" value="30"/>
+                    <select class="input-group-text btn-secondary" id="temp-unit">
+                        <option value="[1,273]">&deg;C</option>
+                        <option value="[1.8,305]">&deg;F</option>
+                        <option value="[1,0]">&deg;K</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-2 col-lg-7 col-md-5 col-sm-12 h100 scrollable">
+        <div class="mb-2 p-4 bg-light rounded-3">
+            <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#map-collapse">
+                Compressor Map
+            </h3>
+            <div class="collapse show chart-holder" id="map-collapse">
+                <canvas class="chart-canvas" id="comp-map"></canvas>
+            </div>
+        </div>
+
+        <div class="mb-2 p-4 bg-light rounded-3">
+            <h3 class="mb-3" role="button" data-bs-toggle="collapse" data-bs-target="#flow-collapse">
+                Exhaust Flow
+            </h3>
+            <div class="collapse show chart-holder" id="flow-collapse">
+                <canvas class="chart-canvas" id="flow-map"></canvas>
+            </div>
+        </div>
+
+        <div class="mb-2 p-4 bg-light rounded-3">
+            <h3 class="mb-3" role="button" data-bs-toggle="collapse" data-bs-target="#boost-collapse">
+                Boost Curve
+            </h3>
+            <div class="collapse show chart-holder" id="boost-collapse">
+                <canvas class="chart-canvas" id="boost-map"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
