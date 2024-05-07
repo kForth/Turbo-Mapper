@@ -2,7 +2,49 @@ var map = undefined;
 let mapImg = undefined;
 let flowImg = undefined;
 
-const pressures = { // altitude(meters): pressure(Pa)
+let boostCurveData = [
+    {
+        rpm: 1500,
+        psi: 6
+    },
+    {
+        rpm: 3000,
+        psi: 10
+    },
+    {
+        rpm: 4000,
+        psi: 13
+    },
+    {
+        rpm: 5000,
+        psi: 15
+    },
+    {
+        rpm: 6000,
+        psi: 16
+    },
+    {
+        rpm: 7000,
+        psi: 16
+    },
+]
+let boostCurveChart = new Chart(
+    $("#boost-map"),
+    {
+      type: 'line',
+      data: {
+        labels: boostCurveData.map(pt => `${pt.rpm} RPM`),
+        datasets: [{
+            label: "PSI",
+            data: boostCurveData.map(pt => pt.psi),
+            cubicInterpolationMode: 'monotone'
+        }]
+      }
+    }
+  );
+
+const pressures = {
+    // altitude(meters): pressure(Pa)
     0: 101325,
     600: 94170,
     1200: 87330,
@@ -54,41 +96,14 @@ function paToPsi(v){
     return v / 6894.76;
 }
 
-function calcBoost(i, n){
-    let max = getInputValue("boost-max", "boost-unit > option:selected");
-    let min = getInputValue("boost-min", "boost-unit > option:selected");
-    let x = i / (n - 1);
-    switch($("#boost-curve").val().toLowerCase()){
-        default:
-        case 'linear':
-            return (max - min) * x + min; //Psi
-        case 'curved':
-            return (max - min) * (Math.sin(Math.PI * x / 2)) + min; // Psi
-    }
-}
-
-function drawBoostMap(map, pts) {
-    let canvas = $("#boost-map")[0];
-    canvas.width = 600;
-    canvas.height = canvas.width / 2;
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    
-    let img_range = [
-        0, parseFloat($("#rpm-max").val()) + parseFloat($("#rpm-min").val()),
-        0, parseFloat($("#boost-max").val()) + parseFloat($("#boost-min").val())
-    ];
-
-    drawLine(canvas, img_range, pts, 'blue', 'rpm', 'boost');
-}
-
 function drawFlowMap(map, pts) {
     let canvas = $("#flow-map")[0];
     let ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(flowImg, 0, 0);
 
-    // drawLine(canvas, map.flow_range, pts, 'red', 'pr', 'massFlow_maxTemp');
-    // drawLine(canvas, map.flow_range, pts, 'blue', 'pr', 'massFlow_minTemp');
+    // drawLine(canvas, map.flow_range, pts, 'red', 'pressure_ratio', 'massFlow_maxTemp__lb_min');
+    // drawLine(canvas, map.flow_range, pts, 'blue', 'pressure_ratio', 'massFlow_minTemp__lb_min');
 }
 
 function drawCompressorMap(map){
@@ -100,48 +115,60 @@ function drawCompressorMap(map){
     let pts = generatePoints();
 
     if(map.map_unit == 'lb_min'){
-        drawLine(canvas, map.map_range, pts, 'red', 'massFlow_maxTemp', 'pr');
-        drawLine(canvas, map.map_range, pts, 'blue', 'massFlow_minTemp', 'pr');
+        drawLine(canvas, map.map_range, pts, 'red', 'massFlow_maxTemp__lb_min', 'pressure_ratio');
+        drawLine(canvas, map.map_range, pts, 'blue', 'massFlow_minTemp__lb_min', 'pressure_ratio');
+    }
+    else if(map.map_unit == 'kg_s'){
+        drawLine(canvas, map.map_range, pts, 'red', 'massFlow_maxTemp__kg_s', 'pressure_ratio');
+        drawLine(canvas, map.map_range, pts, 'blue', 'massFlow_minTemp__kg_s', 'pressure_ratio');
     }
     else if(map.map_unit == 'cfm'){
-        // drawLine(canvas, map.map_range, pts, 'red', 'coldCfm_maxTemp', 'pr');
-        // drawLine(canvas, map.map_range, pts, 'blue', 'coldCfm_minTemp', 'pr');
-        drawLine(canvas, map.map_range, pts, 'red', 'airCfm', 'pr');
-        drawLine(canvas, map.map_range, pts, 'blue', 'airCfm', 'pr');
+        // drawLine(canvas, map.map_range, pts, 'red', 'coldCfm_maxTemp', 'pressure_ratio');
+        // drawLine(canvas, map.map_range, pts, 'blue', 'coldCfm_minTemp', 'pressure_ratio');
+        drawLine(canvas, map.map_range, pts, 'red', 'airFlow__cfm', 'pressure_ratio');
+        // drawLine(canvas, map.map_range, pts, 'blue', 'airFlow__cfm', 'pressure_ratio');
+    }
+    else if(map.map_unit == 'm3_s'){
+        // drawLine(canvas, map.map_range, pts, 'red', 'coldCfm_maxTemp', 'pressure_ratio');
+        // drawLine(canvas, map.map_range, pts, 'blue', 'coldCfm_minTemp', 'pressure_ratio');
+        drawLine(canvas, map.map_range, pts, 'red', 'airFlow__m3_s', 'pressure_ratio');
+        // drawLine(canvas, map.map_range, pts, 'blue', 'airFlow__m3_s', 'pressure_ratio');
     }
     
     drawFlowMap(map, pts);
-    drawBoostMap(map, pts);
 }
 
 function generatePoints(){
     let pts = [];
-    let n_pts = 10;
-    let maxRpm = parseFloat($("#rpm-max").val());
-    let minRpm = parseFloat($("#rpm-min").val());
     let tempUnit = JSON.parse($("#temp-unit > option:selected").val() || "[1,0]");
     let maxTemp = parseFloat($("#temp-max").val()) * tempUnit[0] + tempUnit[1]; //Air Temp (deg Kelvin)
     let minTemp = parseFloat($("#temp-min").val()) * tempUnit[0] + tempUnit[1]; //Air Temp (deg Kelvin)
 
-    let d_rpm = (maxRpm - minRpm) / n_pts;
-    for(let i = 0; i < n_pts; i++){
-        let rpm = minRpm + i * d_rpm;
-        let boost = calcBoost(i, n_pts); //Psi
+    for(let pt of boostCurveData){
+        let rpm = pt.rpm; // RPM
+        let pressure__psi = pt.psi; //Psi
         let ambient_pressure = pressures[$("#altitude").val()]; //Pa
-        let pressure_ratio = (psiToPa(boost) + ambient_pressure) / ambient_pressure;
-        console.log(calcMassFlow(rpm, pressure_ratio, 922));
+        let pressure_ratio = (psiToPa(pressure__psi) + ambient_pressure) / ambient_pressure;
+        let airDensity_maxTemp = calcDensity(maxTemp, pressure_ratio); // lb/cu.ft
+        let airDensity_minTemp = calcDensity(minTemp, pressure_ratio); // lb/cu.ft
+        let massFlow_maxTemp = calcMassFlow2(rpm, airDensity_maxTemp); // CFM
+        let massFlow_minTemp = calcMassFlow2(rpm, airDensity_minTemp); // CFM
+        let airFlow__cfm = calcCfm(rpm);
         pts.push({
             rpm: rpm,
-            boost: boost,
-            airDensity_maxTemp: calcDensity(maxTemp, pressure_ratio),
-            airDensity_minTemp: calcDensity(minTemp, pressure_ratio),
-            massFlow_maxTemp: calcMassFlow(rpm, pressure_ratio, maxTemp),
-            massFlow_minTemp: calcMassFlow(rpm, pressure_ratio, minTemp),
-            airCfm: calcCfm(rpm),
-            coldCfm_maxTemp: calcEquivCfm(rpm, pressure_ratio, maxTemp),
-            coldCfm_minTemp: calcEquivCfm(rpm, pressure_ratio, maxTemp),
-            ap: ambient_pressure,
-            pr: pressure_ratio
+            pressure__psi: pressure__psi,
+            ambient_pressure: ambient_pressure,
+            pressure_ratio: pressure_ratio,
+            airDensity_maxTemp__lb_cf: airDensity_maxTemp,
+            airDensity_minTemp__lb_cf: airDensity_minTemp,
+            massFlow_maxTemp__lb_min: massFlow_maxTemp,
+            massFlow_minTemp__lb_min: massFlow_minTemp,
+            massFlow_maxTemp__kg_s: massFlow_maxTemp * 0.00755987,
+            massFlow_minTemp__kg_s: massFlow_minTemp * 0.00755987,
+            airFlow__cfm: airFlow__cfm,
+            airFlow__m3_s: airFlow__cfm * 0.0004719472,
+            approxPower_maxTemp__hp: 10 * massFlow_maxTemp,
+            approxPower_minTemp__hp: 10 * massFlow_minTemp,
         });
     }
 
@@ -206,12 +233,9 @@ function calcMassFlow(rpm, pr, temp){
     let density = calcDensity(temp, pr);
     return cfm * density; // Mass Flow Rate (lb/min)
 }
-
-function calcEquivCfm(rpm, pr, temp){
-    let hotCfm = calcMassFlow(rpm, pr, temp);
-    let hotDensity = calcDensity(temp, pr);
-    let coldDensity = calcDensity(293, 1);
-    return hotCfm * hotDensity / coldDensity; // Mass Flow Rate (lb/min)
+function calcMassFlow2(rpm, density){
+    let cfm = calcCfm(rpm);
+    return cfm * density; // Mass Flow Rate (lb/min)
 }
 
 function estimateOemVe(){
