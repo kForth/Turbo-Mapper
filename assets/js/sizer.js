@@ -57,6 +57,7 @@ function redraw(){
     let scale = canvas.width / mapImg.width;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
+    ctx.lineWidth = 1;
     ctx.rect(
         $("#bbox_xmin").val() * scale,
         canvas.height - $("#bbox_ymax").val() * scale,
