@@ -2,6 +2,41 @@ var canvas = undefined;
 var ctx = undefined;
 var mapImg = undefined;
 
+var mouseMode = undefined;
+
+$("#selectOrigin").click(() => {
+    mouseMode = "origin";
+    $("#map").css('cursor', 'crosshair');
+})
+
+$("#selectMax").click(() => {
+    mouseMode = "max";
+    $("#map").css('cursor', 'crosshair');
+})
+
+$("#map").click((e) => {
+    console.log(e);
+    let rect = e.target.getBoundingClientRect();
+    let scale = rect.width / mapImg.width;
+    let x = (e.clientX - rect.left) / scale;
+    let y = (rect.bottom - e.clientY) / scale;
+    console.log(x, y, scale, mapImg.width);
+    if(mouseMode){
+        if(mouseMode === 'origin') {
+            $("#bbox_xmin").val(x)
+            $("#bbox_ymin").val(y)
+        }
+        else if(mouseMode === 'max') {
+            $("#bbox_xmax").val(x)
+            $("#bbox_ymax").val(y)
+        }   
+        mouseMode = undefined;
+        $("#map").css('cursor', 'inherit');
+
+        redraw();
+    }
+})
+
 function loadImg(url){
     mapImg.onload = () => {
         // canvas.width = mapImg.width;
