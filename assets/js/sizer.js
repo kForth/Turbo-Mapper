@@ -1,4 +1,4 @@
-var canvase = undefined;
+var canvas = undefined;
 var ctx = undefined;
 var mapImg = undefined;
 
