@@ -14,37 +14,37 @@ js_file: sizer
 
                 <h3>Turbo</h3>
                 <label for="name">Name:</label>
-                <input type="text" id="name" />
-                <br><br>
+                <input class="form-control" type="text" id="name" />
+                <br>
 
                 <h3>Bounding Box</h3>
                 <label for="bbox_xmin">X Min:</label>
-                <input type="number" id="bbox_xmin" value="0" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="bbox_xmin" value="0" step="1" min="0" />
                 <label for="bbox_xmax">X Max:</label>
-                <input type="number" id="bbox_xmax" value="100" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="bbox_xmax" value="100" step="1" min="0" />
                 <label for="bbox_ymin">Y Min:</label>
-                <input type="number" id="bbox_ymin" value="0" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="bbox_ymin" value="0" step="1" min="0" />
                 <label for="bbox_ymax">Y Max:</label>
-                <input type="number" id="bbox_ymax" value="100" step="1" min="0" />
-                <br><br>
+                <input class="form-control" type="number" id="bbox_ymax" value="100" step="1" min="0" />
+                <br>
 
                 <h3>Values</h3>
-                <label for="flow_type">X Axis Type:</label>
+                <label for="x_units">X Axis Type:</label>
+                <select class="form-control" id="x_units">
+                    <option value="cfm">CFM</option>
+                    <option value="lb_min">lb/min</option>
+                    <option value="m3_s">m3/s</option>
+                    <option value="kg_s">kg/s</option>
+                </select>
                 <br>
                 <label for="val_xmin">X Min:</label>
-                <input type="number" id="val_xmin" value="0" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="val_xmin" value="0" step="1" min="0" />
                 <label for="val_xmax">X Max:</label>
-                <input type="number" id="val_xmax" value="300" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="val_xmax" value="300" step="1" min="0" />
                 <label for="val_ymin">Y Min:</label>
-                <input type="number" id="val_ymin" value="1" step="1" min="0" />
-                <br>
+                <input class="form-control" type="number" id="val_ymin" value="1" step="1" min="0" />
                 <label for="val_ymax">Y Max:</label>
-                <input type="number" id="val_ymax" value="3" step="1" min="0" />
+                <input class="form-control" type="number" id="val_ymax" value="3" step="1" min="0" />
                 <br><br>
                 
                 <h3>Output</h3>
