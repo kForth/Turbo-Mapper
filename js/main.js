@@ -1,18 +1,3 @@
-// const boostCurveChart = new Chart(
-//     $("#boost-map"),
-//     {
-//         type: 'line',
-//         data: {
-//             labels: [],
-//             datasets: [{
-//                 label: "PSI",
-//                 data: [],
-//                 cubicInterpolationMode: 'monotone'
-//             }]
-//         }
-//     }
-// );
-
 const LITRE_TO_CUBIC_FOOT = 0.0353147; // L to ft^3
 const pressures = {
     // altitude(meters): pressure(Pa)
@@ -78,7 +63,7 @@ function ViewModel() {
     })
 
     // Boost Curve
-    self.boostCurveData = ko.observableArray([
+    self.boostCurve = ko.observableArray([
         {rpm: ko.observable(1500), psi: ko.observable(6)},
         {rpm: ko.observable(3000), psi: ko.observable(10)},
         {rpm: ko.observable(4000), psi: ko.observable(13)},
@@ -86,21 +71,25 @@ function ViewModel() {
         {rpm: ko.observable(6000), psi: ko.observable(16)},
         {rpm: ko.observable(7000), psi: ko.observable(16)},
     ]);
-    self.addBoostDataRow = function(){
-        let lastPt = self.boostCurveData().at(-1);
-        let newPt = {
-            rpm: ko.observable(lastPt.rpm() + 500),
-            psi: ko.observable(lastPt.psi())
-        }
-        newPt.psi.subscribe(() => self.loadMap());
-        newPt.rpm.subscribe(() => self.loadMap());
-        self.boostCurveData.push(newPt);
-        self.loadMap();
-    }
-    self.removeBoostDataRow = function(row){
-        self.boostCurveData.remove(row);
-        self.loadMap();
-    }
+    self.boostCurveLabels = ko.computed(() => ko.utils.arrayMap(self.boostCurve(), pt => pt.rpm()));
+    self.boostCurveData = ko.computed(() => ko.utils.arrayMap(self.boostCurve(), pt => pt.psi()));
+    self.boostCurveChartData = ko.computed(() => {
+        return {
+            labels: self.boostCurveLabels(),
+            datasets: [
+                {
+                    // label: "Healthy People",
+                    // backgroundColor: "rgba(220,220,220,0.2)",
+                    // borderColor: "rgba(220,220,220,1)",
+                    // pointColor: "rgba(220,220,220,1)",
+                    // pointStrokeColor: "#fff",
+                    // pointHighlightFill: "#fff",
+                    // pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: self.boostCurveData()
+                },
+            ] 
+        };
+    });
 
     self.turbo.subscribe(() => self.loadMap());
     self.engineDisplacementRaw.subscribe(() => self.loadMap());
@@ -111,11 +100,48 @@ function ViewModel() {
     self.ambientTempMaxRaw.subscribe(() => self.loadMap());
     self.ambientTempMinRaw.subscribe(() => self.loadMap());
     self.ambientTempUnit.subscribe(() => self.loadMap());
-    self.boostCurveData.subscribe(() => self.loadMap(), self, "arrayChange");
-    ko.utils.arrayForEach(self.boostCurveData(), (item) => {
-        item.rpm.subscribe(() => self.loadMap());
-        item.psi.subscribe(() => self.loadMap());
+    self.boostCurve.subscribe(() => self.boostCurveChange(), self, "arrayChange");
+    ko.utils.arrayForEach(self.boostCurve(), (item) => {
+        item.rpm.subscribe(() => self.boostCurveChange());
+        item.psi.subscribe(() => self.boostCurveChange());
     });
+    
+    self.addBoostDataRow = function(){
+        let lastPt = self.boostCurve().at(-1);
+        let newPt = {
+            rpm: ko.observable(lastPt.rpm() + 500),
+            psi: ko.observable(lastPt.psi())
+        }
+        newPt.psi.subscribe(() => self.boostCurveChange());
+        newPt.rpm.subscribe(() => self.boostCurveChange());
+        self.boostCurve.push(newPt);
+        // TODO: Update boostCurveChart
+        self.boostCurveChange();
+    }
+    self.removeBoostDataRow = function(row){
+        self.boostCurve.remove(row);
+        // TODO: Update boostCurveChart
+        self.boostCurveChange();
+    }
+    self.boostCurveChange = function() {
+        boostCurveChart.update();
+        self.loadMap();
+    }
+    
+    // self.boostCurveChart = new Chart(
+    //     $("#boost-map"),
+    //     {
+    //         type: 'line',
+    //         data: {
+    //             labels: ko.utils.arrayMap(self.boostCurve(), (item) => item.rpm()),
+    //             datasets: [{
+    //                 label: "PSI",
+    //                 data: ko.utils.arrayMap(self.boostCurve(), (item) => item.psi()),
+    //                 cubicInterpolationMode: 'monotone'
+    //             }]
+    //         }
+    //     }
+    // );
 
     self.loadMap = function() {
         let map = self.turbo();
@@ -191,7 +217,7 @@ function ViewModel() {
         let maxTemp = self.ambientTempMax(); //Air Temp (deg Kelvin)
         let minTemp = self.ambientTempMin(); //Air Temp (deg Kelvin)
     
-        for(let {rpm, psi} of self.boostCurveData()){
+        for(let {rpm, psi} of self.boostCurve()){
             rpm = rpm();
             psi = psi();
             let cfm = self.calcCfm(rpm);

@@ -54,11 +54,11 @@
                                 <th>PSI</th>
                                 <th><button class="btn btn-small btn-success" data-bind="click: addBoostDataRow">+</button></th>
                             </tr></thead>
-                            <tbody data-bind="foreach: boostCurveData">
+                            <tbody data-bind="foreach: boostCurve">
                                 <tr>
                                     <td><input class="form-control" data-bind="value: rpm" type="number" min="0" step="500" /></td>
                                     <td><input class="form-control" data-bind="value: psi" type="number" min="0" step="1" /></td>
-                                    <td><button class="btn btn-small btn-danger" data-bind="click: () => {$parent.boostCurveData.remove($data)}">-</button></td>
+                                    <td><button class="btn btn-small btn-danger" data-bind="$parent.removeBoostDataRow">-</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -116,7 +116,7 @@
                         Boost Curve
                     </h3>
                     <div class="collapse show chart-holder" id="boost-collapse">
-                        <canvas class="chart-canvas" id="boost-map"></canvas>
+                        <canvas class="chart-canvas" data-bind="chart: {type: 'line', data: boostCurveChartData, options: { observeChanges: true} }"></canvas>
                     </div>
                 </div>
             </div>
