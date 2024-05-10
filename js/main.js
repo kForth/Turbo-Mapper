@@ -125,7 +125,7 @@ function ViewModel() {
             $("#comp-map")[0].height = img.height;
             self.drawCompressorMap(map);
         };
-        img.src = `/img/${map.map_img}`;
+        img.src = map.map_img;
         self.mapImg = img;
     
         let img_f = new Image;
@@ -134,7 +134,7 @@ function ViewModel() {
             $("#flow-map")[0].height = img_f.height;
             self.drawCompressorMap(map);
         };
-        img_f.src = `/img/${map.flow_img}`;
+        img_f.src = map.flow_img;
         self.flowImg = img_f;
     }
 
