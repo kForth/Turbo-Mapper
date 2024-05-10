@@ -2,6 +2,8 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.2",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "knockout": "^3.5.1",
+    "mathjs": "^12.4.2"
   }
 }
