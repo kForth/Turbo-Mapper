@@ -75,11 +75,12 @@ function redraw(){
     let y_min = $("#val_ymin").val() - y_scale * $("#bbox_ymin").val();
     let y_max = y_scale * mapImg.height + y_min;
     
-    let output = `
-- name: "${$("#name").val()}"
-  map_img: "${mapImg.src.replace('http://localhost:4000/img/', '')}"
-  map_range: [${x_min}, ${x_max}, ${y_min}, ${y_max}]
-  map_unit: ${$("#x_units").val()}`;
+    let output = `{
+  name: "${$("#name").val()}",
+  map_img: "${mapImg.src.replace('http://localhost:4000/img/', '')}",
+  map_range: [${x_min}, ${x_max}, ${y_min}, ${y_max}],
+  map_unit: "${$("#x_units").val()}"
+},`;
     $("#output").text(output);
 }
 
