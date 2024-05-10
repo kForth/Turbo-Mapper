@@ -40,6 +40,11 @@ function ViewModel() {
     self.flowImg = undefined;
 
     self.turboList = TURBOS;
+    self.turboList.sort((a, b) => {
+        if(a.name < b.name) return -1;
+        if(a.name > b.name) return 1;
+        return 0
+    });
     self.turbo = ko.observable(self.turboList[0].name);
 
     // Engine Specs
