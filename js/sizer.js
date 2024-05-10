@@ -77,7 +77,7 @@ function redraw(){
     
     let output = `
 - name: "${$("#name").val()}"
-  map_img: "${mapImg.src.replace('http://localhost:4000/assets/img/', '')}"
+  map_img: "${mapImg.src.replace('http://localhost:4000/img/', '')}"
   map_range: [${x_min}, ${x_max}, ${y_min}, ${y_max}]
   map_unit: ${$("#x_units").val()}`;
     $("#output").text(output);
