@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.min.css">
 
 </head>
 <body>
@@ -20,104 +21,89 @@
 
     <main role="main">
         <div class="container-fluid p-2 m-0 row h100">
-            <div class="p-2 col-lg-5 col-md-7 col-sm-12 h100 scrollable">
+            <div class="p-2 col-lg-7 col-md-9 col-sm-12 h100 scrollable">
                 <div class="p-4 mb-3 bg-light rounded-3">
-                    <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#engine-specs-collapse">Engine Specs</h3>
-                    <div class="collapse show" id="engine-specs-collapse">
-                        <label for="engDispl">Displacement:</label>
-                        <span class="input-group">
-                            <input class="form-control" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
-                            <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit">
-                                <option value="L">L</option>
-                                <option value="cuin">Cu.In</option>
-                            </select>
-                        </span>
-                        <label for="engVE">Volumetric Efficieny:</label>
-                        <div class="input-group">
-                            <input class="form-control" type="number" data-bind="value: volumetricEfficieny" min="1" step="1" />
-                            <span class="input-group-text">%</span>
-                            <button class="btn btn-secondary input-group-text" data-bind="click: estimateOemVe">Calc</button>
-                        </div>
-                        <div class="mt-2">
-                            <label for="mapSelect">Turbo:</label>
-                            <select class="form-control" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
-                        </div>
+                    <h4 class="mb-2">Engine Specs</h4>
+                    <label for="engDispl">Displacement:</label>
+                    <span class="input-group">
+                        <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
+                        <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit">
+                            <option value="L">L</option>
+                            <option value="cuin">Cu.In</option>
+                        </select>
+                    </span>
+                    <div class="mt-2">
+                        <label for="mapSelect">Turbo:</label>
+                        <select class="form-control form-control-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
                     </div>
-                </div>
 
-                <div class="p-4 mb-3 bg-light rounded-3">
-                    <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#boost-curve-collapse">Boost Curve</h3>
-                    <div id="boost-curve-collapse" class="collapse show">
-                        <table class="table table-striped" id="boost-data-table">
-                            <thead><tr>
-                                <th>RPM</th>
-                                <th>PSI</th>
-                                <th><button class="btn btn-small btn-success" data-bind="click: addBoostDataRow">+</button></th>
-                            </tr></thead>
-                            <tbody data-bind="foreach: boostCurve">
-                                <tr>
-                                    <td><input class="form-control" data-bind="value: rpm" type="number" min="0" step="500" /></td>
-                                    <td><input class="form-control" data-bind="value: psi" type="number" min="0" step="1" /></td>
-                                    <td><button class="btn btn-small btn-danger" data-bind="$parent.removeBoostDataRow">-</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <h4 class="mt-3 mb-2">Boost Curve</h4>
+                    <table class="table table-sm table-striped" id="boost-data-table">
+                        <thead><tr>
+                            <th>RPM</th>
+                            <th>PSI</th>
+                            <th>VE%</th>
+                            <th>
+                                <!-- <button class="btn btn-sm btn-success" data-bind="click: addBoostDataRow">+</button> -->
+                            </th>
+                        </tr></thead>
+                        <tbody data-bind="foreach: boostCurve">
+                            <tr>
+                                <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
+                                <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
+                                <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove"><i class="bi bi-box-arrow-in-up"></i></button>
+                                    <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
+                                    <button class="btn btn-sm btn-danger" data-bind="click: $parent.removeBoostDataRow"><i class="bi bi-trash-fill"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <div class="p-4 mb-3 bg-light rounded-3">
-                    <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#environment-collapse">Environment</h3>
-                    <div class="collapse show" id="environment-collapse">
-                        <label for="altitude">Altitude:</label>
-                        <span class="input-group" id="altitude-input-group">
-                            <input type="number" class="form-control" data-bind="value: altitudeRaw" step="100" />
-                            <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit">
-                                <option value="m">m</option>
-                                <option value="ft">ft</option>
-                            </select>
-                        </span>
+                    <h4 class="mt-3 mb-2">Environment</h4>
+                    <label for="altitude">Altitude:</label>
+                    <span class="input-group" id="altitude-input-group">
+                        <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
+                        <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit">
+                            <option value="m">m</option>
+                            <option value="ft">ft</option>
+                        </select>
+                    </span>
 
-                        <label for="temp-input-group">Temperature Range:</label>
-                        <span class="input-group" id="temp-input-group">
-                            <input class="form-control" type="number" data-bind="value: ambientTempMinRaw" />
-                            <span class="input-group-text">To</span>
-                            <input class="form-control" type="number" data-bind="value: ambientTempMaxRaw" />
-                            <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit">
-                                <option value="degC">&deg;C</option>
-                                <option value="degF">&deg;F</option>
-                                <option value="K">&deg;K</option>
-                            </select>
-                        </span>
-                    </div>
+                    <label for="temp-input-group">Temperature Range:</label>
+                    <span class="input-group" id="temp-input-group">
+                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
+                        <span class="input-group-text">To</span>
+                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
+                        <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit">
+                            <option value="degC">&deg;C</option>
+                            <option value="degF">&deg;F</option>
+                            <option value="K">&deg;K</option>
+                        </select>
+                    </span>
                 </div>
             </div>
 
-            <div class="p-2 col-lg-7 col-md-5 col-sm-12 h100 scrollable">
-                <div class="mb-2 p-4 bg-light rounded-3">
-                    <h3 class="mb-2" role="button" data-bs-toggle="collapse" data-bs-target="#map-collapse">
-                        Compressor Map
-                    </h3>
-                    <div class="collapse show chart-holder" id="map-collapse">
-                        <canvas class="chart-canvas" id="comp-map"></canvas>
-                    </div>
+            <div class="p-2 col-lg-5 col-md-3 col-sm-12 h100 scrollable">
+                <h4 class="mt-3 mb-2">Compressor Map</h4>
+                <div class="chart-holder mb-3" id="map-collapse">
+                    <canvas class="chart-canvas" data-bind="chart: compressorChart"></canvas>
                 </div>
 
-                <div class="mb-2 p-4 bg-light rounded-3">
-                    <h3 class="mb-3" role="button" data-bs-toggle="collapse" data-bs-target="#flow-collapse">
-                        Exhaust Flow
-                    </h3>
-                    <div class="collapse show chart-holder" id="flow-collapse">
-                        <canvas class="chart-canvas" id="flow-map"></canvas>
-                    </div>
-                </div>
+                <!-- <h4 class="mt-3 mb-2">Exhaust Flow Chart</h4>
+                <div class="chart-holder" id="flow-collapse">
+                    <canvas class="chart-canvas" data-bind="chart: exhaustFlowChart"></canvas>
+                </div> -->
 
-                <div class="mb-2 p-4 bg-light rounded-3">
-                    <h3 class="mb-3" role="button" data-bs-toggle="collapse" data-bs-target="#boost-collapse">
-                        Boost Curve
-                    </h3>
-                    <div class="collapse show chart-holder" id="boost-collapse">
-                        <canvas class="chart-canvas" data-bind="chart: {type: 'line', data: boostCurveChartData, options: { observeChanges: true} }"></canvas>
-                    </div>
+                <h4 class="mt-3 mb-2">Air Flow Curves</h4>
+                <div class="chart-holder mb-3" id="boost-collapse">
+                    <canvas class="chart-canvas" data-bind="chart: boostCurveChart"></canvas>
+                </div>
+                
+                <h4 class="mt-3 mb-2">Estimated Power</h4>
+                <div class="chart-holder mb-3" id="boost-collapse">
+                    <canvas class="chart-canvas" data-bind="chart: powerCurveChart"></canvas>
                 </div>
             </div>
         </div>

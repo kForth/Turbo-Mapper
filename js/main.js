@@ -15,15 +15,53 @@ const pressures = {
 function _convert(v, from, to){
     return math.unit(parseFloat(v), from).toNumber(to);
 }
+function _foreach(arr, fn) {
+    return ko.utils.arrayMap(arr, fn)
+}
 
 function ViewModel() {
     var self = this;
 
-    // self.ctx = $("#comp-map")[0].getContext("2d");
+    
+    self.mapImg = new Image;
+    self.flowImg = new Image;
+    
+    self.compPlugin = {
+        id: 'compressorMapBackground',
+        beforeDraw: (chart) => {
+            let map = self.turbo();
+            if (self.mapImg.complete) {
+                const ctx = chart.ctx;
+                const boxX = chart.boxes.filter(e => e.id == 'x')[0];
+                const boxY = chart.boxes.filter(e => e.id == 'y')[0];
+                const origin = { x: boxX.left, y:boxY.bottom };
+                const limit = { x: boxX.right, y:boxY.top };
+                const chartVals = {
+                    minX: boxX.start,
+                    maxX: boxX.end,
+                    minY: boxY.start,
+                    maxY: boxY.end,
+                }
 
-    self.mapImg = undefined;
-    self.flowImg = undefined;
+                const x_scale = (chartVals.maxX - chartVals.minX) / (limit.x - origin.x)
+                const y_scale = (chartVals.maxY - chartVals.minY) / (limit.y - origin.y)
+                const x_min = chartVals.minX - x_scale * origin.x;
+                const x_max = x_scale * chart.width + x_min;
+                const y_min = chartVals.minY - y_scale * origin.y;
+                const y_max = y_scale * chart.height + y_min;
+                const chartRange = [x_min, x_max, y_max, y_min];
 
+                const pt = self.val_to_px(chart, map.map_range[0], map.map_range[2], chartRange)
+                const pt2 = self.val_to_px(chart, map.map_range[1], map.map_range[3], chartRange)
+                const im_w = pt2[0] - pt[0];
+                const im_h = pt2[1] - pt[1];
+                ctx.drawImage(self.mapImg, pt[0], chart.height - pt[1] - im_h, im_w, im_h);
+            } else {
+                self.mapImg.onload = () => chart.draw();
+            }
+        }
+      };
+    
     self.turboList = TURBOS;
     self.turboList.sort((a, b) => {
         if(a.name < b.name) return -1;
@@ -38,7 +76,6 @@ function ViewModel() {
     self.engineDisplacement = ko.computed(() => {
         return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
     }) // L
-    self.volumetricEfficieny = ko.observable(90); // %
 
     /// Environment
     self.altitudeRaw = ko.observable(0);
@@ -46,14 +83,14 @@ function ViewModel() {
     self.altitude = ko.computed(() => {
         return _convert(self.altitudeRaw(), self.altitudeUnit(), 'm');
     }) // m
-    self.ambientTempMaxRaw = ko.observable(0);
-    self.ambientTempMinRaw = ko.observable(30);
+    self.ambientTempMinRaw = ko.observable(0);
+    self.ambientTempMaxRaw = ko.observable(30);
     self.ambientTempUnit = ko.observable("degC");
-    self.ambientTempMax = ko.computed(() => {
-        return _convert(self.ambientTempMaxRaw(), self.ambientTempUnit(), 'K');
-    }) // K
     self.ambientTempMin = ko.computed(() => {
         return _convert(self.ambientTempMinRaw(), self.ambientTempUnit(), 'K');
+    }) // K
+    self.ambientTempMax = ko.computed(() => {
+        return _convert(self.ambientTempMaxRaw(), self.ambientTempUnit(), 'K');
     }) // K
     
     self.ambientPressure = ko.computed(() => {
@@ -61,107 +98,289 @@ function ViewModel() {
         // return (-1.03001e-9 * altitude^3) + (0.0000482823 * altitude^2) + (-3.6778 * altitude + 101329);
         return pressures[self.altitude()];
     })
+    
+    // Compressor Chart Data
+    self.compressorData = ko.observableArray([]);
+    self._compChartX = function (pt, isMaxTemp) {
+        switch(self.turbo().map_unit){
+            case 'lb_min':
+                if(isMaxTemp === true)
+                    return pt.massFlow_maxTemp__lb_min;
+                return pt.massFlow_minTemp__lb_min;
+            case 'kg_s':
+                if(isMaxTemp === true)
+                    return pt.massFlow_maxTemp__kg_s;
+                return pt.massFlow_minTemp__kg_s;
+            case 'cfm':
+                return pt.airFlow__cfm;
+            case 'm3_s':
+                return pt.airFlow__m3_s;
+        }
+    }
+    self.compressorChartMinTemp = ko.computed(() => _foreach(
+        self.compressorData(), pt => {
+            return {
+                x: self._compChartX(pt, false),
+                y: pt.pressure_ratio
+            };
+        }
+    ));
+    self.compressorChartMaxTemp = ko.computed(() => _foreach(
+        self.compressorData(), pt => {
+            return {
+                x: self._compChartX(pt, true),
+                y: pt.pressure_ratio
+            };
+        }
+    ));
 
-    // Boost Curve
-    self.boostCurve = ko.observableArray([
-        {rpm: ko.observable(1500), psi: ko.observable(6)},
-        {rpm: ko.observable(3000), psi: ko.observable(10)},
-        {rpm: ko.observable(4000), psi: ko.observable(13)},
-        {rpm: ko.observable(5000), psi: ko.observable(15)},
-        {rpm: ko.observable(6000), psi: ko.observable(16)},
-        {rpm: ko.observable(7000), psi: ko.observable(16)},
-    ]);
-    self.boostCurveLabels = ko.computed(() => ko.utils.arrayMap(self.boostCurve(), pt => pt.rpm()));
-    self.boostCurveData = ko.computed(() => ko.utils.arrayMap(self.boostCurve(), pt => pt.psi()));
-    self.boostCurveChartData = ko.computed(() => {
-        return {
-            labels: self.boostCurveLabels(),
-            datasets: [
-                {
-                    // label: "Healthy People",
-                    // backgroundColor: "rgba(220,220,220,0.2)",
-                    // borderColor: "rgba(220,220,220,1)",
-                    // pointColor: "rgba(220,220,220,1)",
-                    // pointStrokeColor: "#fff",
-                    // pointHighlightFill: "#fff",
-                    // pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: self.boostCurveData()
+    self.compressorChart = {
+        type: 'scatter',
+        data: ko.computed(() => {
+            return {
+                datasets: [
+                    {
+                        label: "Min Temp.",
+                        showLine: true,
+                        data: self.compressorChartMinTemp(),
+                    },
+                    {
+                        label: "Max Temp.",
+                        showLine: true,
+                        data: self.compressorChartMaxTemp(),
+                    },
+                ] 
+            };
+        }),
+        options: {
+            observeChanges: true,
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: () => self.mapImg.width / self.mapImg.height,
+            scales: {
+                x: {
+                    display: false,
+                    startAtZero: true,
+                    min: () => self.turbo().map_range[0],
+                    max: () => self.turbo().map_range[1],
                 },
-            ] 
-        };
-    });
+                y: {
+                    display: false,
+                    min: () => self.turbo().map_range[2],
+                    max: () => self.turbo().map_range[3],
+                },
+            },
+            animation: false, // disables all animations
+            animations: {
+                colors: false, // disables animation defined by the collection of 'colors' properties
+                x: false, // disables animation defined by the 'x' property
+            },
+            transitions: {
+                active: {
+                    animation: {
+                        duration: 0, // disables the animation for 'active' mode
+                    }
+                }
+            },
+        },
+        plugins: [self.compPlugin]
+    };
 
+    // Boost Curve Data
+    self.boostCurve = ko.observableArray([
+        {rpm: ko.observable(0), psi: ko.observable(0), ve: ko.observable(50)},
+        {rpm: ko.observable(2000), psi: ko.observable(6), ve: ko.observable(70)},
+        {rpm: ko.observable(3000), psi: ko.observable(12), ve: ko.observable(75)},
+        {rpm: ko.observable(4000), psi: ko.observable(14), ve: ko.observable(80)},
+        {rpm: ko.observable(5000), psi: ko.observable(16), ve: ko.observable(90)},
+        {rpm: ko.observable(6000), psi: ko.observable(16), ve: ko.observable(80)},
+        {rpm: ko.observable(7000), psi: ko.observable(16), ve: ko.observable(70)},
+    ]);
+    self.boostCurveRpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
+    self.boostCurvePsi = ko.computed(() => _foreach(self.boostCurve(), pt => pt.psi()));
+    self.boostCurveVe = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
+    self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => {return {x: pt.rpm(), y: pt.psi()}}));
+    self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => {return {x: pt.rpm(), y: pt.ve()}}));
+    self.boostCurveChart = {
+        type: 'scatter',
+        data: ko.computed(() => {
+            return {
+                datasets: [
+                    {
+                        label: "Boost Curve",
+                        data: self.boostCurvePts(),
+                        showLine: true,
+                    },
+                    {
+                        label: "VE %",
+                        data: self.veCurvePts(),
+                        showLine: true,
+                        yAxisID: "y2",
+                    },
+                    {
+                        label: "Flowrate",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.airFlow__cfm}})),
+                        showLine: true,
+                        yAxisID: "y3",
+                    },
+                    {
+                        label: "MassFlow MaxTemp",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.massFlow_maxTemp__lb_min}})),
+                        showLine: true,
+                        yAxisID: "y4",
+                    },
+                    {
+                        label: "MassFlow MinTemp",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.massFlow_minTemp__lb_min}})),
+                        showLine: true,
+                        yAxisID: "y4",
+                    },
+                ] 
+            }
+        }),
+        options: {
+            observeChanges: true,
+            scales: {
+                x: {min: 0, startAtZero: true, title: {display: true, text: 'RPM'} },
+                y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePsi())) + 2, startAtZero: true, title: {display: true, text: 'PSI'} },
+                y2: { min: 0, max: () => parseInt(Math.max(100/1.1, ...self.boostCurveVe()) * 1.1), startAtZero: true, title: {display: true, text: 'VE %'}, position: 'right' },
+                y3: { min: 0, startAtZero: true, title: {display: true, text: 'CFM'}, position: 'left' },
+                y4: { min: 0, startAtZero: true, title: {display: true, text: 'lb/min'}, position: 'right' },
+            }
+        }
+    };
+    self.powerCurveChart = {
+        type: 'scatter',
+        data: ko.computed(() => {
+            return {
+                datasets: [
+                    {
+                        label: "MaxTemp Power",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.approxPower_maxTemp__hp}})),
+                        showLine: true,
+                        yAxisID: "y",
+                    },
+                    {
+                        label: "MinTemp Power",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.approxPower_minTemp__hp}})),
+                        showLine: true,
+                        yAxisID: "y",
+                    },
+                    {
+                        label: "MaxTemp Torque",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.approxTorque_maxTemp__ftlb}})),
+                        showLine: true,
+                        yAxisID: "y2",
+                    },
+                    {
+                        label: "MinTemp Torque",
+                        data: ko.computed(() => _foreach(self.compressorData(), pt => {return {x: pt.rpm, y: pt.approxTorque_minTemp__ftlb}})),
+                        showLine: true,
+                        yAxisID: "y2",
+                    },
+                ] 
+            }
+        }),
+        options: {
+            observeChanges: true,
+            scales: {
+                x: {min: 0, startAtZero: true, title: {display: true, text: 'RPM'} },
+                y: { min: 0, startAtZero: true, title: {display: true, text: 'HP'}, position: 'left' },
+                y2: { min: 0, startAtZero: true, title: {display: true, text: 'ft.lb'}, position: 'right' },
+            }
+        }
+    };
+
+    // Subscriptions
     self.turbo.subscribe(() => self.loadMap());
     self.engineDisplacementRaw.subscribe(() => self.loadMap());
     self.engineDisplacementUnit.subscribe(() => self.loadMap());
-    self.volumetricEfficieny.subscribe(() => self.loadMap());
     self.altitudeRaw.subscribe(() => self.loadMap());
     self.altitudeUnit.subscribe(() => self.loadMap());
     self.ambientTempMaxRaw.subscribe(() => self.loadMap());
     self.ambientTempMinRaw.subscribe(() => self.loadMap());
     self.ambientTempUnit.subscribe(() => self.loadMap());
-    self.boostCurve.subscribe(() => self.boostCurveChange(), self, "arrayChange");
+    self.boostCurve.subscribe(() => self.loadMap(), self, "arrayChange");
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
-        item.rpm.subscribe(() => self.boostCurveChange());
-        item.psi.subscribe(() => self.boostCurveChange());
+        item.rpm.subscribe(() => self.loadMap());
+        item.psi.subscribe(() => self.loadMap());
+        item.ve.subscribe(() => self.loadMap());
     });
     
+    // Boost Curve Table Helpers
+    self._newBoostDataPoint = function(rpm, psi, ve){
+        let pt = {
+            rpm: ko.observable(rpm),
+            psi: ko.observable(psi),
+            ve: ko.observable(ve)
+        };
+        pt.psi.subscribe(() => self.loadMap());
+        pt.rpm.subscribe(() => self.loadMap());
+        pt.ve.subscribe(() => self.loadMap());
+        return pt;
+    }
+    self._getBoostDataMidpoint = function(a, b){
+        return self._newBoostDataPoint(
+            (a.rpm() + b.rpm()) / 2,
+            (a.psi() + b.psi()) / 2,
+            (a.ve() + b.ve()) / 2,
+        );
+    }
     self.addBoostDataRow = function(){
         let lastPt = self.boostCurve().at(-1);
-        let newPt = {
-            rpm: ko.observable(lastPt.rpm() + 500),
-            psi: ko.observable(lastPt.psi())
-        }
-        newPt.psi.subscribe(() => self.boostCurveChange());
-        newPt.rpm.subscribe(() => self.boostCurveChange());
-        self.boostCurve.push(newPt);
-        // TODO: Update boostCurveChart
-        self.boostCurveChange();
+        let pt = self._newBoostDataPoint(
+            lastPt.rpm() + 500,
+            lastPt.psi(),
+            lastPt.ve()
+        );
+        self.insertBoostDataRow(pt);
+    }
+    self.insertBoostDataRow = function(pt, index){
+        if(index === undefined)
+            self.boostCurve.push(pt);
+        else
+            self.boostCurve.splice(index, 0, pt);
     }
     self.removeBoostDataRow = function(row){
         self.boostCurve.remove(row);
-        // TODO: Update boostCurveChart
-        self.boostCurveChange();
     }
-    self.boostCurveChange = function() {
-        boostCurveChart.update();
-        self.loadMap();
+    self.moveBoostDataRowUp = function(row) {
+        let index = self.boostCurve.indexOf(row);
+        self.boostCurve.remove(row);
+        self.boostCurve.splice(index - 1, 0, row);
     }
-    
-    // self.boostCurveChart = new Chart(
-    //     $("#boost-map"),
-    //     {
-    //         type: 'line',
-    //         data: {
-    //             labels: ko.utils.arrayMap(self.boostCurve(), (item) => item.rpm()),
-    //             datasets: [{
-    //                 label: "PSI",
-    //                 data: ko.utils.arrayMap(self.boostCurve(), (item) => item.psi()),
-    //                 cubicInterpolationMode: 'monotone'
-    //             }]
-    //         }
-    //     }
-    // );
+    self.moveBoostDataRowDown = function(row) {
+        let index = self.boostCurve.indexOf(row);
+        self.boostCurve.remove(row);
+        self.boostCurve.splice(index + 1, 0, row);
 
+    }
+    self.insertBoostDataRowAbove = function(row) {
+        let index = self.boostCurve.indexOf(row);
+        let pt = (index > 0) ?
+            self._getBoostDataMidpoint(self.boostCurve().at(index - 1), row) :
+            self._newBoostDataPoint(row.rpm() - 500, row.psi(), row.ve());
+        self.insertBoostDataRow(pt, index);
+    }
+    self.insertBoostDataRowBelow = function(row) {
+        let index = self.boostCurve.indexOf(row);
+        let pt = (index < self.boostCurve.length - 1) ?
+            self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
+            self._newBoostDataPoint(row.rpm() + 500, row.psi(), row.ve());
+        self.insertBoostDataRow(pt, index + 1);
+    }
+
+    // Main Update Function
     self.loadMap = function() {
-        let map = self.turbo();
-        let img = new Image;
-        img.onload = () => {
-            $("#comp-map")[0].width = img.width;
-            $("#comp-map")[0].height = img.height;
-            self.drawCompressorMap(map);
-        };
-        img.src = map.map_img;
-        self.mapImg = img;
-    
-        let img_f = new Image;
-        img_f.onload = () => {
-            $("#flow-map")[0].width = img_f.width;
-            $("#flow-map")[0].height = img_f.height;
-            self.drawCompressorMap(map);
-        };
-        img_f.src = map.flow_img;
-        self.flowImg = img_f;
+        self.mapImg.src = self.turbo().map_img;
+        self.compressorData(self.generatePoints());
+        console.log(self.compressorData());
+        // let img = new Image;
+        // self.mapImg = img;
+
+        // let img_f = new Image;
+        // img_f.src = self.turbo().flow_img;
+        // self.flowImg = img_f;
     }
 
     self.psiToPa = function(v) {
@@ -190,7 +409,6 @@ function ViewModel() {
         ctx.drawImage(self.mapImg, 0, 0);
     
         let pts = self.generatePoints();
-        console.log(pts);
     
         if(map.map_unit == 'lb_min'){
             self.drawLine(canvas, map.map_range, pts, 'red', 'massFlow_maxTemp__lb_min', 'pressure_ratio');
@@ -210,43 +428,6 @@ function ViewModel() {
         }
         
         self.drawFlowMap(map, pts);
-    }
-    
-    self.generatePoints = function() {
-        let pts = [];
-        let maxTemp = self.ambientTempMax(); //Air Temp (deg Kelvin)
-        let minTemp = self.ambientTempMin(); //Air Temp (deg Kelvin)
-    
-        for(let {rpm, psi} of self.boostCurve()){
-            rpm = rpm();
-            psi = psi();
-            let cfm = self.calcCfm(rpm);
-            let ambient_pressure = pressures[self.altitude()]; //Pa
-            let pressure_ratio = (self.psiToPa(psi) + ambient_pressure) / ambient_pressure;
-            let airDensity_maxTemp = self.calcDensity(maxTemp, pressure_ratio); // lb/cu.ft
-            let airDensity_minTemp = self.calcDensity(minTemp, pressure_ratio); // lb/cu.ft
-            let massFlow_maxTemp = self.calcMassFlow2(cfm, airDensity_maxTemp); // CFM
-            let massFlow_minTemp = self.calcMassFlow2(cfm, airDensity_minTemp); // CFM
-
-            pts.push({
-                rpm: rpm,
-                pressure__psi: psi,
-                ambient_pressure: ambient_pressure,
-                pressure_ratio: pressure_ratio,
-                airDensity_maxTemp__lb_cf: airDensity_maxTemp,
-                airDensity_minTemp__lb_cf: airDensity_minTemp,
-                massFlow_maxTemp__lb_min: massFlow_maxTemp,
-                massFlow_minTemp__lb_min: massFlow_minTemp,
-                massFlow_maxTemp__kg_s: massFlow_maxTemp * 0.00755987,
-                massFlow_minTemp__kg_s: massFlow_minTemp * 0.00755987,
-                airFlow__cfm: cfm,
-                airFlow__m3_s: cfm * 0.0004719472,
-                approxPower_maxTemp__hp: 10 * massFlow_maxTemp,
-                approxPower_minTemp__hp: 10 * massFlow_minTemp,
-            });
-        }
-    
-        return pts;
     }
     
     self.val_to_px = function(c, x, y, range) {
@@ -288,39 +469,56 @@ function ViewModel() {
         return pressures[$("#altitude").val()]; //Dry Air Pressure (Pa)
     }
     
-    self.calcCfm = function(rpm) {
-        let eng_displ = self.engineDisplacement();
-        let eng_ve = self.volumetricEfficieny();
-        return eng_displ * LITRE_TO_CUBIC_FOOT * rpm / 2 * (eng_ve / 100)
+    self.calcCfm = function(rpm, ve) {
+        return _convert(self.engineDisplacement(), "L", "cuft") * rpm / 2 * (ve / 100);
+        // return _convert(self.engineDisplacement(), "L", "cuin") * rpm / 3456 * (ve / 100);
     }
     
-    self.calcDensity = function(temp, pr) {
+    self.calcAirDensity = function(temp, pr) {
         let pd = self.ambientPressure() * pr; //Dry Air Pressure (Pa)
         let pv = Math.exp(20.386 - (5132 / temp)) * 133.32239; //Water Vapor Pressure (Pa)
         let density = (pd / (287.058 * temp)) + (pv / (461.495 * temp)); //Air Density (kg/m^3)
-        return density *= 0.06243; // Convert to lb/cu.ft
+        return _convert(density, 'kg/m3', 'lb/cuft'); // Convert to lb/cu.ft
     }
     
-    self.calcMassFlow = function(rpm, pr, temp) {
-        let cfm = calcCfm(rpm);
-        let density = calcDensity(temp, pr);
-        return cfm * density; // Mass Flow Rate (lb/min)
-    }
-    self.calcMassFlow2 = function(cfm, density) {
-        return cfm * density; // Mass Flow Rate (lb/min)
-    }
+    self.generatePoints = function() {
+        let pts = [];
+        let maxTemp = self.ambientTempMax(); //Air Temp (deg Kelvin)
+        let minTemp = self.ambientTempMin(); //Air Temp (deg Kelvin)
     
-    self.estimateOemVe = function() {
-        let eng_displ = self.engineDisplacement();
-        let hp_str = window.prompt("Enter Peak Engine HP (hp@rpm):");
-        let hp = parseFloat(hp_str.substr(0, hp_str.indexOf("@")));
-        let rpm = parseFloat(hp_str.substr(hp_str.indexOf("@")+1));
-        let bsfc = 0.57; // Estimated (random)
+        for(let {rpm, psi, ve} of self.boostCurve()){
+            rpm = rpm();
+            psi = psi();
+            ve = ve();
+            let cfm = self.calcCfm(rpm, ve); // CFM
+            let ambient_pressure = pressures[self.altitude()]; //Pa
+            let pressure_ratio = (self.psiToPa(psi) + ambient_pressure) / ambient_pressure;
+            let airDensity_maxTemp = self.calcAirDensity(maxTemp, pressure_ratio); // lb/cu.ft
+            let airDensity_minTemp = self.calcAirDensity(minTemp, pressure_ratio); // lb/cu.ft
+            let massFlow_maxTemp = cfm * airDensity_maxTemp; // lb/min
+            let massFlow_minTemp = cfm * airDensity_minTemp; // lb/min
+
+            pts.push({
+                rpm: rpm,
+                pressure__psi: psi,
+                ambient_pressure: ambient_pressure,
+                pressure_ratio: pressure_ratio,
+                airDensity_maxTemp__lb_cf: airDensity_maxTemp,
+                airDensity_minTemp__lb_cf: airDensity_minTemp,
+                massFlow_maxTemp__lb_min: massFlow_maxTemp,
+                massFlow_minTemp__lb_min: massFlow_minTemp,
+                massFlow_maxTemp__kg_s: _convert(massFlow_maxTemp, "lb/min", "kg/s"),
+                massFlow_minTemp__kg_s: _convert(massFlow_minTemp, "lb/min", "kg/s"),
+                airFlow__cfm: cfm,
+                airFlow__m3_s: _convert(cfm, "cuft/min", "m3/s"), // * 0.0004719472,
+                approxPower_maxTemp__hp: 10 * massFlow_maxTemp,
+                approxPower_minTemp__hp: 10 * massFlow_minTemp,
+                approxTorque_maxTemp__ftlb: rpm == 0 ? 0 : (10 * massFlow_maxTemp) / (rpm / 5252),
+                approxTorque_minTemp__ftlb: rpm == 0 ? 0 : (10 * massFlow_minTemp) / (rpm / 5252),
+            });
+        }
     
-        let ve = Math.round((9487 * hp * bsfc ) / (eng_displ * rpm));
-    
-        self.volumetricEfficieny(ve);
-        // $("#engVE").val(ve);
+        return pts;
     }
 }
 
