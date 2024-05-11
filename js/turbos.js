@@ -1,10 +1,6 @@
 const TURBOS = [
-  {
-    name: "GBC37-900 67MM",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC37-900-Comp-Map--scaled.jpg",
-    map_range: [-14.522292993630574, 102.60721972034236, 0.46240372213539027, 5.278839962321797],
-    map_unit: "lb_min"
-  },
+  // Garrett Maps
+  // https://www.garrettmotion.com/racing-and-performance/performance-turbos/
   {
     name: "G30-900 62mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-900-35-900-Comp-Map-kg-sec-scaled.jpg",
@@ -37,6 +33,60 @@ const TURBOS = [
     map_unit: "lb_min"
   },
   {
+    name: "GBC22-350 44mm",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-22-Comp-scaled.jpg",
+    map_range: [-8.237704918032787, 48.28688574618981, 0.509899084810979, 4.0563735461609625],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GBC20-300 39mm",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-20-Comp-scaled.jpg",
+    map_range: [-7.312414733969986, 42.863120043912005, 0.5035405629694207, 4.040121867317016],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GBC17-250 36mm",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-17-Comp-scaled.jpg",
+    map_range: [-5.48431105047749, 32.147340032934004, 0.5072014292091169, 4.049864117107564],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GBC14-200 34mm",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-14-Comp-scaled.jpg",
+    map_range: [-5.506849315068493, 32.27945238923373, 0.6700490860556394, 3.042021857390435],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GBC37-900 67MM",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC37-900-Comp-Map--scaled.jpg",
+    map_range: [-14.522292993630574, 102.60721972034236, 0.46240372213539027, 5.278839962321797],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GT2860RS",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT2860RS-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-6.059050064184852, 41.15361616455392, 0.7687842572321657, 3.02021443185782],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GT2871R",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2871R.jpg",
+    map_range: [-6.908866995073891, 55.37027969736184, 0.7289330863097323, 3.7412939595974035],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GT3071R",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3071-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-9.08366533864542, 64.18061153822212, 0.6309051037330906, 4.060763351029614],
+    map_unit: "lb_min"
+  },
+  {
+    name: "GT3076R",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3076-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-9.02127659574468, 69.23120636635637, 0.5701308747165776, 4.578305018395442],
+    map_unit: "lb_min"
+  },
+  {
     name: "GT3582R",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3582-Comp-Map-Kg-Sec-scaled.jpg",
     map_range: [-10.760351011115905, 81.53241433941736, 0.5607368265137205, 4.568076108452972],
@@ -58,12 +108,6 @@ const TURBOS = [
     name: "GTW3884R 62mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3884-Comp-Map-Kg-Sec-scaled.jpg",
     map_range: [-13.561103409755875, 107.26237553961175, 0.640885483715242, 4.0354207830478455],
-    map_unit: "lb_min"
-  },
-  {
-    name: "GTX3071R",
-    map_img: "/img/maps/GTX3071R.jpg",
-    map_range: [-10.432692307692308, 73.70192307692308, 0.7159090909090908, 4.039772727272727],
     map_unit: "lb_min"
   },
   {
@@ -91,66 +135,8 @@ const TURBOS = [
     map_range: [-13.83812010443864, 106.19669383873205, 0.6015003620363586, 4.544735278079658],
     map_unit: "lb_min"
   },
-  {
-    name: "GT2860RS",
-    map_img: "/img/maps/GT2860RS-Comp-Map-Kg-Sec-scaled.webp",
-    flow_img: "/img/flows/Turbine-Flow-Maps-GT28-scaled.webp",
-    map_range: [-6.059050064184852, 41.15361616455392, 0.7684046900850208, 3.023531455370124],
-    map_unit: "lb_min"
-  },
-  {
-    name: "GT42 56T",
-    map_img: "/img/maps/gt42-56trim-cfm.gif",
-    map_range: [-19.852800000000002, 121.5232, 0.5714285714285714, 5.0928571428571425],
-    // map_range: [-264, 1616, 0.5714285714285714, 5.0928571428571425],
-    map_unit: "cfm"
-  },
-  {
-    name: "GBC35-700 58MM",
-    map_img: "/img/maps/GBC35-700-Conmpressor-Map-scaled.webp",
-    map_range: [-10.348258706467663, 81.1409626671331, 0.504138563217669, 5.207467897427286],
-    map_unit: "lb_min"
-  },
-  {
-    name: "GT42 53T",
-    map_img: "/img/maps/gt42-53trim-cfm.gif",
-    map_range: [-19.852800000000002, 121.5232, 0.5714285714285714, 5.0928571428571425],
-    // map_range: [-264, 1616, 0.5706618962432917, 5.100178890876565],
-    map_unit: "cfm"
-  },
-  {
-    name: "GT35 52T",
-    map_img: "/img/maps/gt35-52trim-cfm.gif",
-    map_range: [-10.125131195335277, 61.97807580174926, 0.7428571428571429, 3.455714285714286],
-    // map_range: [-135.38461538461536, 828.7179487179486, 0.7428571428571429, 3.455714285714286],
-    map_unit: "cfm"
-  },
-  {
-    name: "GT35 48T",
-    map_img: "/img/maps/gt35-48trim-cfm.gif",
-    map_range: [-8.973953488372091, 54.93147286821705, 0.7428571428571429, 3.455714285714286],
-    // map_range: [-117.26804123711341, 730.6701030927835, 0.7428571428571429, 3.455714285714286],
-    map_unit: "cfm"
-  },
-  {
-    name: "GT28RS",
-    map_img: "/img/maps/gt28rs-62trim-cfm.gif",
-    map_range: [-8.973953488372091, 54.93147286821705, 0.7428571428571429, 3.455714285714286],
-    // map_range: [-117.26804123711341, 730.6701030927835, 0.7428571428571429, 3.455714285714286],
-    map_unit: "cfm"
-  },
-  {
-    name: "G40-900",
-    map_img: "/img/maps/G40-900.jpg",
-    map_range: [-14.832535885167465, 104.78468899521532, 0.6136363636363636, 5.037878787878788],
-    map_unit: "lb_min"
-  },
-  {
-    name: "Garrett G42-1450 79MM",
-    map_img: "/img/maps/G42-1450C-Comp-Map-kg-sec-scaled.webp",
-    map_range: [-22.076215505913275, 171.24135081307494, 0.5829717770989513, 4.552256239024837],
-    map_unit: "lb_min"
-  },
+
+  // MHI Maps
   {
     name: "TD04H-20TK3S",
     map_img: "/img/maps/TD04H-20TK3S.avif",
@@ -181,11 +167,26 @@ const TURBOS = [
     map_range: [-0.08041193181818182, 0.3545062538493763, 0.7685482579805478, 3.7275930923636738],
     map_unit: "m3_s"
   },
+
+  // BorgWarner Maps
+  // https://www.borgwarner.com/matchbot/#version=1.4&displacement=1.5&CID=91.53&altitude=500&baro=14.502&aat=75&fueltype=1&turboconfig=1&compressor=62k80&pt1_rpm=2000&pt1_ve=85&pt1_boost=5&pt1_ie=99&pt1_filres=0.08&pt1_ipd=0.2&pt1_mbp=0.5&pt1_ce=66&pt1_te=75&pt1_egt=1550&pt1_ter=1.21&pt1_pw=14.54&pt1_bsfc=0.43&pt1_afr=11.5&pt1_wts=300&pt1_wd=83&pt1_wd2=74&pt1_wrsin=69033&pt2_rpm=3000&pt2_ve=95&pt2_boost=10&pt2_ie=95&pt2_filres=0.1&pt2_ipd=0.2&pt2_mbp=1&pt2_ce=70&pt2_te=73&pt2_egt=1600&pt2_ter=1.38&pt2_pw=13.14&pt2_bsfc=0.45&pt2_afr=11.5&pt2_wts=320&pt2_wd=83&pt2_wd2=74&pt2_wrsin=73635&pt3_rpm=4000&pt3_ve=100&pt3_boost=15&pt3_ie=95&pt3_filres=0.12&pt3_ipd=0.3&pt3_mbp=1.3&pt3_ce=74&pt3_te=72&pt3_egt=1650&pt3_ter=1.61&pt3_pw=22.16&pt3_bsfc=0.48&pt3_afr=11.5&pt3_wts=340&pt3_wd=83&pt3_wd2=74&pt3_wrsin=78238&pt4_rpm=5000&pt4_ve=100&pt4_boost=17&pt4_ie=92&pt4_filres=0.15&pt4_ipd=0.4&pt4_mbp=1.5&pt4_ce=76&pt4_te=71&pt4_egt=1650&pt4_ter=1.81&pt4_pw=30.66&pt4_bsfc=0.5&pt4_afr=11.5&pt4_wts=368&pt4_wd=83&pt4_wd2=74&pt4_wrsin=84681&pt5_rpm=6000&pt5_ve=105&pt5_boost=17&pt5_ie=90&pt5_filres=0.18&pt5_ipd=0.5&pt5_mbp=1.8&pt5_ce=72&pt5_te=70&pt5_egt=1650&pt5_ter=1.98&pt5_pw=34.33&pt5_bsfc=0.52&pt5_afr=11.5&pt5_wts=400&pt5_wd=83&pt5_wd2=74&pt5_wrsin=92044&pt6_rpm=7000&pt6_ve=105&pt6_boost=17&pt6_ie=90&pt6_filres=0.2&pt6_ipd=0.6&pt6_mbp=2&pt6_ce=66&pt6_te=70&pt6_egt=1650&pt6_ter=2.18&pt6_pw=36.06&pt6_bsfc=0.55&pt6_afr=11.5&pt6_wts=400&pt6_wd=83&pt6_wd2=74&pt6_wrsin=92044&
   {
-    name: "S300SX-E 87S72",
-    map_img: "/img/maps/e87s72.jpg",
-    map_range: [-4.991823899371069, 82.1654213836478, 0.5459098497495827, 5.086811352253757],
-    map_unit: "lb_min"
+    name: "62K80 (EFR 6258)",
+    map_img: "https://www.borgwarner.com/matchbot/images/62k80.jpg",
+    map_range: [-0.03235955056179775, 0.5186317152387641, 0.7167441198068072, 3.853800478321638],
+    map_unit: "kg_s"
+  },
+  {
+    name: "67X80 (EFR 6758)",
+    map_img: "https://www.borgwarner.com/matchbot/images/67x80.jpg",
+    map_range: [-0.03227895392278954, 0.5173399799579701, 0.7161941083889563, 3.859341838473718],
+    map_unit: "kg_s"
+  },
+  {
+    name: "70S75 (EFR 7064)",
+    map_img: "https://www.borgwarner.com/matchbot/images/70s75.jpg",
+    map_range: [-0.03231920199501247, 0.5179850422771196, 0.5816215721336571, 5.269037829837285],
+    map_unit: "kg_s"
   },
   {
     name: "K24",
