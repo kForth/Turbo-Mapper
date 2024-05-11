@@ -104,11 +104,13 @@
               var chartType = ko.unwrap(chartBinding.type);
               var data = ko.toJS(chartBinding.data);
               var options = ko.toJS(chartBinding.options);
+              var plugins = ko.toJS(chartBinding.plugins);
 
               chartData = {
                   type: chartType,
                   data: data,
-                  options: options
+                  options: options,
+                  plugins: plugins
               };
 
               activeChart = new Chart(element, chartData);
