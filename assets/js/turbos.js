@@ -136,6 +136,7 @@ const TURBOS = [
     map_unit: "lb_min"
   },
 
+
   // MHI Maps
   {
     name: "TD04H-20TK3S",
@@ -183,10 +184,34 @@ const TURBOS = [
     map_unit: "kg_s"
   },
   {
+    name: "EFR 6258",
+    map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_6258.png",
+    map_range: [-8.084449021627188, 51.6271872083387, 0.3699091691009666, 4.297655725347485],
+    map_unit: "lb_min"
+  },
+  {
+    name: "EFR 6758",
+    map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_6758.png",
+    map_range: [-9.784615384615384, 61.57538311298077, 0.3505053532013035, 4.307086123759566],
+    map_unit: "lb_min"
+  },
+  {
+    name: "EFR 7064",
+    map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_7064.png",
+    map_range: [-9.048582995951419, 61.37246815299217, 0.1666623608424943, 5.147117016317909],
+    map_unit: "lb_min"
+  },
+  {
     name: "70S75 (EFR 7064)",
     map_img: "https://www.borgwarner.com/matchbot/images/70s75.jpg",
     map_range: [-0.03231920199501247, 0.5179850422771196, 0.5816215721336571, 5.269037829837285],
     map_unit: "kg_s"
+  },
+  {
+    name: "EFR 7163",
+    map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_7163.png",
+    map_range: [-11.324742268041236, 66.38041073514013, 0.3313268232513433, 4.323614580576012],
+    map_unit: "lb_min"
   },
   {
     name: "K24",
