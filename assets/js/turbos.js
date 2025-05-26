@@ -175,43 +175,57 @@ const TURBOS = [
     name: "62K80 (EFR 6258)",
     map_img: "https://www.borgwarner.com/matchbot/images/62k80.jpg",
     map_range: [-0.03235955056179775, 0.5186317152387641, 0.7167441198068072, 3.853800478321638],
-    map_unit: "kg_s"
+    map_unit: "kg_s",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "67X80 (EFR 6758)",
     map_img: "https://www.borgwarner.com/matchbot/images/67x80.jpg",
     map_range: [-0.03227895392278954, 0.5173399799579701, 0.7161941083889563, 3.859341838473718],
-    map_unit: "kg_s"
+    map_unit: "kg_s",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "EFR 6258",
     map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_6258.png",
     map_range: [-8.084449021627188, 51.6271872083387, 0.3699091691009666, 4.297655725347485],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "EFR 6758",
     map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_6758.png",
     map_range: [-9.784615384615384, 61.57538311298077, 0.3505053532013035, 4.307086123759566],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "EFR 7064",
     map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_7064.png",
     map_range: [-9.048582995951419, 61.37246815299217, 0.1666623608424943, 5.147117016317909],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "70S75 (EFR 7064)",
     map_img: "https://www.borgwarner.com/matchbot/images/70s75.jpg",
     map_range: [-0.03231920199501247, 0.5179850422771196, 0.5816215721336571, 5.269037829837285],
-    map_unit: "kg_s"
+    map_unit: "kg_s",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "EFR 7163",
     map_img: "/Turbo-Mapper/assets/img/maps/bw_efr_7163.png",
     map_range: [-11.324742268041236, 66.38041073514013, 0.3313268232513433, 4.323614580576012],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
+    flow_range: [0.42842741935483863, 4.683770087457473, -0.009593069781357518, 0.09851728646499566]
   },
   {
     name: "K24",
