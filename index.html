@@ -6,6 +6,7 @@ js:
   - /assets/vendor/chart.umd.js
   - /assets/js/knockout.chart.js
   - /assets/js/turbos.js
+  - /assets/js/util.js
   - /assets/js/main.js
 ---
 <div class="container-fluid p-2 m-0 row h100">
@@ -31,6 +32,7 @@ js:
                     <th>RPM</th>
                     <th>PSI</th>
                     <th>VE%</th>
+                    <th>TER</th>
                     <th>
                         <!-- <button class="btn btn-sm btn-success" data-bind="click: addBoostDataRow">+</button> -->
                     </th>
@@ -39,7 +41,8 @@ js:
                     <tr>
                         <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
                         <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
-                        <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>
+                        <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>>
+                        <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
                         <td>
                             <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove"><i class="bi bi-box-arrow-in-up"></i></button>
                             <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
@@ -79,10 +82,10 @@ js:
             <canvas class="chart-canvas" data-bind="chart: compressorChart"></canvas>
         </div>
 
-        <!-- <h4 class="mt-3 mb-2">Exhaust Flow Chart</h4>
+        <h4 class="mt-3 mb-2">Exhaust Flow Chart</h4>
         <div class="chart-holder" id="flow-collapse">
             <canvas class="chart-canvas" data-bind="chart: exhaustFlowChart"></canvas>
-        </div> -->
+        </div>
 
         <h4 class="mt-3 mb-2">Air Flow Curves</h4>
         <div class="chart-holder mb-3" id="boost-collapse">
@@ -90,7 +93,7 @@ js:
         </div>
 
         <h4 class="mt-3 mb-2">Estimated Power</h4>
-        <div class="chart-holder mb-3" id="boost-collapse">
+        <div class="chart-holder mb-3" id="power-collapse">
             <canvas class="chart-canvas" data-bind="chart: powerCurveChart"></canvas>
         </div>
     </div>
