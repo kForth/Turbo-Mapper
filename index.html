@@ -25,7 +25,6 @@ js:
                 <label for="mapSelect">Turbo:</label>
                 <select class="form-control form-control-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
             </div>
-
             <h4 class="mt-3 mb-2">Boost Curve</h4>
             <table class="table table-sm table-striped" id="boost-data-table">
                 <thead><tr>
@@ -33,11 +32,10 @@ js:
                     <th>PSI</th>
                     <th>VE%</th>
                     <th>TER</th>
-                    <th>
-                        <!-- <button class="btn btn-sm btn-success" data-bind="click: addBoostDataRow">+</button> -->
-                    </th>
+                    <th></th>
                 </tr></thead>
-                <tbody data-bind="foreach: boostCurve">
+                <tbody>
+                    <!-- ko foreach: { data: boostCurve, as: 'el' } -->
                     <tr>
                         <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
                         <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
@@ -48,6 +46,14 @@ js:
                             <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
                             <button class="btn btn-sm btn-danger" data-bind="click: $parent.removeBoostDataRow"><i class="bi bi-trash-fill"></i></button>
                         </td>
+                    </tr>
+                    <!-- /ko -->
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button class="btn btn-sm btn-success" data-bind="click: addBoostDataRow">Add Row <i class="bi bi-plus"></i></button></td>
                     </tr>
                 </tbody>
             </table>
