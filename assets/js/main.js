@@ -131,11 +131,12 @@ class ViewModel {
     self.boostCurvePts_Rpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
     self.boostCurvePts_Psi = ko.computed(() => _foreach(self.boostCurve(), pt => pt.psi()));
     self.boostCurvePts_Ve = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
-    self.boostCurvePts_Afr = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
+    self.boostCurvePts_Afr = ko.computed(() => _foreach(self.boostCurve(), pt => pt.afr()));
+    self.boostCurvePts_Ter = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ter()));
     self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.psi() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
     self.compCurveMassFlowPts_MaxTemp = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow_maxTemp__lb_min }; }))
-    self.compCurveMassFlowPts_MinTemp = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow_maxTemp__lb_min }; }))
+    self.compCurveMassFlowPts_MinTemp = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow_minTemp__lb_min }; }))
     self.boostCurveChart = {
       type: 'scatter',
       data: ko.computed(() => {
@@ -203,26 +204,32 @@ class ViewModel {
     ].forEach(e => e.subscribe(() => self.loadMap()));
     self.boostCurve.subscribe(() => self.loadMap(), self, "arrayChange");
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
-      [item.rpm, item.psi, item.ve, item.afr].forEach(e => e.subscribe(() => self.loadMap()));
+      [item.rpm, item.psi, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.loadMap()));
     });
 
     // Boost Curve Table Helpers
-    self._newBoostDataPoint = function (rpm, psi, ve) {
+    self._newBoostDataPoint = function (rpm, psi, ve, afr, ter) {
       let pt = {
         rpm: ko.observable(rpm),
         psi: ko.observable(psi),
-        ve: ko.observable(ve)
+        ve: ko.observable(ve),
+        afr: ko.observable(afr),
+        ter: ko.observable(ter)
       };
       pt.psi.subscribe(() => self.loadMap());
       pt.rpm.subscribe(() => self.loadMap());
       pt.ve.subscribe(() => self.loadMap());
+      pt.afr.subscribe(() => self.loadMap());
+      pt.ter.subscribe(() => self.loadMap());
       return pt;
     };
     self._getBoostDataMidpoint = function (a, b) {
       return self._newBoostDataPoint(
         (a.rpm() + b.rpm()) / 2,
         (a.psi() + b.psi()) / 2,
-        (a.ve() + b.ve()) / 2
+        (a.ve() + b.ve()) / 2,
+        (a.afr() + b.afr()) / 2,
+        (a.ter() + b.ter()) / 2
       );
     };
     self.addBoostDataRow = function () {
@@ -230,7 +237,9 @@ class ViewModel {
       let pt = self._newBoostDataPoint(
         lastPt.rpm() + 500,
         lastPt.psi(),
-        lastPt.ve()
+        lastPt.ve(),
+        lastPt.afr(),
+        lastPt.ter()
       );
       self.insertBoostDataRow(pt);
     };
@@ -275,31 +284,6 @@ class ViewModel {
       self.mapImg.src = self.turbo().map_img;
       self.flowImg.src = self.turbo().flow_img;
       self.compressorData(self.generatePoints());
-      console.log("Compressor Data Updated", self.compressorData());
-
-      // let img = new Image;
-      // self.mapImg = img;
-      // let img_f = new Image;
-      // img_f.src = self.turbo().flow_img;
-      // self.flowImg = img_f;
-    };
-
-    self.psiToPa = function (v) {
-      return _convert(v, 'psi', 'Pa');
-      // return v * 6894.76;
-    };
-    self.paToPsi = function (v) {
-      return _convert(v, 'Pa', 'psi');
-      // return v / 6894.76;
-    };
-
-    self.drawFlowMap = function (map, pts) {
-      // let canvas = $("#flow-map")[0];
-      // let ctx = canvas.getContext("2d");
-      // ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // ctx.drawImage(self.flowImg, 0, 0);
-      // self.drawLine(canvas, map.flow_range, pts, 'red', 'pressure_ratio', 'massFlow_maxTemp__lb_min');
-      // self.drawLine(canvas, map.flow_range, pts, 'blue', 'pressure_ratio', 'massFlow_minTemp__lb_min');
     };
 
     self.drawMapBg = function (chart, img, bounds) {
@@ -455,15 +439,16 @@ class ViewModel {
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency); // CFM
         let ambientPressure = self.ambientPressure_Pa(); //Pa
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure) / ambientPressure;
-        let airDensity_maxTemp__lb_cuft = self.calcAirDensity(maxTemp__K, pressureRatio); // lb/cu.ft
-        let airDensity_minTemp__lb_cuft = self.calcAirDensity(minTemp__K, pressureRatio); // lb/cu.ft
+        let compOutletTemp_maxTemp__K = maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
+        let compOutletTemp_minTemp__K = minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
+        console.log(maxTemp__K, compOutletTemp_maxTemp__K);
+        let airDensity_maxTemp__lb_cuft = self.calcAirDensity(compOutletTemp_maxTemp__K, pressureRatio); // lb/cu.ft
+        let airDensity_minTemp__lb_cuft = self.calcAirDensity(compOutletTemp_minTemp__K, pressureRatio); // lb/cu.ft
         let massFlow_maxTemp__lb_min = airFlow__cfm * airDensity_maxTemp__lb_cuft; // lb/min
         let massFlow_minTemp__lb_min = airFlow__cfm * airDensity_minTemp__lb_cuft; // lb/min
         let estPower_maxTemp__hp = _convert(massFlow_maxTemp__lb_min, "lb/min", "g/s") * 1.25;
         let estPower_minTemp__hp = _convert(massFlow_minTemp__lb_min, "lb/min", "g/s") * 1.25;
 
-        let compOutletTemp_maxTemp__K = maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        let compOutletTemp_minTemp__K = minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
 
         let fuelFlowRate_maxTemp__lb_min = massFlow_maxTemp__lb_min * (airToFuelRatio / 100);
         let fuelFlowRate_minTemp__lb_min = massFlow_minTemp__lb_min * (airToFuelRatio / 100);
