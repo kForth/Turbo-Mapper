@@ -31,6 +31,7 @@ js:
                     <th>RPM</th>
                     <th>PSI</th>
                     <th>VE%</th>
+                    <th>AFR</th>
                     <th>TER</th>
                     <th></th>
                 </tr></thead>
@@ -40,6 +41,7 @@ js:
                         <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
                         <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
                         <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>>
+                        <td><input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" /></td>>
                         <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
                         <td>
                             <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove"><i class="bi bi-box-arrow-in-up"></i></button>
@@ -49,6 +51,7 @@ js:
                     </tr>
                     <!-- /ko -->
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
