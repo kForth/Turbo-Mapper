@@ -116,7 +116,7 @@ class ViewModel {
           y: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[2] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[3] : 0.1, title: { display: true, text: 'Phi (Turbine Swallowing)' }},
         },
       },
-      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.drawMapBg(chart, self.flowImg, self.turbo().flow_range)}]
+      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.flowImg.width ? self.drawMapBg(chart, self.flowImg, self.turbo().flow_range) : undefined}]
     };
 
     // Boost Curve Data
