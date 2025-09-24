@@ -441,7 +441,6 @@ class ViewModel {
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure) / ambientPressure;
         let compOutletTemp_maxTemp__K = maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
         let compOutletTemp_minTemp__K = minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        console.log(maxTemp__K, compOutletTemp_maxTemp__K);
         let airDensity_maxTemp__lb_cuft = self.calcAirDensity(compOutletTemp_maxTemp__K, pressureRatio); // lb/cu.ft
         let airDensity_minTemp__lb_cuft = self.calcAirDensity(compOutletTemp_minTemp__K, pressureRatio); // lb/cu.ft
         let massFlow_maxTemp__lb_min = airFlow__cfm * airDensity_maxTemp__lb_cuft; // lb/min
