@@ -185,8 +185,8 @@ class ViewModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, startAtZero: true, title: { display: true, text: 'HP' }, position: 'left' },
-          y2: { min: 0, startAtZero: true, title: { display: true, text: 'ft.lb' }, position: 'right' },
+          y: { min: 0, startAtZero: true, title: { display: true, text: 'HP' }, position: 'left', max: parseInt(Math.max(...self.compressorData().map(pt => pt.approxPower_maxTemp__hp), ...self.compressorData().map(pt => pt.approxPower_minTemp__hp)) + 50) },
+          y2: { min: 0, startAtZero: true, title: { display: true, text: 'ft.lb' }, position: 'right', max: parseInt(Math.max(...self.compressorData().map(pt => pt.approxTorque_maxTemp__ftlb), ...self.compressorData().map(pt => pt.approxTorque_minTemp__ftlb)) + 50) },
         }
       }
     };
