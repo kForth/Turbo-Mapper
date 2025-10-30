@@ -441,8 +441,10 @@ class ViewModel {
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure) / ambientPressure;
         let compOutletTemp_maxTemp__K = maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
         let compOutletTemp_minTemp__K = minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        let airDensity_maxTemp__lb_cuft = self.calcAirDensity(compOutletTemp_maxTemp__K, pressureRatio); // lb/cu.ft
-        let airDensity_minTemp__lb_cuft = self.calcAirDensity(compOutletTemp_minTemp__K, pressureRatio); // lb/cu.ft
+        let intercoolerOutletTemp_maxTemp_K = compOutletTemp_maxTemp__K - (1) * (compOutletTemp_maxTemp__K - maxTemp__K);
+        let intercoolerOutletTemp_minTemp_K = compOutletTemp_minTemp__K - (1) * (compOutletTemp_minTemp__K - minTemp__K);
+        let airDensity_maxTemp__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_maxTemp_K, pressureRatio); // lb/cu.ft
+        let airDensity_minTemp__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_minTemp_K, pressureRatio); // lb/cu.ft
         let massFlow_maxTemp__lb_min = airFlow__cfm * airDensity_maxTemp__lb_cuft; // lb/min
         let massFlow_minTemp__lb_min = airFlow__cfm * airDensity_minTemp__lb_cuft; // lb/min
         let estPower_maxTemp__hp = _convert(massFlow_maxTemp__lb_min, "lb/min", "g/s") * 1.25;
