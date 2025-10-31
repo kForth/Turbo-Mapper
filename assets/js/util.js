@@ -31,7 +31,7 @@ ko.bindingHandlers.converted = {
         let toUnit = ko.unwrap(allBindings.get('to'));
         let convertedVal = _convert(value, fromUnit, toUnit)
         let precision = ko.unwrap(allBindings.get('precision')) || 1; // Default to 1 decimal places
-        let formattedValue = parseFloat(convertedVal).toFixed(precision);
+        let formattedValue = precision == 0 ? parseInt(convertedVal) : parseFloat(convertedVal).toFixed(precision);  // Could use toPrecision, but don't like scientific
         if(element.tagName.toLowerCase() == "input")
           ko.applyBindingsToNode(element, { value: formattedValue });
         else
