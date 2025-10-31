@@ -57,54 +57,72 @@ js:
                 <select class="form-control form-control-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
             </div>
 
-            <h4 class="mt-3 mb-2">Boost Curve</h4>
+            <h4 class="mt-3 mb-2">Inputs</h4>
             <table class="table table-sm table-striped" id="boost-data-table">
                 <thead><tr>
-                    <th>RPM</th>
-                    <th>Boost</th>
-                    <th>Volumetric Efficiency</th>
-                    <th>Air-to-Fuel Ratio</th>
-                    <th>Turbine Expansion Ratio</th>
-                    <th>Intercooler Efficiency</th>
                     <th></th>
+                    <!-- ko foreach: boostCurve -->
+                    <th><div class="input-group flex-nowrap">
+                        <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove" title="Insert Col Left"><i class="bi bi-box-arrow-in-left"></i></button>
+                        <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow" title="Insert Col Right"><i class="bi bi-box-arrow-in-right"></i></button>
+                        <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow" title="Delete Col"><i class="bi bi-trash-fill"></i></button>
+                    </div></th>
+                    <!-- /ko -->
                 </tr></thead>
                 <tbody>
-                    <!-- ko foreach: { data: boostCurve, as: 'el' } -->
                     <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Engine Speed</span>
+                            <span class="input-group-text">RPM</span>
+                        </div></td>
+                        <!-- ko foreach: boostCurve -->
                         <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" />
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Boost Pressure</span>
                             <span class="input-group-text">psi</span>
                         </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" />
-                            <span class="input-group-text">%</span>
-                        </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" />
-                            <span class="input-group-text">:1</span>
-                        </div></td>
-                        <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
-                        </div>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" />
-                            <span class="input-group-text">%</span>
-                        </div></td>
-                        <td><div class="input-group flex-nowrap">
-                            <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove"><i class="bi bi-box-arrow-in-up"></i></button>
-                            <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
-                            <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow"><i class="bi bi-trash-fill"></i></button>
-                        </div></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
+                        <!-- /ko -->
                     </tr>
-                    <!-- /ko -->
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><button class="btn btn-sm btn-success" data-bind="click: addBoostDataRow">Add Row <i class="bi bi-plus"></i></button></td>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Volumetric Efficiency</span>
+                            <span class="input-group-text">%</span>
+                        </div></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Intercooler Efficiency</span>
+                            <span class="input-group-text">%</span>
+                        </div></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Air-to-Fuel Ratio</span>
+                            <span class="input-group-text">n:1</span>
+                        </div></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Turbine Expansion Ratio</span>
+                            <!-- <span class="input-group-text">n:1</span> -->
+                        </div></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
+                        <!-- /ko -->
                     </tr>
                 </tbody>
             </table>
@@ -112,40 +130,66 @@ js:
             <h4 class="mt-3 mb-2">Manifold Values</h4>
             <table class="table table-sm table-striped" id="boost-data-table">
                 <thead><tr>
-                    <th>RPM</th>
-                    <th>Absolute Pressure</th>
-                    <th>Air Temp</th>
-                    <th>Air Density</th>
-                    <th>Air Mass Flow</th>
-                    <th>Air Flow</th>
                     <th></th>
+                    <!-- ko foreach: boostCurve -->
+                    <th></th>
+                    <!-- /ko -->
                 </tr></thead>
                 <tbody>
-                    <!-- ko foreach: { data: compressorData, as: 'el' } -->
                     <tr>
-                        <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" readonly /></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="numeric: absolutePressure__psi, precision: 1" type="number" readonly />
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Engine Speed</span>
+                            <span class="input-group-text">RPM</span>
+                        </div></td>
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="value: rpm" disabled readonly /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Absolute Pressure</span>
                             <span class="input-group-text">psi</span>
                         </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="numeric: airTemp_maxTemp__C, precision: 1" type="number" readonly />
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="numeric: absolutePressure__psi, precision: 1" disabled readonly /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Air Temperature</span>
                             <span class="input-group-text">&deg;C</span>
                         </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="numeric: airDensity_maxTemp__lb_cf, precision: 3" type="number" readonly />
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="numeric: airTemp_maxTemp__C, precision: 1" disabled readonly /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Air Density</span>
                             <span class="input-group-text">lb/ft<sup>3</sup></span>
                         </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="numeric: massFlow_maxTemp__lb_min, precision: 1" type="number" readonly />
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="numeric: airDensity_maxTemp__lb_cf, precision: 3" disabled readonly /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Air Mass Flow</span>
                             <span class="input-group-text">lb/min</span>
                         </div></td>
-                        <td><div class="input-group input-group-sm">
-                            <input class="form-control form-control-sm" data-bind="numeric: airFlow__m3_s, precision: 3" type="number" readonly />
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="numeric: massFlow_maxTemp__lb_min, precision: 1" disabled readonly /></td>
+                        <!-- /ko -->
+                    </tr>
+                    <tr>
+                        <td><div class="input-group input-group-sm flex-nowrap">
+                            <span class="input-group-text flex-fill">Air Flow</span>
                             <span class="input-group-text">CFM</span>
                         </div></td>
+                        <!-- ko foreach: compressorData -->
+                        <td><input class="form-control form-control-sm" data-bind="numeric: airFlow__m3_s, precision: 3" disabled readonly /></td>
+                        <!-- /ko -->
                     </tr>
-                    <!-- /ko -->
                 </tbody>
             </table>
         </div>
