@@ -27,6 +27,7 @@ class ViewModel {
     self.engineDisplacement_L = ko.computed(() => {
       return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
     }); // L
+    self.numberOfTurbos = ko.observable(1); // TODO
 
     /// Environment
     self.altitudeRaw = ko.observable(0);
@@ -121,12 +122,12 @@ class ViewModel {
 
     // Boost Curve Data
     self.boostCurve = ko.observableArray([
-      { rpm: ko.observable(2000), psi: ko.observable(5), ve: ko.observable(85), afr: ko.observable(12.2), ter: ko.observable(1.21) },
-      { rpm: ko.observable(3000), psi: ko.observable(10), ve: ko.observable(95), afr: ko.observable(12.2), ter: ko.observable(1.45) },
-      { rpm: ko.observable(4000), psi: ko.observable(14), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.72) },
-      { rpm: ko.observable(5000), psi: ko.observable(16), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.94) },
-      { rpm: ko.observable(6000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.17) },
-      { rpm: ko.observable(7000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.40) },
+      { rpm: ko.observable(2000), psi: ko.observable(5), ve: ko.observable(85), afr: ko.observable(12.2), ter: ko.observable(1.21), ie: ko.observable(90) },
+      { rpm: ko.observable(3000), psi: ko.observable(10), ve: ko.observable(95), afr: ko.observable(12.2), ter: ko.observable(1.45), ie: ko.observable(90) },
+      { rpm: ko.observable(4000), psi: ko.observable(14), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.72), ie: ko.observable(90) },
+      { rpm: ko.observable(5000), psi: ko.observable(16), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.94), ie: ko.observable(90) },
+      { rpm: ko.observable(6000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.17), ie: ko.observable(90) },
+      { rpm: ko.observable(7000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.40), ie: ko.observable(90) },
     ]);
     self.boostCurvePts_Rpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
     self.boostCurvePts_Psi = ko.computed(() => _foreach(self.boostCurve(), pt => pt.psi()));
@@ -208,19 +209,21 @@ class ViewModel {
     });
 
     // Boost Curve Table Helpers
-    self._newBoostDataPoint = function (rpm, psi, ve, afr, ter) {
+    self._newBoostDataPoint = function (rpm, psi, ve, afr, ter, ie) {
       let pt = {
         rpm: ko.observable(rpm),
         psi: ko.observable(psi),
         ve: ko.observable(ve),
         afr: ko.observable(afr),
-        ter: ko.observable(ter)
+        ter: ko.observable(ter),
+        ie: ko.observable(ie)
       };
       pt.psi.subscribe(() => self.loadMap());
       pt.rpm.subscribe(() => self.loadMap());
       pt.ve.subscribe(() => self.loadMap());
       pt.afr.subscribe(() => self.loadMap());
       pt.ter.subscribe(() => self.loadMap());
+      pt.ie.subscribe(() => self.loadMap());
       return pt;
     };
     self._getBoostDataMidpoint = function (a, b) {
@@ -229,7 +232,8 @@ class ViewModel {
         (a.psi() + b.psi()) / 2,
         (a.ve() + b.ve()) / 2,
         (a.afr() + b.afr()) / 2,
-        (a.ter() + b.ter()) / 2
+        (a.ter() + b.ter()) / 2,
+        (a.ie() + b.ie()) / 2
       );
     };
     self.addBoostDataRow = function () {
@@ -239,7 +243,8 @@ class ViewModel {
         lastPt.psi(),
         lastPt.ve(),
         lastPt.afr(),
-        lastPt.ter()
+        lastPt.ter(),
+        lastPt.ie()
       );
       self.insertBoostDataRow(pt);
     };
@@ -425,24 +430,25 @@ class ViewModel {
     self.generatePoints = function () {
       var i_ = 0;
       let pts = [];
-      let maxTemp__K = self.ambientTempMax_K(); //Air Temp (deg Kelvin)
-      let minTemp__K = self.ambientTempMin_K(); //Air Temp (deg Kelvin)
+      let ambientTemp_maxTemp__K = self.ambientTempMax_K(); //Air Temp (deg Kelvin)
+      let ambientTemp_minTemp__K = self.ambientTempMin_K(); //Air Temp (deg Kelvin)
       for (let pt of self.boostCurve()) {
         let rpm = pt.rpm();
         let boostPressure__psi = pt.psi();
         let volumetricEfficiency = pt.ve();
         let airToFuelRatio = pt.afr();
         let turboExpansionRatio = pt.ter();
+        let intercoolerEfficiency = pt.ie() / 100;
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
         let compressorEfficiency = 80;  // TODO: Adjust based on compressor map
 
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency); // CFM
-        let ambientPressure = self.ambientPressure_Pa(); //Pa
-        let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure) / ambientPressure;
-        let compOutletTemp_maxTemp__K = maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        let compOutletTemp_minTemp__K = minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        let intercoolerOutletTemp_maxTemp_K = compOutletTemp_maxTemp__K - (1) * (compOutletTemp_maxTemp__K - maxTemp__K);
-        let intercoolerOutletTemp_minTemp_K = compOutletTemp_minTemp__K - (1) * (compOutletTemp_minTemp__K - minTemp__K);
+        let ambientPressure__Pa = self.ambientPressure_Pa(); //Pa
+        let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure__Pa) / ambientPressure__Pa;
+        let compOutletTemp_maxTemp__K = ambientTemp_maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
+        let compOutletTemp_minTemp__K = ambientTemp_minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
+        let intercoolerOutletTemp_maxTemp_K = compOutletTemp_maxTemp__K - intercoolerEfficiency * (compOutletTemp_maxTemp__K - ambientTemp_maxTemp__K);
+        let intercoolerOutletTemp_minTemp_K = compOutletTemp_minTemp__K - intercoolerEfficiency * (compOutletTemp_minTemp__K - ambientTemp_minTemp__K);
         let airDensity_maxTemp__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_maxTemp_K, pressureRatio); // lb/cu.ft
         let airDensity_minTemp__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_minTemp_K, pressureRatio); // lb/cu.ft
         let massFlow_maxTemp__lb_min = airFlow__cfm * airDensity_maxTemp__lb_cuft; // lb/min
@@ -464,10 +470,10 @@ class ViewModel {
         //   minTemp__K, pressureRatio, _convert(massFlow_minTemp__lb_min, "lb/min", "kg/s"), compressorEfficiency
         // );
         let compShaftPower_maxTemp__W = self.calcTurbineShaftPower__W(
-          maxTemp__K, compOutletTemp_maxTemp__K, _convert(massFlow_maxTemp__lb_min, "lb/min", "kg/s")
+          ambientTemp_maxTemp__K, compOutletTemp_maxTemp__K, _convert(massFlow_maxTemp__lb_min, "lb/min", "kg/s")
         );
         let compShaftPower_minTemp__W = self.calcTurbineShaftPower__W(
-          minTemp__K, compOutletTemp_minTemp__K, _convert(massFlow_minTemp__lb_min, "lb/min", "kg/s")
+          ambientTemp_minTemp__K, compOutletTemp_minTemp__K, _convert(massFlow_minTemp__lb_min, "lb/min", "kg/s")
         );
 
         // TODO: Fix these
@@ -516,14 +522,18 @@ class ViewModel {
           i: i_++,
           rpm: rpm,
           pressure__psi: boostPressure__psi,
-          ambient_pressure: ambientPressure,
+          ambient_pressure: ambientPressure__Pa,
+          ambient_pressure_psi: _convert(ambientPressure__Pa, "Pa", "psi"),
           pressure_ratio: pressureRatio,
+          absolutePressure__psi: _convert(ambientPressure__Pa * pressureRatio, "Pa", "psi"),
           turbineExpansionRatio: turboExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
           fuelFlowRate_maxTemp__lb_hr: fuelFlowRate_maxTemp__lb_min,
           fuelFlowRate_minTemp__lb_hr: fuelFlowRate_minTemp__lb_min,
           fuelFlowRate_maxTemp__L_hr: fuelFlowRate_maxTemp__L_hr,
           fuelFlowRate_minTemp__L_hr: fuelFlowRate_minTemp__L_hr,
+          airTemp_maxTemp__C: _convert(intercoolerOutletTemp_maxTemp_K, "K", "degC"),
+          airTemp_minTemp__C: _convert(intercoolerOutletTemp_minTemp_K, "K", "degC"),
           airDensity_maxTemp__lb_cf: airDensity_maxTemp__lb_cuft,
           airDensity_minTemp__lb_cf: airDensity_minTemp__lb_cuft,
           massFlow_maxTemp__lb_min: massFlow_maxTemp__lb_min,

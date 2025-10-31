@@ -12,45 +12,93 @@ js:
 <div class="container-fluid p-2 m-0 row h100">
     <div class="p-2 col-xl-8 col-lg-7 col-md-9 col-sm-12 h100 scrollable">
         <div class="p-4 mb-3 rounded-3">
-            <h4 class="mb-2">Engine Specs</h4>
-            <label for="engDispl">Displacement:</label>
-            <span class="input-group">
-                <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
-                <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit">
-                    <option value="L">L</option>
-                    <option value="cuin">Cu.In</option>
+            <h4 class="mt-3 mb-2">Environment</h4>
+            <label for="altitude">Altitude:</label>
+            <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
+                <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
+                <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit">
+                    <option value="m">m</option>
+                    <option value="ft">ft</option>
                 </select>
             </span>
+
+            <label for="temp-input-group input-group-sm">Temperature Range:</label>
+            <span class="input-group input-group-sm" id="temp-input-group input-group-sm">
+                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
+                <span class="input-group-text">To</span>
+                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
+                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit">
+                    <option value="degC">&deg;C</option>
+                    <option value="degF">&deg;F</option>
+                    <option value="K">&deg;K</option>
+                </select>
+            </span>
+
+            <h4 class="mb-2">Engine Specs</h4>
+            <div class="row">
+                <div class="col-6">
+                    <label for="engDispl">Displacement:</label>
+                    <span class="input-group input-group-sm">
+                        <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
+                        <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit">
+                            <option value="L">L</option>
+                            <option value="cuin">Cu.In</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="col-6">
+                    <label for="engDispl"># Turbos:</label>
+                    <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
+                </div>
+            </div>
+
             <div class="mt-2">
                 <label for="mapSelect">Turbo:</label>
                 <select class="form-control form-control-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
             </div>
+
             <h4 class="mt-3 mb-2">Boost Curve</h4>
             <table class="table table-sm table-striped" id="boost-data-table">
                 <thead><tr>
                     <th>RPM</th>
-                    <th>PSI</th>
-                    <th>VE%</th>
-                    <th>AFR</th>
-                    <th>TER</th>
+                    <th>Boost</th>
+                    <th>Volumetric Efficiency</th>
+                    <th>Air-to-Fuel Ratio</th>
+                    <th>Turbine Expansion Ratio</th>
+                    <th>Intercooler Efficiency</th>
                     <th></th>
                 </tr></thead>
                 <tbody>
                     <!-- ko foreach: { data: boostCurve, as: 'el' } -->
                     <tr>
                         <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
-                        <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
-                        <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>>
-                        <td><input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" /></td>>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" />
+                            <span class="input-group-text">psi</span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" />
+                            <span class="input-group-text">%</span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" />
+                            <span class="input-group-text">:1</span>
+                        </div></td>
                         <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
-                        <td>
+                        </div>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" />
+                            <span class="input-group-text">%</span>
+                        </div></td>
+                        <td><div class="input-group flex-nowrap">
                             <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove"><i class="bi bi-box-arrow-in-up"></i></button>
-                            <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
-                            <button class="btn btn-sm btn-danger" data-bind="click: $parent.removeBoostDataRow"><i class="bi bi-trash-fill"></i></button>
-                        </td>
+                            <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow"><i class="bi bi-box-arrow-in-down"></i></button>
+                            <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow"><i class="bi bi-trash-fill"></i></button>
+                        </div></td>
                     </tr>
                     <!-- /ko -->
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -61,27 +109,45 @@ js:
                 </tbody>
             </table>
 
-            <h4 class="mt-3 mb-2">Environment</h4>
-            <label for="altitude">Altitude:</label>
-            <span class="input-group" id="altitude-input-group">
-                <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
-                <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit">
-                    <option value="m">m</option>
-                    <option value="ft">ft</option>
-                </select>
-            </span>
-
-            <label for="temp-input-group">Temperature Range:</label>
-            <span class="input-group" id="temp-input-group">
-                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
-                <span class="input-group-text">To</span>
-                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
-                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit">
-                    <option value="degC">&deg;C</option>
-                    <option value="degF">&deg;F</option>
-                    <option value="K">&deg;K</option>
-                </select>
-            </span>
+            <h4 class="mt-3 mb-2">Manifold Values</h4>
+            <table class="table table-sm table-striped" id="boost-data-table">
+                <thead><tr>
+                    <th>RPM</th>
+                    <th>Absolute Pressure</th>
+                    <th>Air Temp</th>
+                    <th>Air Density</th>
+                    <th>Air Mass Flow</th>
+                    <th>Air Flow</th>
+                    <th></th>
+                </tr></thead>
+                <tbody>
+                    <!-- ko foreach: { data: compressorData, as: 'el' } -->
+                    <tr>
+                        <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" readonly /></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="numeric: absolutePressure__psi, precision: 1" type="number" readonly />
+                            <span class="input-group-text">psi</span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="numeric: airTemp_maxTemp__C, precision: 1" type="number" readonly />
+                            <span class="input-group-text">&deg;C</span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="numeric: airDensity_maxTemp__lb_cf, precision: 3" type="number" readonly />
+                            <span class="input-group-text">lb/ft<sup>3</sup></span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="numeric: massFlow_maxTemp__lb_min, precision: 1" type="number" readonly />
+                            <span class="input-group-text">lb/min</span>
+                        </div></td>
+                        <td><div class="input-group input-group-sm">
+                            <input class="form-control form-control-sm" data-bind="numeric: airFlow__m3_s, precision: 3" type="number" readonly />
+                            <span class="input-group-text">CFM</span>
+                        </div></td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
         </div>
     </div>
 
