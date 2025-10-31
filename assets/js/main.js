@@ -187,7 +187,7 @@ class ViewModel {
             { label: "MaxTemp Power", data: self.powerCurvePts_MaxTempPower(), showLine: true, yAxisID: "y" },
             { label: "MinTemp Power", data: self.powerCurvePts_MinTempPower(), showLine: true, yAxisID: "y" },
             { label: "MaxTemp Torque", data: self.powerCurvePts_MaxTempTorque(), showLine: true, yAxisID: "y2" },
-            { label: "MinTemp Torque", data: self.powerCurvePts_MaxTempTorque(), showLine: true, yAxisID: "y2" },
+            { label: "MinTemp Torque", data: self.powerCurvePts_MinTempTorque(), showLine: true, yAxisID: "y2" },
           ]
         };
       }),
