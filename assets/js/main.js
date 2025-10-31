@@ -49,6 +49,9 @@ class ViewModel {
     });
     self.ambientPressureDisplayUnit = ko.observable(UNITS.pressure.find(e => e.default));
 
+    // Input Table Units
+    self.inputBoostPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+
     // Result Table Units
     self.resultAmbientPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
     self.resultAirTemperatureUnit = ko.observable(UNITS.temperature.find(e => e.default));
@@ -130,19 +133,19 @@ class ViewModel {
 
     // Boost Curve Data
     self.boostCurve = ko.observableArray([
-      { rpm: ko.observable(2000), psi: ko.observable(5), ve: ko.observable(85), afr: ko.observable(12.2), ter: ko.observable(1.21), ie: ko.observable(90) },
-      { rpm: ko.observable(3000), psi: ko.observable(10), ve: ko.observable(95), afr: ko.observable(12.2), ter: ko.observable(1.45), ie: ko.observable(90) },
-      { rpm: ko.observable(4000), psi: ko.observable(14), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.72), ie: ko.observable(90) },
-      { rpm: ko.observable(5000), psi: ko.observable(16), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.94), ie: ko.observable(90) },
-      { rpm: ko.observable(6000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.17), ie: ko.observable(90) },
-      { rpm: ko.observable(7000), psi: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.40), ie: ko.observable(90) },
+      { rpm: ko.observable(2000), boost: ko.observable(5), ve: ko.observable(85), afr: ko.observable(12.2), ter: ko.observable(1.21), ie: ko.observable(90) },
+      { rpm: ko.observable(3000), boost: ko.observable(10), ve: ko.observable(95), afr: ko.observable(12.2), ter: ko.observable(1.45), ie: ko.observable(90) },
+      { rpm: ko.observable(4000), boost: ko.observable(14), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.72), ie: ko.observable(90) },
+      { rpm: ko.observable(5000), boost: ko.observable(16), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.94), ie: ko.observable(90) },
+      { rpm: ko.observable(6000), boost: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.17), ie: ko.observable(90) },
+      { rpm: ko.observable(7000), boost: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.40), ie: ko.observable(90) },
     ]);
     self.boostCurvePts_Rpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
-    self.boostCurvePts_Psi = ko.computed(() => _foreach(self.boostCurve(), pt => pt.psi()));
+    self.boostCurvePts_Boost = ko.computed(() => _foreach(self.boostCurve(), pt => pt.boost()));
     self.boostCurvePts_Ve = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
     self.boostCurvePts_Afr = ko.computed(() => _foreach(self.boostCurve(), pt => pt.afr()));
     self.boostCurvePts_Ter = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ter()));
-    self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.psi() }; }));
+    self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
     self.compCurveMassFlowPts_MaxTemp = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow_maxTemp__lb_min }; }))
     self.compCurveMassFlowPts_MinTemp = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow_minTemp__lb_min }; }))
@@ -164,7 +167,7 @@ class ViewModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts_Psi())) + 2, startAtZero: true, title: { display: true, text: 'PSI' } },
+          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts_Boost())) + 2, startAtZero: true, title: { display: true, text: 'Boost' } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.boostCurvePts_Ve()) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
           y4: { min: 0, startAtZero: true, title: { display: true, text: 'lb/min' }, position: 'right' },
         }
@@ -210,23 +213,24 @@ class ViewModel {
       self.ambientTempMaxRaw,
       self.ambientTempMinRaw,
       self.ambientTempUnit,
+      self.inputBoostPressureUnit,
     ].forEach(e => e.subscribe(() => self.loadMap()));
     self.boostCurve.subscribe(() => self.loadMap(), self, "arrayChange");
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
-      [item.rpm, item.psi, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.loadMap()));
+      [item.rpm, item.boost, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.loadMap()));
     });
 
     // Boost Curve Table Helpers
-    self._newBoostDataPoint = function (rpm, psi, ve, afr, ter, ie) {
+    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie) {
       let pt = {
         rpm: ko.observable(rpm),
-        psi: ko.observable(psi),
+        boost: ko.observable(boost),
         ve: ko.observable(ve),
         afr: ko.observable(afr),
         ter: ko.observable(ter),
         ie: ko.observable(ie)
       };
-      pt.psi.subscribe(() => self.loadMap());
+      pt.boost.subscribe(() => self.loadMap());
       pt.rpm.subscribe(() => self.loadMap());
       pt.ve.subscribe(() => self.loadMap());
       pt.afr.subscribe(() => self.loadMap());
@@ -237,7 +241,7 @@ class ViewModel {
     self._getBoostDataMidpoint = function (a, b) {
       return self._newBoostDataPoint(
         (a.rpm() + b.rpm()) / 2,
-        (a.psi() + b.psi()) / 2,
+        (a.boost() + b.boost()) / 2,
         (a.ve() + b.ve()) / 2,
         (a.afr() + b.afr()) / 2,
         (a.ter() + b.ter()) / 2,
@@ -248,7 +252,7 @@ class ViewModel {
       let lastPt = self.boostCurve().at(-1);
       let pt = self._newBoostDataPoint(
         lastPt.rpm() + 500,
-        lastPt.psi(),
+        lastPt.boost(),
         lastPt.ve(),
         lastPt.afr(),
         lastPt.ter(),
@@ -281,14 +285,14 @@ class ViewModel {
       let index = self.boostCurve.indexOf(row);
       let pt = (index > 0) ?
         self._getBoostDataMidpoint(self.boostCurve().at(index - 1), row) :
-        self._newBoostDataPoint(row.rpm() - 500, row.psi(), row.ve());
+        self._newBoostDataPoint(row.rpm() - 500, row.boost(), row.ve());
       self.insertBoostDataRow(pt, index);
     };
     self.insertBoostDataRowBelow = function (row) {
       let index = self.boostCurve.indexOf(row);
       let pt = (index < self.boostCurve.length - 1) ?
         self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
-        self._newBoostDataPoint(row.rpm() + 500, row.psi(), row.ve());
+        self._newBoostDataPoint(row.rpm() + 500, row.boost(), row.ve());
       self.insertBoostDataRow(pt, index + 1);
     };
 
@@ -442,7 +446,8 @@ class ViewModel {
       let ambientTemp_minTemp__K = self.ambientTempMin_K(); //Air Temp (deg Kelvin)
       for (let pt of self.boostCurve()) {
         let rpm = pt.rpm();
-        let boostPressure__psi = pt.psi();
+        let boost = pt.boost();
+        let boostPressure__psi = _convert(boost, self.inputBoostPressureUnit().value, "psi");
         let volumetricEfficiency = pt.ve();
         let airToFuelRatio = pt.afr();
         let turboExpansionRatio = pt.ter();

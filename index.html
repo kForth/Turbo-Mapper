@@ -80,10 +80,10 @@ js:
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Boost Pressure</span>
-                            <span class="input-group-text">psi</span>
+                            <select class="input-group-text btn-secondary" data-bind="value: inputBoostPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: psi" type="number" min="0" step="1" /></td>
+                        <td><input class="form-control form-control-sm" data-bind="value: boost" type="number" min="0" step="1" /></td>
                         <!-- /ko -->
                     </tr>
                     <tr>
