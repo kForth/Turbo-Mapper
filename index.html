@@ -7,6 +7,7 @@ js:
   - /assets/js/knockout.chart.js
   - /assets/js/turbos.js
   - /assets/js/util.js
+  - /assets/js/units.js
   - /assets/js/main.js
 ---
 <div class="container-fluid p-2 m-0 row h100">
@@ -148,46 +149,46 @@ js:
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Absolute Pressure</span>
-                            <span class="input-group-text">psi</span>
+                            <select class="input-group-text btn-secondary" data-bind="value: resultAmbientPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="numeric: absolutePressure__psi, precision: 1" disabled readonly /></td>
+                        <td><input class="form-control form-control-sm" data-bind="converted: absolutePressure__psi, from: 'psi', to: $root.resultAmbientPressureUnit().value, precision: $root.resultAmbientPressureUnit().precision" disabled readonly /></td>
                         <!-- /ko -->
                     </tr>
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Air Temperature</span>
-                            <span class="input-group-text">&deg;C</span>
+                            <select class="input-group-text btn-secondary" data-bind="value: resultAirTemperatureUnit, options: UNITS.temperature, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="numeric: airTemp_maxTemp__C, precision: 1" disabled readonly /></td>
+                        <td><input class="form-control form-control-sm" data-bind="converted: airTemp_maxTemp__C, from: 'degC', to: $root.resultAirTemperatureUnit().value, precision: $root.resultAirTemperatureUnit().precision" disabled readonly /></td>
                         <!-- /ko -->
                     </tr>
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Air Density</span>
-                            <span class="input-group-text">lb/ft<sup>3</sup></span>
+                            <select class="input-group-text btn-secondary" data-bind="value: resultAirDensityUnit, options: UNITS.density, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="numeric: airDensity_maxTemp__lb_cf, precision: 3" disabled readonly /></td>
+                        <td><input class="form-control form-control-sm" data-bind="converted: airDensity_maxTemp__lb_cf, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>
                         <!-- /ko -->
                     </tr>
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Air Mass Flow</span>
-                            <span class="input-group-text">lb/min</span>
+                            <select class="input-group-text btn-secondary" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="numeric: massFlow_maxTemp__lb_min, precision: 1" disabled readonly /></td>
+                        <td><input class="form-control form-control-sm" data-bind="converted: massFlow_maxTemp__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
                         <!-- /ko -->
                     </tr>
                     <tr>
                         <td><div class="input-group input-group-sm flex-nowrap">
                             <span class="input-group-text flex-fill">Air Flow</span>
-                            <span class="input-group-text">CFM</span>
+                            <select class="input-group-text btn-secondary" data-bind="value: resultAirVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select>
                         </div></td>
                         <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="numeric: airFlow__m3_s, precision: 3" disabled readonly /></td>
+                        <td><input class="form-control form-control-sm" data-bind="converted: airFlow__m3_s, from: 'm^3/s', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
                         <!-- /ko -->
                     </tr>
                 </tbody>

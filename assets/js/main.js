@@ -48,6 +48,13 @@ class ViewModel {
       return (0.0004 * self.altitude_m()^2) - (12.217 * self.altitude_m()) + 101338
     });
 
+    // Result Table Units
+    self.resultAmbientPressureUnit = ko.observable();
+    self.resultAirTemperatureUnit = ko.observable();
+    self.resultAirDensityUnit = ko.observable();
+    self.resultAirMassFlowUnit = ko.observable();
+    self.resultAirVolFlowUnit = ko.observable();
+
     // Compressor Chart Data
     self.compressorData = ko.observableArray([]);
     self._compChartX = function (pt, isMaxTemp) {
