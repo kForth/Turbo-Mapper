@@ -47,13 +47,14 @@ class ViewModel {
     self.ambientPressure_Pa = ko.computed(() => {
       return (0.0004 * self.altitude_m()^2) - (12.217 * self.altitude_m()) + 101338
     });
+    self.ambientPressureDisplayUnit = ko.observable(UNITS.pressure.find(e => e.default));
 
     // Result Table Units
-    self.resultAmbientPressureUnit = ko.observable();
-    self.resultAirTemperatureUnit = ko.observable();
-    self.resultAirDensityUnit = ko.observable();
-    self.resultAirMassFlowUnit = ko.observable();
-    self.resultAirVolFlowUnit = ko.observable();
+    self.resultAmbientPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.resultAirTemperatureUnit = ko.observable(UNITS.temperature.find(e => e.default));
+    self.resultAirDensityUnit = ko.observable(UNITS.density.find(e => e.default));
+    self.resultAirMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
+    self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
 
     // Compressor Chart Data
     self.compressorData = ko.observableArray([]);
