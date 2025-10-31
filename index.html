@@ -63,11 +63,7 @@ js:
                 <thead><tr>
                     <th></th>
                     <!-- ko foreach: boostCurve -->
-                    <th><div class="input-group flex-nowrap">
-                        <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove" title="Insert Col Left"><i class="bi bi-box-arrow-in-left"></i></button>
-                        <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow" title="Insert Col Right"><i class="bi bi-box-arrow-in-right"></i></button>
-                        <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow" title="Delete Col"><i class="bi bi-trash-fill"></i></button>
-                    </div></th>
+                    <th data-bind="text: '#' + ($index() + 1)"></th>
                     <!-- /ko -->
                 </tr></thead>
                 <tbody>
@@ -125,6 +121,16 @@ js:
                         <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
                         <!-- /ko -->
                     </tr>
+                    <tr>
+                        <td></td>
+                        <!-- ko foreach: boostCurve -->
+                        <td><div class="input-group flex-nowrap justify-content-end">
+                            <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove" title="Insert Col Left"><i class="bi bi-box-arrow-in-left"></i></button>
+                            <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow" title="Insert Col Right"><i class="bi bi-box-arrow-in-right"></i></button>
+                            <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow" title="Delete Col"><i class="bi bi-trash-fill"></i></button>
+                        </div></td>
+                        <!-- /ko -->
+                    </tr>
                 </tbody>
             </table>
 
@@ -132,8 +138,8 @@ js:
             <table class="table table-sm table-striped" id="boost-data-table">
                 <thead><tr>
                     <th></th>
-                    <!-- ko foreach: boostCurve -->
-                    <th></th>
+                    <!-- ko foreach: compressorData -->
+                    <th data-bind="text: '#' + ($index() + 1)"></th>
                     <!-- /ko -->
                 </tr></thead>
                 <tbody>
