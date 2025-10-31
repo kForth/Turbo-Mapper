@@ -169,7 +169,7 @@ class ViewModel {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
           y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts_Boost())) + 2, startAtZero: true, title: { display: true, text: 'Boost' } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.boostCurvePts_Ve()) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
-          y4: { min: 0, startAtZero: true, title: { display: true, text: 'lb/min' }, position: 'right' },
+          y3: { min: 0, startAtZero: true, title: { display: true, text: 'Mass Flow [lb/min]' }, position: 'right', max: parseInt(Math.max(...self.compressorData().map(pt => pt.massFlow_maxTemp__lb_min), ...self.compressorData().map(pt => pt.massFlow_minTemp__lb_min)) + 5) },
         }
       }
     };
