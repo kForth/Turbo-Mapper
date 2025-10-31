@@ -132,14 +132,7 @@ class ViewModel {
     };
 
     // Boost Curve Data
-    self.boostCurve = ko.observableArray([
-      { rpm: ko.observable(2000), boost: ko.observable(5), ve: ko.observable(85), afr: ko.observable(12.2), ter: ko.observable(1.21), ie: ko.observable(90) },
-      { rpm: ko.observable(3000), boost: ko.observable(10), ve: ko.observable(95), afr: ko.observable(12.2), ter: ko.observable(1.45), ie: ko.observable(90) },
-      { rpm: ko.observable(4000), boost: ko.observable(14), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.72), ie: ko.observable(90) },
-      { rpm: ko.observable(5000), boost: ko.observable(16), ve: ko.observable(100), afr: ko.observable(12.2), ter: ko.observable(1.94), ie: ko.observable(90) },
-      { rpm: ko.observable(6000), boost: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.17), ie: ko.observable(90) },
-      { rpm: ko.observable(7000), boost: ko.observable(16), ve: ko.observable(105), afr: ko.observable(12.2), ter: ko.observable(2.40), ie: ko.observable(90) },
-    ]);
+    self.boostCurve = ko.observableArray([]);
     self.boostCurvePts_Rpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
     self.boostCurvePts_Boost = ko.computed(() => _foreach(self.boostCurve(), pt => pt.boost()));
     self.boostCurvePts_Ve = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
@@ -230,8 +223,8 @@ class ViewModel {
         ter: ko.observable(ter),
         ie: ko.observable(ie)
       };
-      pt.boost.subscribe(() => self.loadMap());
       pt.rpm.subscribe(() => self.loadMap());
+      pt.boost.subscribe(() => self.loadMap());
       pt.ve.subscribe(() => self.loadMap());
       pt.afr.subscribe(() => self.loadMap());
       pt.ter.subscribe(() => self.loadMap());
@@ -574,6 +567,15 @@ class ViewModel {
 
       return pts;
     };
+
+    self.boostCurve([
+      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99),
+      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95),
+      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.72, 95),
+      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.94, 92),
+      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.17, 90),
+      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.40, 90),
+    ])
   }
 }
 
