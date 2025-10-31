@@ -7,6 +7,10 @@ const UNITS = {
     { value: "dm", label: "dm", precision: 1 },
     { value: "m", label: "m", precision: 1 },
   ],
+  altitude: [
+    { value: "ft", label: "ft", precision: 1 },
+    { value: "m", label: "m", precision: 1, default: true },
+  ],
   area: [
     { value: "mm^2", label: "mm²", precision: 1 },
     { value: "cm^2", label: "cm²", precision: 1 },
@@ -41,6 +45,7 @@ const UNITS = {
   temperature: [
     { value: "degC", label: "°C", precision: 1, default: true },
     { value: "degF", label: "°F", precision: 1 },
+    { value: "K", label: "°K", precision: 1 },
   ],
   density: [
     { value: "lb/ft^3", label: "lb/cu.ft", precision: 3 },
@@ -50,7 +55,7 @@ const UNITS = {
   ],
   massFlow: [
     { value: "lb/min", label: "lb/min", precision: 1 },
-    { value: "kg/s", label: "kg/s", precision: 1, default: true },
+    { value: "kg/s", label: "kg/s", precision: 3, default: true },
   ],
   volumetricFlow: [
     { value: "ft^3/min", label: "CFM", precision: 1,default: true },
