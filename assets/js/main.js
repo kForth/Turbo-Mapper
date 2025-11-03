@@ -261,7 +261,6 @@ class ViewModel {
     self.insertBoostDataRow = function (pt, index) {
       if (index === undefined)
         self.boostCurve.push(pt);
-
       else
         self.boostCurve.splice(index, 0, pt);
     };
@@ -277,16 +276,15 @@ class ViewModel {
       let index = self.boostCurve.indexOf(row);
       self.boostCurve.remove(row);
       self.boostCurve.splice(index + 1, 0, row);
-
     };
-    self.insertBoostDataRowAbove = function (row) {
+    self.insertBoostDataRowLeft = function (row) {
       let index = self.boostCurve.indexOf(row);
       let pt = (index > 0) ?
         self._getBoostDataMidpoint(self.boostCurve().at(index - 1), row) :
         self._newBoostDataPoint(row.rpm() - 500, row.boost(), row.ve(), row.afr(), row.ter(), row.ie(), row.ce());
       self.insertBoostDataRow(pt, index);
     };
-    self.insertBoostDataRowBelow = function (row) {
+    self.insertBoostDataRowRight = function (row) {
       let index = self.boostCurve.indexOf(row);
       let pt = (index < self.boostCurve().length - 1) ?
         self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
