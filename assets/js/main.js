@@ -263,7 +263,7 @@ class ViewModel {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(self.mapImg, 0, 0);
 
-      let pts = self.generatePoints();
+      let pts = self.compressorData();
 
       if (map.map_unit == 'lb_min') {
         self.drawLine(canvas, map.map_range, pts, 'red', 'massFlow__lb_min', 'pressure_ratio');
