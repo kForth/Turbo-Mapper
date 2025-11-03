@@ -215,14 +215,15 @@ class ViewModel {
     });
 
     // Boost Curve Table Helpers
-    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie) {
+    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie, ce) {
       let pt = {
         rpm: ko.observable(rpm),
         boost: ko.observable(boost),
         ve: ko.observable(ve),
         afr: ko.observable(afr),
         ter: ko.observable(ter),
-        ie: ko.observable(ie)
+        ie: ko.observable(ie),
+        ce: ko.observable(ce)
       };
       pt.rpm.subscribe(() => self.loadMap());
       pt.boost.subscribe(() => self.loadMap());
@@ -230,6 +231,7 @@ class ViewModel {
       pt.afr.subscribe(() => self.loadMap());
       pt.ter.subscribe(() => self.loadMap());
       pt.ie.subscribe(() => self.loadMap());
+      pt.ce.subscribe(() => self.loadMap());
       return pt;
     };
     self._getBoostDataMidpoint = function (a, b) {
@@ -239,7 +241,8 @@ class ViewModel {
         (a.ve() + b.ve()) / 2,
         (a.afr() + b.afr()) / 2,
         (a.ter() + b.ter()) / 2,
-        (a.ie() + b.ie()) / 2
+        (a.ie() + b.ie()) / 2,
+        (a.ce() + b.ce()) / 2
       );
     };
     self.addBoostDataRow = function () {
@@ -250,7 +253,8 @@ class ViewModel {
         lastPt.ve(),
         lastPt.afr(),
         lastPt.ter(),
-        lastPt.ie()
+        lastPt.ie(),
+        lastPt.ce()
       );
       self.insertBoostDataRow(pt);
     };
@@ -279,14 +283,14 @@ class ViewModel {
       let index = self.boostCurve.indexOf(row);
       let pt = (index > 0) ?
         self._getBoostDataMidpoint(self.boostCurve().at(index - 1), row) :
-        self._newBoostDataPoint(row.rpm() - 500, row.boost(), row.ve());
+        self._newBoostDataPoint(row.rpm() - 500, row.boost(), row.ve(), row.afr(), row.ter(), row.ie(), row.ce());
       self.insertBoostDataRow(pt, index);
     };
     self.insertBoostDataRowBelow = function (row) {
       let index = self.boostCurve.indexOf(row);
       let pt = (index < self.boostCurve().length - 1) ?
         self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
-        self._newBoostDataPoint(row.rpm() + 500, row.boost(), row.ve());
+        self._newBoostDataPoint(row.rpm() + 500, row.boost(), row.ve(), row.afr(), row.ter(), row.ie(), row.ce());
       self.insertBoostDataRow(pt, index + 1);
     };
 
@@ -446,14 +450,14 @@ class ViewModel {
         let airToFuelRatio = pt.afr();
         let turboExpansionRatio = pt.ter();
         let intercoolerEfficiency = pt.ie() / 100;
+        let compressorEfficiency = pt.ce();  // TODO: Adjust based on compressor map
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
-        let compressorEfficiency = 80;  // TODO: Adjust based on compressor map
 
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency); // CFM
         let ambientPressure__Pa = self.ambientPressure_Pa(); //Pa
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure__Pa) / ambientPressure__Pa;
-        let compOutletTemp_maxTemp__K = ambientTemp_maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
-        let compOutletTemp_minTemp__K = ambientTemp_minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR);
+        let compOutletTemp_maxTemp__K = ambientTemp_maxTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) / (compressorEfficiency / 100);
+        let compOutletTemp_minTemp__K = ambientTemp_minTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) / (compressorEfficiency / 100);
         let intercoolerOutletTemp_maxTemp_K = compOutletTemp_maxTemp__K - intercoolerEfficiency * (compOutletTemp_maxTemp__K - ambientTemp_maxTemp__K);
         let intercoolerOutletTemp_minTemp_K = compOutletTemp_minTemp__K - intercoolerEfficiency * (compOutletTemp_minTemp__K - ambientTemp_minTemp__K);
         let airDensity_maxTemp__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_maxTemp_K, pressureRatio); // lb/cu.ft
@@ -570,12 +574,12 @@ class ViewModel {
     };
 
     self.boostCurve([
-      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99),
-      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95),
-      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.72, 95),
-      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.94, 92),
-      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.17, 90),
-      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.40, 90),
+      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99, 60),
+      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95, 65),
+      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.72, 95, 70),
+      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.94, 92, 75),
+      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.17, 90, 80),
+      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.40, 90, 75),
     ])
 
     self.updateChartColors = (theme) => {
