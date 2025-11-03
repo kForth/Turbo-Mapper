@@ -55,7 +55,9 @@ const UNITS = {
   ],
   massFlow: [
     { value: "lb/min", label: "lb/min", precision: 1 },
+    { value: "lb/hr", label: "lb/hr", precision: 1 },
     { value: "kg/s", label: "kg/s", precision: 3, default: true },
+    { value: "kg/h", label: "kg/h", precision: 3, default: true },
   ],
   volumetricFlow: [
     { value: "ft^3/min", label: "CFM", precision: 1,default: true },
