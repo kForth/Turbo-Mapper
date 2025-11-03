@@ -234,63 +234,6 @@ class ViewModel {
       pt.ce.subscribe(() => self.loadMap());
       return pt;
     };
-    self._getBoostDataMidpoint = function (a, b) {
-      return self._newBoostDataPoint(
-        (a.rpm() + b.rpm()) / 2,
-        (a.boost() + b.boost()) / 2,
-        (a.ve() + b.ve()) / 2,
-        (a.afr() + b.afr()) / 2,
-        (a.ter() + b.ter()) / 2,
-        (a.ie() + b.ie()) / 2,
-        (a.ce() + b.ce()) / 2
-      );
-    };
-    self.addBoostDataRow = function () {
-      let lastPt = self.boostCurve().at(-1);
-      let pt = self._newBoostDataPoint(
-        lastPt.rpm() + 500,
-        lastPt.boost(),
-        lastPt.ve(),
-        lastPt.afr(),
-        lastPt.ter(),
-        lastPt.ie(),
-        lastPt.ce()
-      );
-      self.insertBoostDataRow(pt);
-    };
-    self.insertBoostDataRow = function (pt, index) {
-      if (index === undefined)
-        self.boostCurve.push(pt);
-      else
-        self.boostCurve.splice(index, 0, pt);
-    };
-    self.removeBoostDataRow = function (row) {
-      self.boostCurve.remove(row);
-    };
-    self.moveBoostDataRowUp = function (row) {
-      let index = self.boostCurve.indexOf(row);
-      self.boostCurve.remove(row);
-      self.boostCurve.splice(index - 1, 0, row);
-    };
-    self.moveBoostDataRowDown = function (row) {
-      let index = self.boostCurve.indexOf(row);
-      self.boostCurve.remove(row);
-      self.boostCurve.splice(index + 1, 0, row);
-    };
-    self.insertBoostDataRowLeft = function (row) {
-      let index = self.boostCurve.indexOf(row);
-      let pt = (index > 0) ?
-        self._getBoostDataMidpoint(self.boostCurve().at(index - 1), row) :
-        self._newBoostDataPoint(row.rpm() - 500, row.boost(), row.ve(), row.afr(), row.ter(), row.ie(), row.ce());
-      self.insertBoostDataRow(pt, index);
-    };
-    self.insertBoostDataRowRight = function (row) {
-      let index = self.boostCurve.indexOf(row);
-      let pt = (index < self.boostCurve().length - 1) ?
-        self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
-        self._newBoostDataPoint(row.rpm() + 500, row.boost(), row.ve(), row.afr(), row.ter(), row.ie(), row.ce());
-      self.insertBoostDataRow(pt, index + 1);
-    };
 
     // Main Update Function
     self.loadMap = function () {
