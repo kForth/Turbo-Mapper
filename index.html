@@ -205,6 +205,13 @@ js:
                                 <td><input class="form-control form-control-sm" data-bind="converted: airFlow__m3_s, from: 'm^3/s', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
+                            <tr>
+                                <td class="table-title-col">Fuel Flow</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultFuelFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: fuelFlowRate_maxTemp__lb_hr, from: 'lb/hr', to: $root.resultFuelFlowUnit().value, precision: $root.resultFuelFlowUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
                         </tbody>
                     </table>
                 </div>

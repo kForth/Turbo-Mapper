@@ -58,6 +58,7 @@ class ViewModel {
     self.resultAirDensityUnit = ko.observable(UNITS.density.find(e => e.default));
     self.resultAirMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
+    self.resultFuelFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
 
     // Compressor Chart Data
     self.compressorData = ko.observableArray([]);
