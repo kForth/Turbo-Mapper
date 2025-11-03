@@ -283,7 +283,7 @@ class ViewModel {
     };
     self.insertBoostDataRowBelow = function (row) {
       let index = self.boostCurve.indexOf(row);
-      let pt = (index < self.boostCurve.length - 1) ?
+      let pt = (index < self.boostCurve().length - 1) ?
         self._getBoostDataMidpoint(row, self.boostCurve().at(index + 1)) :
         self._newBoostDataPoint(row.rpm() + 500, row.boost(), row.ve());
       self.insertBoostDataRow(pt, index + 1);
