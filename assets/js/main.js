@@ -168,10 +168,10 @@ class ViewModel {
     };
 
     // Estimated Power/Torque Chart Data
-    self.powerCurvePts_MaxTempPower = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.i, y: pt.approxPower_maxTemp__hp }; }));
-    self.powerCurvePts_MinTempPower = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.i, y: pt.approxPower_minTemp__hp }; }));
-    self.powerCurvePts_MaxTempTorque = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.i, y: pt.approxTorque_maxTemp__ftlb }; }));
-    self.powerCurvePts_MinTempTorque = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.i, y: pt.approxTorque_minTemp__ftlb }; }));
+    self.powerCurvePts_MaxTempPower = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.approxPower_maxTemp__hp }; }));
+    self.powerCurvePts_MinTempPower = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.approxPower_minTemp__hp }; }));
+    self.powerCurvePts_MaxTempTorque = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.approxTorque_maxTemp__ftlb }; }));
+    self.powerCurvePts_MinTempTorque = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.approxTorque_minTemp__ftlb }; }));
     self.powerCurveChart = {
       type: 'scatter',
       data: ko.computed(() => {
