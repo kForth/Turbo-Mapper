@@ -45,3 +45,11 @@ function _convert(v, from, to){
 function _foreach(arr, fn) {
     return ko.utils.arrayMap(arr, fn)
 }
+
+// Collapse Carets
+$('.collapse').on('show.bs.collapse', function () {
+  $(`*[data-bs-target="#${$(this).attr("id")}"] .caret`).removeClass("flip");
+});
+$('.collapse').on('hide.bs.collapse', function () {
+  $(`*[data-bs-target="#${$(this).attr("id")}"] .caret`).addClass("flip");
+});

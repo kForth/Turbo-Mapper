@@ -11,217 +11,254 @@ js:
   - /assets/js/main.js
 ---
 <div class="container-fluid p-2 m-0 row h100">
-    <div class="p-2 col-xl-8 col-lg-7 col-md-9 col-sm-12 h100 scrollable">
-        <div class="p-4 mb-3 rounded-3">
-            <h4 class="mt-3 mb-2">Environment</h4>
-            <div class="row">
-                <div class="col-6">
-                    <label for="altitude">Altitude:</label>
-                    <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
-                        <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
-                        <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
-                    </span>
-                </div>
-                <div class="col-6">
-                    <label for="altitude">Ambient Pressure:</label>
-                    <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
-                        <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
-                        <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
+    <div class="config-col p-2 col-xxl-8 col-xl-12">
+        <div class="p-4 mb-3">
+            <div class="mb-2 pb-2 border-bottom">
+                <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#env-collapse">
+                    Environment
+                    <i class="caret bi bi-chevron-up fs-5"></i>
+                </a>
+                <div class="mb-2 pb-1 collapse show" id="env-collapse">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="altitude">Altitude:</label>
+                            <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
+                                <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
+                                <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <label for="altitude">Ambient Pressure:</label>
+                            <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
+                                <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
+                                <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
+                            </span>
+                        </div>
+                    </div>
+
+                    <label for="temp-input-group input-group-sm">Temperature Range:</label>
+                    <span class="input-group input-group-sm" id="temp-input-group input-group-sm">
+                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
+                        <span class="input-group-text">To</span>
+                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
+                        <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
                     </span>
                 </div>
             </div>
 
-            <label for="temp-input-group input-group-sm">Temperature Range:</label>
-            <span class="input-group input-group-sm" id="temp-input-group input-group-sm">
-                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
-                <span class="input-group-text">To</span>
-                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
-                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
-            </span>
+            <div class="mb-2 pb-2 border-bottom">
+                <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#eng-collapse">
+                    Engine Specs
+                    <i class="caret bi bi-chevron-up fs-5"></i>
+                </a>
+                <div class="mb-2 pb-1 collapse show" id="eng-collapse">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="engDispl">Displacement:</label>
+                            <span class="input-group input-group-sm">
+                                <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
+                                <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <label for="engDispl"># Turbos:</label>
+                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
+                        </div>
+                    </div>
 
-            <h4 class="mb-2">Engine Specs</h4>
-            <div class="row">
-                <div class="col-6">
-                    <label for="engDispl">Displacement:</label>
-                    <span class="input-group input-group-sm">
-                        <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
-                        <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
-                    </span>
-                </div>
-                <div class="col-6">
-                    <label for="engDispl"># Turbos:</label>
-                    <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
+                    <div class="mt-2">
+                        <label for="mapSelect">Turbo:</label>
+                        <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-2">
-                <label for="mapSelect">Turbo:</label>
-                <select class="form-control form-control-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
+            <div class="mb-2 pb-2 border-bottom">
+                <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#input-collapse">
+                    Input Values
+                    <i class="caret bi bi-chevron-up fs-5"></i>
+                </a>
+                <div class="mb-2 pb-1 collapse show" id="input-collapse">
+                    <table class="table table-sm" id="boost-data-table">
+                        <thead><tr>
+                            <th class="table-title-col"></th>
+                            <th class="table-unit-col"></th>
+                            <!-- ko foreach: boostCurve -->
+                            <th data-bind="text: '#' + ($index() + 1)"></th>
+                            <!-- /ko -->
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-title-col">Engine Speed</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="RPM" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Boost Pressure</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputBoostPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: boost" type="number" min="0" step="1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Volumetric Efficiency</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Intercooler Efficiency</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Air-to-Fuel Ratio</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="N:1" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Turbine Expansion Ratio</td>
+                                <td class="table-unit-col"><!-- <input class="form-control" type="text" value="N:1" readonly disabled /> --></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="table-title-col"></td>
+                                <td></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><div class="input-group flex-nowrap justify-content-end">
+                                    <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove" title="Insert Col Left"><i class="bi bi-box-arrow-in-left"></i></button>
+                                    <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow" title="Insert Col Right"><i class="bi bi-box-arrow-in-right"></i></button>
+                                    <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow" title="Delete Col"><i class="bi bi-trash-fill"></i></button>
+                                </div></td>
+                                <!-- /ko -->
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
 
-            <h4 class="mt-3 mb-2">Inputs</h4>
-            <table class="table table-sm table-striped" id="boost-data-table">
-                <thead><tr>
-                    <th></th>
-                    <!-- ko foreach: boostCurve -->
-                    <th data-bind="text: '#' + ($index() + 1)"></th>
-                    <!-- /ko -->
-                </tr></thead>
-                <tbody>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Engine Speed</span>
-                            <span class="input-group-text">RPM</span>
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: rpm" type="number" min="0" step="500" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Boost Pressure</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: inputBoostPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: boost" type="number" min="0" step="1" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Volumetric Efficiency</span>
-                            <span class="input-group-text">%</span>
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: ve" type="number" min="0" step="1" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Intercooler Efficiency</span>
-                            <span class="input-group-text">%</span>
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Air-to-Fuel Ratio</span>
-                            <span class="input-group-text">n:1</span>
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: afr" type="number" min="0" step="0.1" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Turbine Expansion Ratio</span>
-                            <!-- <span class="input-group-text">n:1</span> -->
-                        </div></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.1" /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <!-- ko foreach: boostCurve -->
-                        <td><div class="input-group flex-nowrap justify-content-end">
-                            <button class="btn btn-sm btn-primary" data-bind="click: $parent.insertBoostDataRowAbove" title="Insert Col Left"><i class="bi bi-box-arrow-in-left"></i></button>
-                            <button class="btn btn-sm btn-primary border-start" data-bind="click: $parent.insertBoostDataRowBelow" title="Insert Col Right"><i class="bi bi-box-arrow-in-right"></i></button>
-                            <button class="btn btn-sm btn-danger border-start" data-bind="click: $parent.removeBoostDataRow" title="Delete Col"><i class="bi bi-trash-fill"></i></button>
-                        </div></td>
-                        <!-- /ko -->
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4 class="mt-3 mb-2">Manifold Values</h4>
-            <table class="table table-sm table-striped" id="boost-data-table">
-                <thead><tr>
-                    <th></th>
-                    <!-- ko foreach: compressorData -->
-                    <th data-bind="text: '#' + ($index() + 1)"></th>
-                    <!-- /ko -->
-                </tr></thead>
-                <tbody>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Engine Speed</span>
-                            <span class="input-group-text">RPM</span>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="value: rpm" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Absolute Pressure</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: resultAmbientPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="converted: absolutePressure__psi, from: 'psi', to: $root.resultAmbientPressureUnit().value, precision: $root.resultAmbientPressureUnit().precision" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Air Temperature</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: resultAirTemperatureUnit, options: UNITS.temperature, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="converted: airTemp_maxTemp__C, from: 'degC', to: $root.resultAirTemperatureUnit().value, precision: $root.resultAirTemperatureUnit().precision" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Air Density</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: resultAirDensityUnit, options: UNITS.density, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="converted: airDensity_maxTemp__lb_cf, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Air Mass Flow</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="converted: massFlow_maxTemp__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                    <tr>
-                        <td><div class="input-group input-group-sm flex-nowrap">
-                            <span class="input-group-text flex-fill">Air Flow</span>
-                            <select class="input-group-text btn-secondary" data-bind="value: resultAirVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select>
-                        </div></td>
-                        <!-- ko foreach: compressorData -->
-                        <td><input class="form-control form-control-sm" data-bind="converted: airFlow__m3_s, from: 'm^3/s', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
-                        <!-- /ko -->
-                    </tr>
-                </tbody>
-            </table>
+            <div class="mb-2 pb-2 border-bottom">
+                <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#output-collapse">
+                    Output Values
+                    <i class="caret bi bi-chevron-up fs-5 flip"></i>
+                </a>
+                <div class="mb-2 pb-1 collapse" id="output-collapse">
+                    <table class="table table-sm" id="boost-data-table">
+                        <thead><tr>
+                            <th></th>
+                            <th></th>
+                            <!-- ko foreach: compressorData -->
+                            <th data-bind="text: '#' + ($index() + 1)"></th>
+                            <!-- /ko -->
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-title-col">Engine Speed</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="RPM" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: rpm" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Absolute Pressure</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAmbientPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: absolutePressure__psi, from: 'psi', to: $root.resultAmbientPressureUnit().value, precision: $root.resultAmbientPressureUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Air Temperature</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirTemperatureUnit, options: UNITS.temperature, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: airTemp_maxTemp__C, from: 'degC', to: $root.resultAirTemperatureUnit().value, precision: $root.resultAirTemperatureUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Air Density</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirDensityUnit, options: UNITS.density, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: airDensity_maxTemp__lb_cf, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Air Mass Flow</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: massFlow_maxTemp__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Air Flow</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: airFlow__m3_s, from: 'm^3/s', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="p-2 col-xl-4 col-lg-5 col-md-3 col-sm-12 h100 scrollable">
-        <h4 class="mt-3 mb-2">Compressor Map</h4>
-        <div class="chart-holder mb-3" id="map-collapse">
-            <canvas class="chart-canvas" data-bind="chart: compressorChart"></canvas>
+    <div class="graph-col p-2 col-xxl-4 col-xl-12">
+        <div class="mb-2 pb-2 border-bottom">
+            <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#comp-collapse">
+                Compressor Map
+                <i class="caret bi bi-chevron-up fs-5"></i>
+            </a>
+            <div class="my-2 pb-1 collapse show" id="comp-collapse">
+                <div class="chart-holder">
+                    <canvas class="chart-canvas" data-bind="chart: compressorChart"></canvas>
+                </div>
+            </div>
         </div>
 
-        <h4 class="mt-3 mb-2">Exhaust Flow Chart</h4>
-        <div class="chart-holder" id="flow-collapse">
-            <canvas class="chart-canvas" data-bind="chart: exhaustFlowChart"></canvas>
+        <div class="mb-2 pb-2 border-bottom">
+            <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#flow-collapse">
+                Exhaust Flow Chart
+                <i class="caret bi bi-chevron-up fs-5"></i>
+            </a>
+            <div class="my-2 pb-1 collapse show" id="flow-collapse">
+                <div class="chart-holder">
+                    <canvas class="chart-canvas" data-bind="chart: exhaustFlowChart"></canvas>
+                </div>
+            </div>
         </div>
 
-        <h4 class="mt-3 mb-2">Air Flow Curves</h4>
-        <div class="chart-holder mb-3" id="boost-collapse">
-            <canvas class="chart-canvas" data-bind="chart: boostCurveChart"></canvas>
+        <div class="mb-2 pb-2 border-bottom">
+            <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#boost-collapse">
+                Air Flow Curves
+                <i class="caret bi bi-chevron-up fs-5"></i>
+            </a>
+            <div class="my-2 pb-1 collapse show" id="boost-collapse">
+                <div class="chart-holder">
+                    <canvas class="chart-canvas" data-bind="chart: boostCurveChart"></canvas>
+                </div>
+            </div>
         </div>
 
-        <h4 class="mt-3 mb-2">Estimated Power</h4>
-        <div class="chart-holder mb-3" id="power-collapse">
-            <canvas class="chart-canvas" data-bind="chart: powerCurveChart"></canvas>
+        <div class="mb-2 pb-2 border-bottom">
+            <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#power-collapse">
+                Estimated Power
+                <i class="caret bi bi-chevron-up fs-5"></i>
+            </a>
+            <div class="my-2 pb-1 collapse show" id="power-collapse">
+                <div class="chart-holder">
+                    <canvas class="chart-canvas" data-bind="chart: powerCurveChart"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>

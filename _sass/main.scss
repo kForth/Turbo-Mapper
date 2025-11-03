@@ -4,24 +4,60 @@ html, body {
   overflow: hidden;
 }
 
-label {
-  font-weight: bold;
-}
-
 main {
   height: calc(100% - 56px);
+}
+
+@media (max-width: 1575px) {
+  main {
+    overflow: scroll;
+  }
+}
+
+@media (min-width: 1575px) {
+  .config-col, .graph-col {
+    height: 100%;;
+    overflow-y: scroll;
+  }
+}
+
+// Utility
+label {
+  font-weight: bold;
 }
 
 .h100 {
   height: 100%;;
 }
 
-.scrollable {
-  height: 100%;
-  overflow-y: scroll;
-  box-shadow: inset 5px #f00;
+.clickable:hover {
+  cursor: pointer;
 }
 
+.caret {
+  &::before{
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &.flip::before {
+    transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+  }
+}
+
+// Tables
+.table-title-col {
+  white-space: nowrap;
+}
+
+.table-unit-col {
+  width: 100px;
+  min-width: 100px;
+}
+
+// Chart Objects
 .chart-holder {
   text-align: center;
 }
@@ -33,6 +69,8 @@ main {
   border-radius: 2px;
 }
 
+
+// Bootstrap Color Mode
 .btn-bd-primary {
   outline: 0;
   --bd-violet-bg: #712cf9;
