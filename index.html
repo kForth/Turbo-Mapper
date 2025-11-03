@@ -20,29 +20,28 @@ js:
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="env-collapse">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <label for="altitude">Altitude:</label>
-                            <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
+                            <span class="input-group input-group-sm" id="altitude">
                                 <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
                                 <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-6">
-                            <label for="altitude">Ambient Pressure:</label>
-                            <span class="input-group input-group-sm" id="altitude-input-group input-group-sm">
+                        <div class="col-4">
+                            <label for="ambient-pressue">Ambient Pressure:</label>
+                            <span class="input-group input-group-sm" id="ambient-pressue">
                                 <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
                             </span>
                         </div>
+                        <div class="col-4">
+                            <label for="ambient-temp">Ambient Temperature:</label>
+                            <span class="input-group input-group-sm" id="ambient-temp">
+                                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
+                                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
+                            </span>
+                        </div>
                     </div>
-
-                    <label for="temp-input-group input-group-sm">Temperature Range:</label>
-                    <span class="input-group input-group-sm" id="temp-input-group input-group-sm">
-                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMinRaw" />
-                        <span class="input-group-text">To</span>
-                        <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempMaxRaw" />
-                        <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
-                    </span>
                 </div>
             </div>
 
@@ -53,22 +52,21 @@ js:
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="eng-collapse">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-3">
                             <label for="engDispl">Displacement:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
                                 <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <label for="engDispl"># Turbos:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
                         </div>
-                    </div>
-
-                    <div class="mt-2">
-                        <label for="mapSelect">Turbo:</label>
-                        <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
+                        <div class="col-6">
+                            <label for="mapSelect">Turbo:</label>
+                            <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,21 +173,21 @@ js:
                                 <td class="table-title-col">Air Temperature</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirTemperatureUnit, options: UNITS.temperature, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: airTemp_maxTemp__C, from: 'degC', to: $root.resultAirTemperatureUnit().value, precision: $root.resultAirTemperatureUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: airTemp__C, from: 'degC', to: $root.resultAirTemperatureUnit().value, precision: $root.resultAirTemperatureUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Air Density</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirDensityUnit, options: UNITS.density, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: airDensity_maxTemp__lb_cf, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: airDensity__lb_cf, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Air Mass Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: massFlow_maxTemp__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: massFlow__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
@@ -203,7 +201,7 @@ js:
                                 <td class="table-title-col">Fuel Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultFuelFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: fuelFlowRate_maxTemp__lb_hr, from: 'lb/hr', to: $root.resultFuelFlowUnit().value, precision: $root.resultFuelFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: fuelFlowRate__lb_hr, from: 'lb/hr', to: $root.resultFuelFlowUnit().value, precision: $root.resultFuelFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                         </tbody>
