@@ -4,11 +4,20 @@ const SPECIFIC_HEAT_CAPACITY_AIR = 0.7171;  // kJ/kg/K
 const SPECIFIC_HEAT_CAPACITY_EXH = 0.87;  // kJ/kg/K
 const MOLECULAR_WEIGHT_AIR = 28.96; // g/mol
 const MOLECULAR_WEIGHT_FUEL = 105; // g/mol (average for gasoline)
-const DENSITY_OF_GASOLINE__KG_L = 0.7475;  // kg/L
+
+const FUEL_TYPES = [
+  { name: "Gasoline", density: 0.726, stoich: 14.7 },
+  { name: "Diesel", density: 1.875, stoich: 14.5 },
+  { name: "E85", density: 0.778, stoich: 9.8 },
+  { name: "E100", density: 0.789, stoich: 9.0 },
+  { name: "M1", density: 0.793, stoich: 6.5 },
+]
 
 class ViewModel {
   constructor() {
     var self = this;
+
+    self.fuelTypeList = FUEL_TYPES;
 
     self.mapImg = new Image;
     self.flowImg = new Image;
@@ -19,7 +28,8 @@ class ViewModel {
       if (a.name > b.name) return 1;
       return 0;
     });
-    self.turbo = ko.observable(self.turboList[0].name);
+    self.turbo = ko.observable(self.turboList[0]);
+    self.fuelType = ko.observable(self.fuelTypeList[0])
 
     // Engine Specs
     self.engineDisplacementRaw = ko.observable(2.5);
@@ -182,6 +192,7 @@ class ViewModel {
       self.engineDisplacementUnit,
       self.numberOfTurbos,
       self.turbo,
+      self.fuelType,
       self.altitudeRaw,
       self.altitudeUnit,
       self.ambientTempRaw,
@@ -385,7 +396,7 @@ class ViewModel {
         let manifoldAirMassFlow__lb_min = airFlow__cfm * manifoldAirDensity__lb_cuft;
 
         let fuelMassFlowRate__lb_min = manifoldAirMassFlow__lb_min * (pt.afr() / 100);
-        let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / DENSITY_OF_GASOLINE__KG_L;
+        let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density;
         let approxPower__hp = _convert(manifoldAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
