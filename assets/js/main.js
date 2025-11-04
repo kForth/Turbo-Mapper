@@ -369,7 +369,7 @@ class ViewModel {
         let airToFuelRatio = pt.afr();
         let turboExpansionRatio = pt.ter();
         let intercoolerEfficiency = pt.ie() / 100;
-        let compressorEfficiency = pt.ce();  // TODO: Adjust based on compressor map
+        let compressorEfficiency = pt.ce();
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
 
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency); // CFM
