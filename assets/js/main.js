@@ -5,6 +5,11 @@ const SPECIFIC_HEAT_CAPACITY_EXH = 0.87;  // kJ/kg/K
 const MOLECULAR_WEIGHT_AIR = 28.96; // g/mol
 const MOLECULAR_WEIGHT_FUEL = 105; // g/mol (average for gasoline)
 
+const CP_AIR_85 = 0.242;
+const CP_EX_1000 = 0.274;
+const GAMMA_EX_1000 = 1.34;
+const GAMMA_AIR = 1.395;
+
 const FUEL_TYPES = [
   { name: "Gasoline", density: 0.726, stoich: 14.7 },
   { name: "Diesel", density: 1.875, stoich: 14.5 },
@@ -374,10 +379,13 @@ class ViewModel {
         let rpm = pt.rpm();
         let boostPressure__psi = _convert(pt.boost(), self.inputBoostPressureUnit().value, "psi");
         let volumetricEfficiency = pt.ve();
-        let turboExpansionRatio = pt.ter();
+        let turbineExpansionRatio = pt.ter();
         let intercoolerEfficiency = pt.ie() / 100;
         let compressorEfficiency = pt.ce();
+        let turbineEfficiency = 72; // TODO
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
+        let brakeSpecificFuelConsumption__lb_hphr = 0.5; // TODO
+        let mufflerSystemBackpressure__psi = 1.5; // TODO
 
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency);
         let compOutletPressure__Pa = ambientPressure__Pa + _convert(boostPressure__psi, "psi", "Pa")
@@ -400,43 +408,68 @@ class ViewModel {
         let approxPower__hp = _convert(manifoldAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
+        let phi = (
+          compInletAirMassFlow__lb_min * CP_AIR_85 *
+          (460 + _convert(ambientTemp__K, "K", "degF")) *
+          Math.pow(compPressureRatio, (GAMMA_AIR - 1) / GAMMA_AIR) - 1) /
+          (compressorEfficiency / 100) / 42.41;
+        var wgPercent =
+          (phi /
+            ((compInletAirMassFlow__lb_min *
+              (1 + 1 / brakeSpecificFuelConsumption__lb_hphr) *
+              (460 + _convert(exhGasTemp_K, "K", "degF")) *
+              (turbineEfficiency / 100) *
+              CP_EX_1000 *
+              (1 - Math.pow(1 / turbineExpansionRatio, (GAMMA_EX_1000 - 1) / GAMMA_EX_1000))) /
+              42.41) -
+            1) *
+          -100;
+
+        // let ambientPressure__psi = _convert(ambientPressure__Pa, "Pa", "psi");
+        // let exhaustManifoldPressure__psi = (mufflerSystemBackpressure__psi + ambientPressure__psi) * pt.ter() - ambientPressure__psi;
+        // let turbineSwallowingParameter =
+        //   ((1 - wgPercent / 100) *
+        //     (actualFlowRate__lb_min_NotCorrected * (1 + 1 / brakeSpecificFuelConsumption__lb_hphr) * 0.00756) *
+        //     Math.sqrt(exhGasTemp_K)) /
+        //   ((exhaustManifoldPressure__psi + ambientPressure_Psi) * 6.894);
+
         // TODO: Fix these
         // let compShaftPower__W = self.calcCompressorShaftPower__W(
         //   ambientPressure__Pa, pressureRatio, _convert(compInletAirMassFlow__lb_min, "lb/min", "kg/s"), compressorEfficiency
         // );
-        let compShaftPower__W = self.calcTurbineShaftPower__W(
-          ambientTemp__K, compOutletTemp__K, _convert(manifoldAirMassFlow__lb_min, "lb/min", "kg/s")
-        );
+        // let compShaftPower__W = self.calcTurbineShaftPower__W(
+        //   ambientTemp__K, compOutletTemp__K, _convert(manifoldAirMassFlow__lb_min, "lb/min", "kg/s")
+        // );
 
         // TODO: Fix these
-        let exhMassFlow__lb_min = manifoldAirMassFlow__lb_min + fuelMassFlowRate__lb_min;
-        let turbineShaftPower__W = (
-          (compressorEfficiency / 100)
-          * SPECIFIC_HEAT_CAPACITY_EXH
-          * exhGasTemp_K
-          * (1 - Math.pow(1 / turboExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH))
-          * _convert(exhMassFlow__lb_min, "lb/min", "kg/s")
-        ) * 1000;
+        // let exhMassFlow__lb_min = manifoldAirMassFlow__lb_min + fuelMassFlowRate__lb_min;
+        // let turbineShaftPower__W = (
+        //   (compressorEfficiency / 100)
+        //   * SPECIFIC_HEAT_CAPACITY_EXH
+        //   * exhGasTemp_K
+        //   * (1 - Math.pow(1 / turboExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH))
+        //   * _convert(exhMassFlow__lb_min, "lb/min", "kg/s")
+        // ) * 1000;
         // let turbineShaftPower__W = self.calcTurbineShaftPower__W(
         //   exhGasTemp_K, exhOutletTemp__K, _convert(exhMassFlow__lb_min, "lb/min", "kg/s")
         // );
 
         // TODO: Fix these
-        let wgPercent = 1 - (compShaftPower__W / turbineShaftPower__W);
-        let phi = self.calcPhi(
-          wgPercent,
-          _convert(exhMassFlow__lb_min, "lb/min", "kg/s"),
-          exhGasTemp_K,
-          turboExpansionRatio,
-          _convert(5, "psi", "Pa")
-        );
+        // let wgPercent = 1 - (compShaftPower__W / turbineShaftPower__W);
+        // let phi = self.calcPhi(
+        //   wgPercent,
+        //   _convert(exhMassFlow__lb_min, "lb/min", "kg/s"),
+        //   exhGasTemp_K,
+        //   turboExpansionRatio,
+        //   _convert(5, "psi", "Pa")
+        // );
 
         pts.push({
           i: i_++,
           rpm: rpm,
           compOutletPressure__Pa: compOutletPressure__Pa,
           compPressureRatio: compPressureRatio,
-          turbineExpansionRatio: turboExpansionRatio,
+          turbineExpansionRatio: turbineExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
           airFlow__cfm: airFlow__cfm,
           compInletAirFlow__cfm: compInletAirFlow__cfm,
@@ -456,9 +489,9 @@ class ViewModel {
           approxTorque__ftlb: approxTorque__ftlb,
 
           wgPercent: wgPercent,
-          compressorShaftPower__W: compShaftPower__W,
-          turbineShaftPower__W: turbineShaftPower__W,
           phi: phi,
+          // compressorShaftPower__W: compShaftPower__W,
+          // turbineShaftPower__W: turbineShaftPower__W,
         });
       }
 
