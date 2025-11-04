@@ -455,13 +455,6 @@ class ViewModel {
       self._newBoostDataPoint(6000, 16, 105, 12.2, 2.17, 90, 80),
       self._newBoostDataPoint(7000, 16, 105, 12.2, 2.40, 90, 75),
     ])
-
-    self.updateChartColors = (theme) => {
-      console.log(theme);
-      // TODO: Update chart.js colours
-    };
-    $(document).on('change', (e) => self.updateChartColors($(document.documentElement).attr("data-bs-theme")));
-    $("button[data-bs-theme-value]").on('click', (e) => self.updateChartColors($(e.target).attr("data-bs-theme-value")));
   }
 }
 
