@@ -124,11 +124,6 @@ class ViewModel {
 
     // Boost Curve Data
     self.boostCurve = ko.observableArray([]);
-    self.boostCurvePts_Rpm = ko.computed(() => _foreach(self.boostCurve(), pt => pt.rpm()));
-    self.boostCurvePts_Boost = ko.computed(() => _foreach(self.boostCurve(), pt => pt.boost()));
-    self.boostCurvePts_Ve = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ve()));
-    self.boostCurvePts_Afr = ko.computed(() => _foreach(self.boostCurve(), pt => pt.afr()));
-    self.boostCurvePts_Ter = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ter()));
     self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
     self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.totalMassFlow__lb_min }; }))
@@ -149,8 +144,8 @@ class ViewModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts_Boost())) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
-          y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.boostCurvePts_Ve()) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
+          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
+          y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.veCurvePts().map(pt => pt.y)) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
           y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
         }
       }
@@ -377,8 +372,8 @@ class ViewModel {
         let ambientPressure__Pa = self.ambientPressure_Pa(); //Pa
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure__Pa) / ambientPressure__Pa;
         let compOutletTemp__K = ambientTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) / (compressorEfficiency / 100);
-        let intercoolerOutletTemp_K = compOutletTemp__K - intercoolerEfficiency * (compOutletTemp__K - ambientTemp__K);
-        let airDensity__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_K, pressureRatio); // lb/cu.ft
+        let manifoldAirTemp__K = compOutletTemp__K - (intercoolerEfficiency * (compOutletTemp__K - ambientTemp__K));
+        let airDensity__lb_cuft = self.calcAirDensity(manifoldAirTemp__K, pressureRatio); // lb/cu.ft
         let massFlow__lb_min = airFlow__cfm * airDensity__lb_cuft; // lb/min
 
         let totalMassFlow__lb_min = massFlow__lb_min * self.numberOfTurbos();
@@ -427,9 +422,10 @@ class ViewModel {
           absolutePressure__psi: _convert(ambientPressure__Pa * pressureRatio, "Pa", "psi"),
           turbineExpansionRatio: turboExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
-          airTemp__C: _convert(intercoolerOutletTemp_K, "K", "degC"),
           fuelFlowRate__lb_hr: fuelMassFlowRate__lb_min,
           fuelFlowRate__L_hr: fuelVolFlowRate__L_hr,
+          compressorOutletTemp__C: _convert(compOutletTemp__K, "K", "degC"),
+          manifoldAirTemp__C: _convert(manifoldAirTemp__K, "K", "degC"),
           airDensity__lb_cf: airDensity__lb_cuft,
           massFlow__lb_min: massFlow__lb_min,
           massFlow__kg_s: _convert(massFlow__lb_min, "lb/min", "kg/s"),
@@ -441,7 +437,6 @@ class ViewModel {
           totalAirFlow__m3_s: _convert(airFlow__cfm * self.numberOfTurbos(), "cuft/min", "m3/s"),
           approxPower__hp: rpm == 0 ? 0 : estPower__hp,
           approxTorque__ftlb: rpm == 0 ? 0 : estPower__hp * 5252 / rpm,
-          compressorOutletTemp__K: compOutletTemp__K,
           wgPercent: wgPercent,
           compressorShaftPower__W: compShaftPower__W,
           turbineShaftPower__W: turbineShaftPower__W,
