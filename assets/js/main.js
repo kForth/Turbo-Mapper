@@ -131,7 +131,7 @@ class ViewModel {
     self.boostCurvePts_Ter = ko.computed(() => _foreach(self.boostCurve(), pt => pt.ter()));
     self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
-    self.compCurveMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.massFlow__lb_min }; }))
+    self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.totalMassFlow__lb_min }; }))
     self.boostCurveChart = {
       type: 'scatter',
       data: ko.computed(() => {
@@ -139,7 +139,7 @@ class ViewModel {
           datasets: [
             { label: "Boost", data: self.boostCurvePts(), showLine: true },
             { label: "VE", data: self.veCurvePts(), showLine: true, yAxisID: "y2" },
-            { label: "Air Flow", data: self.compCurveMassFlowPts(), showLine: true, yAxisID: "y3" },
+            { label: "Air Flow", data: self.airMassFlowPts(), showLine: true, yAxisID: "y3" },
           ]
         };
       }),
@@ -151,7 +151,7 @@ class ViewModel {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
           y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts_Boost())) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.boostCurvePts_Ve()) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
-          y3: { min: 0, max: parseInt(Math.max(...self.compCurveMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
+          y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
         }
       }
     };
@@ -183,9 +183,10 @@ class ViewModel {
 
     // Subscriptions
     [
-      self.turbo,
       self.engineDisplacementRaw,
       self.engineDisplacementUnit,
+      self.numberOfTurbos,
+      self.turbo,
       self.altitudeRaw,
       self.altitudeUnit,
       self.ambientTempRaw,
@@ -372,18 +373,18 @@ class ViewModel {
         let compressorEfficiency = pt.ce();
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
 
-        let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency); // CFM
+        let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency) / self.numberOfTurbos(); // CFM
         let ambientPressure__Pa = self.ambientPressure_Pa(); //Pa
         let pressureRatio = (_convert(boostPressure__psi, "psi", "Pa") + ambientPressure__Pa) / ambientPressure__Pa;
         let compOutletTemp__K = ambientTemp__K * Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) / (compressorEfficiency / 100);
         let intercoolerOutletTemp_K = compOutletTemp__K - intercoolerEfficiency * (compOutletTemp__K - ambientTemp__K);
         let airDensity__lb_cuft = self.calcAirDensity(intercoolerOutletTemp_K, pressureRatio); // lb/cu.ft
         let massFlow__lb_min = airFlow__cfm * airDensity__lb_cuft; // lb/min
-        let estPower__hp = _convert(massFlow__lb_min, "lb/min", "g/s") * 1.25;
 
-
-        let fuelFlowRate__lb_min = massFlow__lb_min * (airToFuelRatio / 100);
-        let fuelFlowRate__L_hr = _convert(fuelFlowRate__lb_min, "lb/min", "kg/hr") / DENSITY_OF_GASOLINE__KG_L;
+        let totalMassFlow__lb_min = massFlow__lb_min * self.numberOfTurbos();
+        let fuelMassFlowRate__lb_min = totalMassFlow__lb_min * (airToFuelRatio / 100);
+        let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / DENSITY_OF_GASOLINE__KG_L;
+        let estPower__hp = _convert(totalMassFlow__lb_min, "lb/min", "g/s") * 1.25;
 
         // TODO: Fix these
         // let compShaftPower__W = self.calcCompressorShaftPower__W(
@@ -394,7 +395,7 @@ class ViewModel {
         );
 
         // TODO: Fix these
-        let exhMassFlow__lb_min = massFlow__lb_min + fuelFlowRate__lb_min;
+        let exhMassFlow__lb_min = massFlow__lb_min + fuelMassFlowRate__lb_min;
         let turbineShaftPower__W = (
           (compressorEfficiency / 100)
           * SPECIFIC_HEAT_CAPACITY_EXH
@@ -426,14 +427,18 @@ class ViewModel {
           absolutePressure__psi: _convert(ambientPressure__Pa * pressureRatio, "Pa", "psi"),
           turbineExpansionRatio: turboExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
-          fuelFlowRate__lb_hr: fuelFlowRate__lb_min,
-          fuelFlowRate__L_hr: fuelFlowRate__L_hr,
           airTemp__C: _convert(intercoolerOutletTemp_K, "K", "degC"),
+          fuelFlowRate__lb_hr: fuelMassFlowRate__lb_min,
+          fuelFlowRate__L_hr: fuelVolFlowRate__L_hr,
           airDensity__lb_cf: airDensity__lb_cuft,
           massFlow__lb_min: massFlow__lb_min,
           massFlow__kg_s: _convert(massFlow__lb_min, "lb/min", "kg/s"),
           airFlow__cfm: airFlow__cfm,
           airFlow__m3_s: _convert(airFlow__cfm, "cuft/min", "m3/s"),
+          totalMassFlow__lb_min: massFlow__lb_min * self.numberOfTurbos(),
+          totalMassFlow__kg_s: _convert(massFlow__lb_min * self.numberOfTurbos(), "lb/min", "kg/s"),
+          totalAirFlow__cfm: airFlow__cfm * self.numberOfTurbos(),
+          totalAirFlow__m3_s: _convert(airFlow__cfm * self.numberOfTurbos(), "cuft/min", "m3/s"),
           approxPower__hp: rpm == 0 ? 0 : estPower__hp,
           approxTorque__ftlb: rpm == 0 ? 0 : estPower__hp * 5252 / rpm,
           compressorOutletTemp__K: compOutletTemp__K,
