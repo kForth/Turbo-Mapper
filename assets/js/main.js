@@ -222,7 +222,7 @@ class ViewModel {
     self.loadMap = function () {
       self.mapImg.src = self.turbo().map_img;
       self.flowImg.src = self.turbo().flow_img;
-      self.compressorData(self.generatePoints());
+      self.compressorData(self.updateCompressorMapPoints());
     };
 
     self.drawMapBg = function (chart, img, bounds) {
@@ -357,7 +357,7 @@ class ViewModel {
       );
     };
 
-    self.generatePoints = function () {
+    self.updateCompressorMapPoints = function () {
       var i_ = 0;
       let pts = [];
       let ambientTemp__K = self.ambientTemp_K(); //Air Temp (deg Kelvin)
