@@ -212,10 +212,14 @@ class ViewModel {
       self.ambientTempRaw,
       self.ambientTempUnit,
       self.inputBoostPressureUnit,
-    ].forEach(e => e.subscribe(() => self.loadMap()));
-    self.boostCurve.subscribe(() => self.loadMap(), self, "arrayChange");
+    ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
+    self.boostCurve.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
-      [item.rpm, item.boost, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.loadMap()));
+      [item.rpm, item.boost, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.updateCompressorMap()));
+    });
+    self.turbo.subscribe(() => {
+      self.mapImg.src = self.turbo().map_img;
+      self.flowImg.src = self.turbo().flow_img;
     });
 
     // Boost Curve Table Helpers
@@ -229,20 +233,14 @@ class ViewModel {
         ie: ko.observable(ie),
         ce: ko.observable(ce)
       };
-      pt.rpm.subscribe(() => self.loadMap());
-      pt.boost.subscribe(() => self.loadMap());
-      pt.ve.subscribe(() => self.loadMap());
-      pt.afr.subscribe(() => self.loadMap());
-      pt.ter.subscribe(() => self.loadMap());
-      pt.ie.subscribe(() => self.loadMap());
-      pt.ce.subscribe(() => self.loadMap());
+      Object.values(pt).forEach(
+        e => e.subscribe(() => self.updateCompressorMap())
+      );
       return pt;
     };
 
     // Main Update Function
-    self.loadMap = function () {
-      self.mapImg.src = self.turbo().map_img;
-      self.flowImg.src = self.turbo().flow_img;
+    self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());
     };
 
@@ -289,31 +287,6 @@ class ViewModel {
       ];
     };
 
-    self.drawLine = function (canvas, px_range, pts, colour, x_key, y_key) {
-      let ctx = canvas.getContext("2d");
-      ctx.strokeStyle = colour;
-
-      ctx.beginPath();
-      for (let i = 0; i < pts.length; i++) {
-        let pt = pts[i];
-        var px = self.val_to_px(canvas, pt[x_key], pt[y_key], px_range);
-        if (i == 0)
-          ctx.moveTo(px[0], canvas.height - px[1]);
-
-        else
-          ctx.lineTo(px[0], canvas.height - px[1]);
-      }
-      ctx.stroke();
-
-      ctx.fillStyle = colour;
-      for (let pt of pts) {
-        var px = self.val_to_px(canvas, pt[x_key], pt[y_key], px_range);
-        ctx.beginPath();
-        ctx.arc(px[0], canvas.height - px[1], 5, 0, 2 * Math.PI, false);
-        ctx.fill();
-      }
-    };
-
     self.calcCfm = function (rpm, ve) {
       return _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (ve / 100);
     };
@@ -323,35 +296,6 @@ class ViewModel {
       let pv = Math.exp(20.386 - (5132 / temp)) * 133.32239; //Water Vapor Pressure (Pa)
       let density = (pd / (287.058 * temp)) + (pv / (461.495 * temp)); //Air Density (kg/m^3)
       return _convert(density, 'kg/m3', 'lb/cuft'); // Convert to lb/cu.ft
-    };
-
-    self.calcPhi = function (wgPercent, exhMassFlow__kg_s, exhGasTemp_K, turbineExpansionRatio, backpressure__Pa) {
-      let exhManifoldPressure_Pa = (backpressure__Pa + self.ambientPressure_Pa()) * turbineExpansionRatio;
-      return (
-          (1 - wgPercent)
-          * exhMassFlow__kg_s
-          * Math.sqrt(exhGasTemp_K)
-          / (exhManifoldPressure_Pa / 1000)
-      );
-    };
-
-    self.calcCompressorShaftPower__W = function (inletTemp__K, pressureRatio, compInletAirMassFlow__kg_s, compressorEfficiency) {
-      return (
-        compInletAirMassFlow__kg_s *
-        SPECIFIC_HEAT_CAPACITY_AIR *
-        inletTemp__K * (Math.pow(pressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1)
-      ) / (compressorEfficiency / 100) / 42.41;
-    };
-
-    self.calcTurbineShaftPower__W = function (inletTemp__K, outletTemp__K, compInletAirMassFlow__kg_s) {
-      return (
-        compInletAirMassFlow__kg_s
-        * (8.314 / (MOLECULAR_WEIGHT_AIR + MOLECULAR_WEIGHT_FUEL))
-        * inletTemp__K
-        * HEAT_CAPACITY_RATIO_EXH
-        / (HEAT_CAPACITY_RATIO_EXH - 1)
-        * outletTemp__K
-      );
     };
 
     self.updateCompressorMapPoints = function () {
@@ -417,37 +361,6 @@ class ViewModel {
             (compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()) * 0.00756) *
             Math.sqrt(ambientTemp__K)) /
           ((exhaustManifoldPressure__psi + ambientPressure__psi) * 6.894);
-
-        // TODO: Fix these
-        // let compShaftPower__W = self.calcCompressorShaftPower__W(
-        //   ambientPressure__Pa, pressureRatio, _convert(compInletAirMassFlow__lb_min, "lb/min", "kg/s"), compressorEfficiency
-        // );
-        // let compShaftPower__W = self.calcTurbineShaftPower__W(
-        //   ambientTemp__K, compOutletTemp__K, _convert(manifoldAirMassFlow__lb_min, "lb/min", "kg/s")
-        // );
-
-        // TODO: Fix these
-        // let exhMassFlow__lb_min = manifoldAirMassFlow__lb_min + fuelMassFlowRate__lb_min;
-        // let turbineShaftPower__W = (
-        //   (compressorEfficiency / 100)
-        //   * SPECIFIC_HEAT_CAPACITY_EXH
-        //   * exhGasTemp_K
-        //   * (1 - Math.pow(1 / turboExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH))
-        //   * _convert(exhMassFlow__lb_min, "lb/min", "kg/s")
-        // ) * 1000;
-        // let turbineShaftPower__W = self.calcTurbineShaftPower__W(
-        //   exhGasTemp_K, exhOutletTemp__K, _convert(exhMassFlow__lb_min, "lb/min", "kg/s")
-        // );
-
-        // TODO: Fix these
-        // let wgPercent = 1 - (compShaftPower__W / turbineShaftPower__W);
-        // let phi = self.calcPhi(
-        //   wgPercent,
-        //   _convert(exhMassFlow__lb_min, "lb/min", "kg/s"),
-        //   exhGasTemp_K,
-        //   turboExpansionRatio,
-        //   _convert(5, "psi", "Pa")
-        // );
 
         pts.push({
           i: i_++,
