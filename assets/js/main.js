@@ -22,19 +22,13 @@ class ViewModel {
   constructor() {
     var self = this;
 
-    self.fuelTypeList = FUEL_TYPES;
-
-    self.mapImg = new Image;
-    self.flowImg = new Image;
-
     self.turboList = TURBOS;
     self.turboList.sort((a, b) => {
       if (a.name < b.name) return -1;
       if (a.name > b.name) return 1;
       return 0;
     });
-    self.turbo = ko.observable(self.turboList[0]);
-    self.fuelType = ko.observable(self.fuelTypeList[0])
+    self.fuelTypeList = FUEL_TYPES;
 
     // Engine Specs
     self.engineDisplacementRaw = ko.observable(2.5);
@@ -42,7 +36,9 @@ class ViewModel {
     self.engineDisplacement_L = ko.computed(() => {
       return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
     }); // L
-    self.numberOfTurbos = ko.observable(1); // TODO
+    self.turbo = ko.observable(self.turboList[0]);
+    self.numberOfTurbos = ko.observable(1);
+    self.fuelType = ko.observable(self.fuelTypeList[0])
 
     /// Environment
     self.altitudeRaw = ko.observable(0);
@@ -72,6 +68,9 @@ class ViewModel {
     self.resultFuelFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
 
     // Compressor Chart Data
+
+    self.mapImg = new Image;
+    self.mapImg.src = self.turbo().map_img;
     self.compressorData = ko.observableArray([]);
     self._compChartX = function (pt) {
       switch (self.turbo().map_unit) {
@@ -113,6 +112,8 @@ class ViewModel {
     };
 
     // Exhaust Flow Chart Data
+    self.flowImg = new Image;
+    self.flowImg.src = self.turbo().flow_img;
     self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({x: pt.turbineExpansionRatio, y: pt.phi})));
     self.exhaustFlowChart = {
       type: 'scatter',
