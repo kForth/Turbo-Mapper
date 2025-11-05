@@ -4,17 +4,17 @@ var mapImg = undefined;
 
 var mouseMode = undefined;
 
-$("#selectOrigin").click(() => {
+$("#selectOrigin").on("click", () => {
     mouseMode = "origin";
     $("#map").css('cursor', 'crosshair');
 })
 
-$("#selectMax").click(() => {
+$("#selectMax").on("click", () => {
     mouseMode = "max";
     $("#map").css('cursor', 'crosshair');
 })
 
-$("#map").click((e) => {
+$("#map").on("click", (e) => {
     console.log(e);
     let rect = e.target.getBoundingClientRect();
     let scale = rect.width / mapImg.width;
