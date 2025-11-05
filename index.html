@@ -222,6 +222,34 @@ js:
                                 <td><input class="form-control form-control-sm" data-bind="converted: fuelMassFlowRate__lb_min, from: 'lb/hr', to: $root.resultFuelFlowUnit().value, precision: $root.resultFuelFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
+                            <tr>
+                                <td class="table-title-col">Turbine Shaft Power</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="HP" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: turboShaftPower__hp" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Wastegating Amount</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: wgPercent" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Exhaust Manifold Pressure</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="psi" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: exhaustManifoldPressure__psi" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Turbine Swallowing Parameter</td>
+                                <td class="table-unit-col"></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: phi" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
                         </tbody>
                     </table>
                 </div>
