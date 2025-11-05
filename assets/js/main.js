@@ -101,7 +101,7 @@ class ViewModel {
         maintainAspectRatio: false,
         aspectRatio: () => self.mapImg.width / self.mapImg.height,
         scales: {
-          x: {display: false, startAtZero: true, min: () => self.turbo().map_range[0], max: () => self.turbo().map_range[1]},
+          x: {display: false, min: () => self.turbo().map_range[0], max: () => self.turbo().map_range[1]},
           y: {display: false, min: () => self.turbo().map_range[2], max: () => self.turbo().map_range[3]},
         },
         animation: false,
@@ -129,7 +129,7 @@ class ViewModel {
         maintainAspectRatio: false,
         aspectRatio: () => self.flowImg.width / self.flowImg.height,
         scales: {
-          x: {display: false, startAtZero: true, min: () => self.turbo().flow_range ? self.turbo().flow_range[0] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[1] : 4, title: { display: false, text: 'Turbine Expansion Ratio' } },
+          x: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[0] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[1] : 4, title: { display: false, text: 'Turbine Expansion Ratio' } },
           y: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[2] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[3] : 0.1, title: { display: true, text: 'Phi (Turbine Swallowing)' }},
         },
         plugins: { legend: { display: false } },
