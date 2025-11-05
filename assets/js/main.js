@@ -132,6 +132,9 @@ class ViewModel {
           x: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[0] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[1] : 4, title: { display: false, text: 'Turbine Expansion Ratio' } },
           y: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[2] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[3] : 0.1, title: { display: true, text: 'Phi (Turbine Swallowing)' }},
         },
+        animation: false,
+        animations: {colors: false, x: false},
+        transitions: {active: {animation: {duration: 0}}},
         plugins: { legend: { display: false } },
       },
       plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.flowImg.width ? self.drawMapBg(chart, self.flowImg, self.turbo().flow_range) : undefined}]
@@ -162,7 +165,10 @@ class ViewModel {
           y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.veCurvePts().map(pt => pt.y)) * 1.1), startAtZero: true, title: { display: true, text: 'VE %' }, position: 'right' },
           y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
-        }
+        },
+        animation: false,
+        animations: {colors: false, x: false},
+        transitions: {active: {animation: {duration: 0}}},
       }
     };
 
@@ -187,7 +193,10 @@ class ViewModel {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
           y: { min: 0, startAtZero: true, title: { display: true, text: 'HP' }, position: 'left', max: parseInt(Math.max(...self.compressorData().map(pt => pt.approxPower__hp)) + 50) },
           y2: { min: 0, startAtZero: true, title: { display: true, text: 'ft.lb' }, position: 'right', max: parseInt(Math.max(...self.compressorData().map(pt => pt.approxTorque__ftlb)) + 50) },
-        }
+        },
+        animation: false,
+        animations: {colors: false, x: false},
+        transitions: {active: {animation: {duration: 0}}},
       }
     };
 
