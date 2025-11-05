@@ -1,21 +1,14 @@
-const HEAT_CAPACITY_RATIO_AIR = 1.395;
-const HEAT_CAPACITY_RATIO_EXH = 1.34;
-const SPECIFIC_HEAT_CAPACITY_AIR = 0.7171;  // kJ/kg/K
-const SPECIFIC_HEAT_CAPACITY_EXH = 0.87;  // kJ/kg/K
-const MOLECULAR_WEIGHT_AIR = 28.96; // g/mol
-const MOLECULAR_WEIGHT_FUEL = 105; // g/mol (average for gasoline)
-
-const CP_AIR_85 = 0.242;
-const CP_EX_1000 = 0.274;
-const GAMMA_EX_1000 = 1.34;
-const GAMMA_AIR = 1.395;
+const HEAT_CAPACITY_RATIO_AIR = 1.398; // @ ~200C
+const HEAT_CAPACITY_RATIO_EXH = 1.367; // @ ~750C
+const SPECIFIC_HEAT_CAPACITY_AIR = 0.7178; // @ ~30C kJ/kg/K
+const SPECIFIC_HEAT_CAPACITY_EXH = 0.8716; // @ ~825C kJ/kg/K
 
 const FUEL_TYPES = [
-  { name: "Gasoline", density: 0.726, stoich: 14.7 },
-  { name: "Diesel", density: 1.875, stoich: 14.5 },
-  { name: "E85", density: 0.778, stoich: 9.8 },
-  { name: "E100", density: 0.789, stoich: 9.0 },
-  { name: "M1", density: 0.793, stoich: 6.5 },
+  { name: "Gasoline", density__kg_L: 0.726, stoich: 14.7 },
+  { name: "Diesel", density__kg_L: 1.875, stoich: 14.5 },
+  { name: "E85", density__kg_L: 0.778, stoich: 9.8 },
+  { name: "E100", density__kg_L: 0.789, stoich: 9.0 },
+  { name: "M1", density__kg_L: 0.793, stoich: 6.5 },
 ]
 
 class ViewModel {
@@ -65,7 +58,8 @@ class ViewModel {
     self.resultAirDensityUnit = ko.observable(UNITS.density.find(e => e.default));
     self.resultAirMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
-    self.resultFuelFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
+    self.resultFuelMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
+    self.resultFuelVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
 
     // Compressor Chart Data
 
@@ -288,10 +282,6 @@ class ViewModel {
       ];
     };
 
-    self.calcCfm = function (rpm, ve) {
-      return _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (ve / 100);
-    };
-
     self.calcAirDensity = function (temp, pr) {
       let pd = self.ambientPressure_Pa() * pr; //Dry Air Pressure (Pa)
       let pv = Math.exp(20.386 - (5132 / temp)) * 133.32239; //Water Vapor Pressure (Pa)
@@ -316,7 +306,7 @@ class ViewModel {
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
         let mufflerSystemBackpressure__psi = 1.5; // TODO
 
-        let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency);
+        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100);
         let compOutletPressure__Pa = ambientPressure__Pa + _convert(boostPressure__psi, "psi", "Pa")
         let compPressureRatio = compOutletPressure__Pa / ambientPressure__Pa;
 
@@ -332,36 +322,29 @@ class ViewModel {
         let manifoldAirDensity__lb_cuft = self.calcAirDensity(manifoldAirTemp__K, manifoldPressureRatio);
         let manifoldAirMassFlow__lb_min = airFlow__cfm * manifoldAirDensity__lb_cuft;
 
-        let fuelMassFlowRate__lb_min = manifoldAirMassFlow__lb_min * (pt.afr() / 100);
-        let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density;
+        let fuelMassFlowRate__lb_min = manifoldAirMassFlow__lb_min / pt.afr();
+        let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density__kg_L;
         let approxPower__hp = _convert(manifoldAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
-        let turboShaftPower__hp = (
-          compInletAirMassFlow__lb_min * CP_AIR_85 *
-          (460 + _convert(ambientTemp__K, "K", "degF")) *
-          (Math.pow(compPressureRatio, (GAMMA_AIR - 1) / GAMMA_AIR) - 1)) /
-          (compressorEfficiency / 100) / 42.41;
+        //https://www.grc.nasa.gov/www/k-12/airplane/compth.html
+        let compressorShaftPower__kW =
+          _convert(compInletAirMassFlow__lb_min, "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_AIR *
+          ambientTemp__K *
+          (Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1) /
+          (compressorEfficiency / 100);
 
-        let wgPercent =
-          (turboShaftPower__hp /
-            ((compInletAirMassFlow__lb_min *
-              (1 + 1 / pt.afr()) *
-              (460 + _convert(exhGasTemp_K, "K", "degF")) *
-              (turbineEfficiency / 100) *
-              CP_EX_1000 *
-              (1 - Math.pow(1 / turbineExpansionRatio, (GAMMA_EX_1000 - 1) / GAMMA_EX_1000))) /
-              42.41) -
-            1) *
-          -100;
+        let turbineShaftPower__kW =
+          _convert(compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
+          exhGasTemp_K *
+          (Math.pow(1 / turbineExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH) - 1) *
+          (turbineEfficiency / 100) * -1;
 
-        let ambientPressure__psi = _convert(ambientPressure__Pa, "Pa", "psi");
-        let exhaustManifoldPressure__psi = (mufflerSystemBackpressure__psi + ambientPressure__psi) * turbineExpansionRatio - ambientPressure__psi;
-        let phi =
-          ((1 - wgPercent / 100) *
-            (compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()) * 0.00756) *
-            Math.sqrt(ambientTemp__K)) /
-          ((exhaustManifoldPressure__psi + ambientPressure__psi) * 6.894);
+        let wastegateFlowPercent = (turbineShaftPower__kW - compressorShaftPower__kW) / turbineShaftPower__kW * 100;
+        let exhaustMassFlow__kg_s = _convert(compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
+        let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
+        let exhaustManifoldPressure_Pa = (_convert(mufflerSystemBackpressure__psi, "psi", "Pa") + ambientPressure__Pa) * turbineExpansionRatio;
+        let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
 
         pts.push({
           i: i_++,
@@ -387,9 +370,10 @@ class ViewModel {
           approxPower__hp: approxPower__hp,
           approxTorque__ftlb: approxTorque__ftlb,
 
-          turboShaftPower__hp: turboShaftPower__hp,
-          exhaustManifoldPressure__psi: exhaustManifoldPressure__psi,
-          wgPercent: wgPercent,
+          compressorShaftPower__kW: compressorShaftPower__kW,
+          turbineShaftPower__kW: turbineShaftPower__kW,
+          exhaustManifoldPressure_Pa: exhaustManifoldPressure_Pa,
+          wastegateFlowPercent: wastegateFlowPercent,
           phi: phi,
         });
       }
