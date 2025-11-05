@@ -269,30 +269,6 @@ class ViewModel {
       }
     };
 
-    self.drawCompressorMap = function (map) {
-      let canvas = $("#comp-map")[0];
-      let ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(self.mapImg, 0, 0);
-
-      let pts = self.compressorData();
-
-      if (map.map_unit == 'lb_min') {
-        self.drawLine(canvas, map.map_range, pts, 'red', 'compInletAirMassFlow__lb_min', 'pressure_ratio');
-      }
-      else if (map.map_unit == 'kg_s') {
-        self.drawLine(canvas, map.map_range, pts, 'red', 'compInletAirMassFlow__kg_s', 'pressure_ratio');
-      }
-      else if (map.map_unit == 'cfm') {
-        self.drawLine(canvas, map.map_range, pts, 'red', 'compInletAirFlow__cfm', 'pressure_ratio');
-      }
-      else if (map.map_unit == 'm3_s') {
-        self.drawLine(canvas, map.map_range, pts, 'red', 'compInletAirFlow__m3_s', 'pressure_ratio');
-      }
-
-      self.drawFlowMap(map, pts);
-    };
-
     self.val_to_px = function (c, x, y, range) {
       let minX = range[0];
       let maxX = range[1];
