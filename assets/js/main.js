@@ -384,7 +384,6 @@ class ViewModel {
         let compressorEfficiency = pt.ce();
         let turbineEfficiency = 72; // TODO
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
-        let brakeSpecificFuelConsumption__lb_hphr = 0.5; // TODO
         let mufflerSystemBackpressure__psi = 1.5; // TODO
 
         let airFlow__cfm = self.calcCfm(rpm, volumetricEfficiency);
@@ -408,15 +407,16 @@ class ViewModel {
         let approxPower__hp = _convert(manifoldAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
-        let phi = (
+        let turboShaftPower__hp = (
           compInletAirMassFlow__lb_min * CP_AIR_85 *
           (460 + _convert(ambientTemp__K, "K", "degF")) *
-          Math.pow(compPressureRatio, (GAMMA_AIR - 1) / GAMMA_AIR) - 1) /
+          (Math.pow(compPressureRatio, (GAMMA_AIR - 1) / GAMMA_AIR) - 1)) /
           (compressorEfficiency / 100) / 42.41;
-        var wgPercent =
-          (phi /
+
+        let wgPercent =
+          (turboShaftPower__hp /
             ((compInletAirMassFlow__lb_min *
-              (1 + 1 / brakeSpecificFuelConsumption__lb_hphr) *
+              (1 + 1 / pt.afr()) *
               (460 + _convert(exhGasTemp_K, "K", "degF")) *
               (turbineEfficiency / 100) *
               CP_EX_1000 *
@@ -425,13 +425,13 @@ class ViewModel {
             1) *
           -100;
 
-        // let ambientPressure__psi = _convert(ambientPressure__Pa, "Pa", "psi");
-        // let exhaustManifoldPressure__psi = (mufflerSystemBackpressure__psi + ambientPressure__psi) * pt.ter() - ambientPressure__psi;
-        // let turbineSwallowingParameter =
-        //   ((1 - wgPercent / 100) *
-        //     (actualFlowRate__lb_min_NotCorrected * (1 + 1 / brakeSpecificFuelConsumption__lb_hphr) * 0.00756) *
-        //     Math.sqrt(exhGasTemp_K)) /
-        //   ((exhaustManifoldPressure__psi + ambientPressure_Psi) * 6.894);
+        let ambientPressure__psi = _convert(ambientPressure__Pa, "Pa", "psi");
+        let exhaustManifoldPressure__psi = (mufflerSystemBackpressure__psi + ambientPressure__psi) * turbineExpansionRatio - ambientPressure__psi;
+        let phi =
+          ((1 - wgPercent / 100) *
+            (compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()) * 0.00756) *
+            Math.sqrt(ambientTemp__K)) /
+          ((exhaustManifoldPressure__psi + ambientPressure__psi) * 6.894);
 
         // TODO: Fix these
         // let compShaftPower__W = self.calcCompressorShaftPower__W(
@@ -488,10 +488,10 @@ class ViewModel {
           approxPower__hp: approxPower__hp,
           approxTorque__ftlb: approxTorque__ftlb,
 
+          turboShaftPower__hp: turboShaftPower__hp,
+          exhaustManifoldPressure__psi: exhaustManifoldPressure__psi,
           wgPercent: wgPercent,
           phi: phi,
-          // compressorShaftPower__W: compShaftPower__W,
-          // turbineShaftPower__W: turbineShaftPower__W,
         });
       }
 
