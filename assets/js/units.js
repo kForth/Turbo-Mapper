@@ -63,7 +63,7 @@ const UNITS = {
     { value: "ft^3/min", label: "CFM", precision: 1,default: true },
     { value: "L/h", label: "Lph", precision: 0 },
     { value: "in^3/sec", label: "in³/s", precision: 0,default: true },
-    { value: "cm^3/min", label: "cm/m", precision: 0 },
+    { value: "cm^3/min", label: "cm³/m", precision: 0 },
     { value: "m^3/s", label: "m³/s", precision: 3 },
   ],
 };
