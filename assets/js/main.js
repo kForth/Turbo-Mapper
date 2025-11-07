@@ -121,7 +121,10 @@ class ViewModel {
     // Exhaust Flow Chart Data
     self.flowImg = new Image;
     self.flowImg.src = self.turbo().flow_img;
-    self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({x: pt.turbineExpansionRatio, y: pt.phi})));
+    self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({
+      x: pt.turbineExpansionRatio,
+      y: self.turbo().flow_unit == "phi" ? pt.phi : pt.correctedGasFlow__kg_s
+    })));
     self.exhaustFlowChart = {
       type: 'scatter',
       data: ko.computed(() => {
@@ -300,6 +303,8 @@ class ViewModel {
         let exhaustManifoldPressure_Pa = (exhaustBackpressure__Pa + ambientPressure__Pa) * turbineExpansionRatio;
         let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
 
+        let correctedGasFlow__kg_s = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K / 298.15) * (101325 / exhaustManifoldPressure_Pa);
+
         pts.push({
           i: i_++,
           rpm: rpm,
@@ -330,6 +335,7 @@ class ViewModel {
           compressorShaftPower__kW: compressorShaftPower__kW,
           turbineShaftPower__kW: turbineShaftPower__kW,
           exhaustManifoldPressure_Pa: exhaustManifoldPressure_Pa,
+          correctedGasFlow__kg_s: correctedGasFlow__kg_s,
           wastegateFlowPercent: wastegateFlowPercent,
           phi: phi,
         });

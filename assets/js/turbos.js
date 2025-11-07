@@ -24,13 +24,19 @@ const TURBOS = [
     name: "G25-660 54mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
     map_range: [-9.79150167606058, 75.14207839405213, 0.6226354665507113, 4.0482161502295595],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s"
   },
   {
     name: "G25-550 48mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-550-Comp-Map-kg-sec-scaled.jpg",
     map_range: [-8.192161820480404, 61.5524658511773, 0.5900502573173779, 4.209551591914949],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s"
   },
   {
     name: "GBC22-350 44mm",
@@ -177,7 +183,8 @@ const TURBOS = [
     map_range: [-0.03235955056179775, 0.5186317152387641, 0.7167441198068072, 3.853800478321638],
     map_unit: "kg_s",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "67X80 (EFR 6758)",
@@ -185,7 +192,8 @@ const TURBOS = [
     map_range: [-0.03227895392278954, 0.5173399799579701, 0.7161941083889563, 3.859341838473718],
     map_unit: "kg_s",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "EFR 6258",
@@ -193,7 +201,8 @@ const TURBOS = [
     map_range: [-8.084449021627188, 51.6271872083387, 0.3699091691009666, 4.297655725347485],
     map_unit: "lb_min",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "EFR 6758",
@@ -201,7 +210,8 @@ const TURBOS = [
     map_range: [-9.784615384615384, 61.57538311298077, 0.3505053532013035, 4.307086123759566],
     map_unit: "lb_min",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "EFR 7064",
@@ -209,7 +219,8 @@ const TURBOS = [
     map_range: [-9.048582995951419, 61.37246815299217, 0.1666623608424943, 5.147117016317909],
     map_unit: "lb_min",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "70S75 (EFR 7064)",
@@ -217,7 +228,8 @@ const TURBOS = [
     map_range: [-0.03231920199501247, 0.5179850422771196, 0.5816215721336571, 5.269037829837285],
     map_unit: "kg_s",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "EFR 7163",
@@ -225,7 +237,8 @@ const TURBOS = [
     map_range: [-11.324742268041236, 66.38041073514013, 0.3313268232513433, 4.323614580576012],
     map_unit: "lb_min",
     flow_img: "/Turbo-Mapper/assets/img/flows/bw_flow.png",
-    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983]
+    flow_range: [0.4120267260579066, 4.702895404501322, -0.00974259763201768, 0.09841153345604983],
+    flow_unit: "phi"
   },
   {
     name: "K24",
