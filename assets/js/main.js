@@ -112,7 +112,7 @@ class ViewModel {
         transitions: {active: {animation: {duration: 0}}},
         plugins: { legend: { display: false } },
       },
-      plugins: [{id: 'compressorMapBackground', beforeDraw: (chart) => self.drawMapBg(chart, self.mapImg, self.turbo().map_range)}]
+      plugins: [{id: 'compressorMapBackground', beforeDraw: (chart) => drawMapBg(chart, self.mapImg, self.turbo().map_range)}]
     };
 
     // Exhaust Flow Chart Data
@@ -142,7 +142,7 @@ class ViewModel {
         transitions: {active: {animation: {duration: 0}}},
         plugins: { legend: { display: false } },
       },
-      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.flowImg.width ? self.drawMapBg(chart, self.flowImg, self.turbo().flow_range) : undefined}]
+      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.flowImg.width ? drawMapBg(chart, self.flowImg, self.turbo().flow_range) : undefined}]
     };
 
     // Boost Curve Data
@@ -247,49 +247,6 @@ class ViewModel {
     // Main Update Function
     self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());
-    };
-
-    self.drawMapBg = function (chart, img, bounds) {
-      if (img.src && img.complete) {
-        const ctx = chart.ctx;
-        const boxX = chart.boxes.filter(e => e.id == 'x')[0];
-        const boxY = chart.boxes.filter(e => e.id == 'y')[0];
-        const origin = { x: boxX.left, y: boxY.bottom };
-        const limit = { x: boxX.right, y: boxY.top };
-        const chartVals = {
-          minX: boxX.start,
-          maxX: boxX.end,
-          minY: boxY.start,
-          maxY: boxY.end,
-        };
-
-        const x_scale = (chartVals.maxX - chartVals.minX) / (limit.x - origin.x);
-        const y_scale = (chartVals.maxY - chartVals.minY) / (limit.y - origin.y);
-        const x_min = chartVals.minX - x_scale * origin.x;
-        const x_max = x_scale * chart.width + x_min;
-        const y_min = chartVals.minY - y_scale * origin.y;
-        const y_max = y_scale * chart.height + y_min;
-        const chartRange = [x_min, x_max, y_max, y_min];
-
-        const pt = self.val_to_px(chart, bounds[0], bounds[2], chartRange);
-        const pt2 = self.val_to_px(chart, bounds[1], bounds[3], chartRange);
-        const im_w = pt2[0] - pt[0];
-        const im_h = pt2[1] - pt[1];
-        ctx.drawImage(img, pt[0], chart.height - pt[1] - im_h, im_w, im_h);
-      } else {
-        img.onload = () => chart.draw();
-      }
-    };
-
-    self.val_to_px = function (c, x, y, range) {
-      let minX = range[0];
-      let maxX = range[1];
-      let minY = range[2];
-      let maxY = range[3];
-      return [
-        (x - minX) / (maxX - minX) * c.width,
-        (y - minY) / (maxY - minY) * c.height
-      ];
     };
 
     self.updateCompressorMapPoints = function () {
