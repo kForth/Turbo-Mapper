@@ -227,23 +227,6 @@ class ViewModel {
       self.flowImg.src = self.turbo().flow_img;
     });
 
-    // Boost Curve Table Helpers
-    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie, ce) {
-      let pt = {
-        rpm: ko.observable(rpm),
-        boost: ko.observable(boost),
-        ve: ko.observable(ve),
-        afr: ko.observable(afr),
-        ter: ko.observable(ter),
-        ie: ko.observable(ie),
-        ce: ko.observable(ce)
-      };
-      Object.values(pt).forEach(
-        e => e.subscribe(() => self.updateCompressorMap())
-      );
-      return pt;
-    };
-
     // Main Update Function
     self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());
@@ -347,6 +330,22 @@ class ViewModel {
       return pts;
     };
 
+    // Initialize Boost Curve
+    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie, ce) {
+      let pt = {
+        rpm: ko.observable(rpm),
+        boost: ko.observable(boost),
+        ve: ko.observable(ve),
+        afr: ko.observable(afr),
+        ter: ko.observable(ter),
+        ie: ko.observable(ie),
+        ce: ko.observable(ce)
+      };
+      Object.values(pt).forEach(
+        e => e.subscribe(() => self.updateCompressorMap())
+      );
+      return pt;
+    };
     self.boostCurve([
       self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99, 60),
       self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95, 65),
