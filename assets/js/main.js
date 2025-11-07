@@ -350,9 +350,9 @@ class ViewModel {
       self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99, 60),
       self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95, 65),
       self._newBoostDataPoint(4000, 14, 100, 12.2, 1.72, 95, 70),
-      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.94, 92, 75),
-      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.17, 90, 80),
-      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.40, 90, 75),
+      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.93, 92, 75),
+      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.06, 90, 80),
+      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.26, 90, 75),
     ])
   }
 }
