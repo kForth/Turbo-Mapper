@@ -47,6 +47,15 @@ const UNITS = {
     { value: "degF", label: "°F", precision: 1 },
     { value: "K", label: "°K", precision: 1 },
   ],
+  power: [
+    { value: "W", label: "W", precision: 1 },
+    { value: "kW", label: "kW", precision: 1 },
+    { value: "hp", label: "HP", precision: 1, default: true },
+  ],
+  torque: [
+    { value: "ft*lb", label: "ft-lb", precision: 1, default: true },
+    { value: "N*m", label: "Nm", precision: 1 },
+  ],
   density: [
     { value: "lb/ft^3", label: "lb/cu.ft", precision: 3 },
     { value: "lb/in^3", label: "lb/cu.in", precision: 7 },
