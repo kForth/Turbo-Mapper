@@ -1,7 +1,7 @@
 const HEAT_CAPACITY_RATIO_AIR = 1.398; // @ ~200C
 const HEAT_CAPACITY_RATIO_EXH = 1.367; // @ ~750C
-const SPECIFIC_HEAT_CAPACITY_AIR = 0.7178; // @ ~30C kJ/kg/K
-const SPECIFIC_HEAT_CAPACITY_EXH = 0.8716; // @ ~825C kJ/kg/K
+const SPECIFIC_HEAT_CAPACITY_AIR = 1.006; // Isobaric @ ~30C kJ/kg/K
+const SPECIFIC_HEAT_CAPACITY_EXH = 1.159; // Isobaric @ ~825C kJ/kg/K
 
 const FUEL_TYPES = [
   { name: "Gasoline", density__kg_L: 0.726, stoich: 14.7 },
