@@ -134,10 +134,10 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
-                                <td class="table-title-col">Compressor Efficiency</td>
-                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <td class="table-title-col">Intake Restriction</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputRestrictionPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: boostCurve -->
-                                <td><input class="form-control form-control-sm" data-bind="value: ce" type="number" min="1" max="100" step="0.1" /></td>
+                                <td><input class="form-control form-control-sm" data-bind="value: ir" type="number" min="0" step="0.1" /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
@@ -145,6 +145,34 @@ js:
                                 <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
                                 <!-- ko foreach: boostCurve -->
                                 <td><input class="form-control form-control-sm" data-bind="value: ie" type="number" min="1" max="100" step="0.1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Intercooler Pressure Drop</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputIntercoolerPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ipd" type="number" min="0" step="0.1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Compressor Efficiency</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ce" type="number" min="1" max="100" step="1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Turbine Efficiency</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: te" type="number" min="1" max="100" step="1" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Exhaust Backpressure</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputBackpressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: boostCurve -->
+                                <td><input class="form-control form-control-sm" data-bind="value: ebp" type="number" min="1" max="100" step="0.1" /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
@@ -218,7 +246,7 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
-                                <td class="table-title-col">Air Density</td>
+                                <td class="table-title-col">Manifold Air Density</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirDensityUnit, options: UNITS.density, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
                                 <td><input class="form-control form-control-sm" data-bind="converted: manifoldAirDensity__lb_cuft, from: 'lb/ft^3', to: $root.resultAirDensityUnit().value, precision: $root.resultAirDensityUnit().precision" disabled readonly /></td>

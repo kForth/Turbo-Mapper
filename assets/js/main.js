@@ -61,6 +61,9 @@ class ViewModel {
 
     // Input Table Units
     self.inputBoostPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.inputRestrictionPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.inputIntercoolerPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.inputBackpressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
 
     // Result Table Units
     self.resultPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
@@ -217,6 +220,9 @@ class ViewModel {
       self.ambientTempRaw,
       self.ambientTempUnit,
       self.inputBoostPressureUnit,
+      self.inputRestrictionPressureUnit,
+      self.inputIntercoolerPressureUnit,
+      self.inputBackpressureUnit,
     ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
     self.boostCurve.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
@@ -240,30 +246,32 @@ class ViewModel {
 
       for (let pt of self.boostCurve()) {
         let rpm = pt.rpm();
-        let intakeAirPressure__Pa = ambientPressure__Pa; // - intakeRestriction__Pa // TODO
-        let boostPressure__psi = _convert(pt.boost(), self.inputBoostPressureUnit().value, "psi");
+        let boostPressure__Pa = _convert(pt.boost(), self.inputBoostPressureUnit().value, "Pa");
         let volumetricEfficiency = pt.ve();
         let turbineExpansionRatio = pt.ter();
+        let intakeRestriction__Pa = _convert(pt.ir(), self.inputRestrictionPressureUnit().value, "Pa");
         let intercoolerEfficiency = pt.ie() / 100;
-        let compressorEfficiency = pt.ce();
-        let turbineEfficiency = 72; // TODO
+        let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit().value, "Pa"); // TODO
+        let compressorEfficiency = pt.ce() / 100;
+        let turbineEfficiency = pt.te() / 100;
+        let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit().value, "Pa");
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
-        let mufflerSystemBackpressure__psi = 1.5; // TODO
 
-        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100); // TODO: Intake restriction?
-        let compOutletPressure__Pa = intakeAirPressure__Pa + _convert(boostPressure__psi, "psi", "Pa")
+        let intakeAirPressure__Pa = ambientPressure__Pa - intakeRestriction__Pa;
+        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100);
+        let compOutletPressure__Pa = intakeAirPressure__Pa + boostPressure__Pa;
         let compPressureRatio = compOutletPressure__Pa / intakeAirPressure__Pa;
-        let compOutletTemp__K = (ambientTemp__K * Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - ambientTemp__K) / (compressorEfficiency / 100) + ambientTemp__K;
+        let compOutletTemp__K = (ambientTemp__K * Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - ambientTemp__K) / compressorEfficiency + ambientTemp__K;
 
         let compAirFlow__cfm = airFlow__cfm / self.numberOfTurbos();
         let compAirDensity__lb_cuft = _convert(compOutletPressure__Pa / 287.055 / ambientTemp__K, "kg/m^3", "lb/ft^3");
         let compAirMassFlow__lb_min = compAirFlow__cfm * compAirDensity__lb_cuft;
 
-        let compAirMassFlowCorrected__lb_min = compAirMassFlow__lb_min * Math.sqrt(ambientTemp__K / 298.15) * (intakeAirPressure__Pa / 101325); // TODO: Intake restriction?
+        let compAirMassFlowCorrected__lb_min = compAirMassFlow__lb_min * Math.sqrt(ambientTemp__K / 298.15) * (intakeAirPressure__Pa / 101325);
         let compAirFlowCorrected__cfm = compAirMassFlowCorrected__lb_min / compAirDensity__lb_cuft;
 
         let manifoldAirTemp__K = compOutletTemp__K - (intercoolerEfficiency * (compOutletTemp__K - ambientTemp__K));
-        let manifoldAbosultePressure__Pa = compOutletPressure__Pa - 0; // TODO: Intercooler pressure drop?
+        let manifoldAbosultePressure__Pa = compOutletPressure__Pa - intercoolerPressureDrop__Pa;
         let manifoldPressureRatio = manifoldAbosultePressure__Pa / intakeAirPressure__Pa;
         let manifoldAirDensity__lb_cuft = _convert(manifoldAbosultePressure__Pa / 287.055 / manifoldAirTemp__K, "kg/m^3", "lb/ft^3");
 
@@ -278,26 +286,26 @@ class ViewModel {
           _convert(compAirMassFlow__lb_min, "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_AIR *
           ambientTemp__K *
           (Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1) /
-          (compressorEfficiency / 100);
+          compressorEfficiency;
 
         let turbineShaftPower__kW =
           _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
           exhGasTemp_K *
           (Math.pow(1 / turbineExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH) - 1) *
-          (turbineEfficiency / 100) * -1;
+          turbineEfficiency * -1;
 
         let wastegateFlowPercent = (turbineShaftPower__kW - compressorShaftPower__kW) / turbineShaftPower__kW * 100;
         let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
         let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
-        let exhaustManifoldPressure_Pa = (_convert(mufflerSystemBackpressure__psi, "psi", "Pa") + ambientPressure__Pa) * turbineExpansionRatio;
+        let exhaustManifoldPressure_Pa = (exhaustBackpressure__Pa + ambientPressure__Pa) * turbineExpansionRatio;
         let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
 
         pts.push({
           i: i_++,
           rpm: rpm,
+          turbineExpansionRatio: turbineExpansionRatio,
           compOutletPressure__Pa: compOutletPressure__Pa,
           compPressureRatio: compPressureRatio,
-          turbineExpansionRatio: turbineExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
           airFlow__cfm: airFlow__cfm,
           compAirFlow__cfm: compAirFlow__cfm,
@@ -331,15 +339,19 @@ class ViewModel {
     };
 
     // Initialize Boost Curve
-    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ie, ce) {
+    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ir, ie, ipd, ce, te, ebp) {
       let pt = {
         rpm: ko.observable(rpm),
         boost: ko.observable(boost),
         ve: ko.observable(ve),
         afr: ko.observable(afr),
         ter: ko.observable(ter),
+        ir: ko.observable(ir),
         ie: ko.observable(ie),
-        ce: ko.observable(ce)
+        ipd: ko.observable(ipd),
+        ce: ko.observable(ce),
+        te: ko.observable(te),
+        ebp: ko.observable(ebp),
       };
       Object.values(pt).forEach(
         e => e.subscribe(() => self.updateCompressorMap())
@@ -347,12 +359,12 @@ class ViewModel {
       return pt;
     };
     self.boostCurve([
-      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 99, 60),
-      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 95, 65),
-      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.72, 95, 70),
-      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.93, 92, 75),
-      self._newBoostDataPoint(6000, 16, 105, 12.2, 2.06, 90, 80),
-      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.26, 90, 75),
+      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 0.50, 99, 0.2, 60, 75, 0.5),
+      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 0.52, 95, 0.2, 65, 73, 1.2),
+      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.71, 0.58, 95, 0.3, 70, 72, 2.1),
+      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.87, 0.68, 92, 0.4, 75, 71, 3.3),
+      self._newBoostDataPoint(6000, 16, 105, 12.2, 1.94, 0.82, 90, 0.5, 80, 70, 4.8),
+      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.05, 1.0, 90, 0.6, 75, 70, 6.5),
     ])
   }
 }
