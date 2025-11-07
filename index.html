@@ -158,7 +158,14 @@ js:
                                 <td class="table-title-col">Turbine Expansion Ratio</td>
                                 <td class="table-unit-col"><!-- <input class="form-control" type="text" value="N:1" readonly disabled /> --></td>
                                 <!-- ko foreach: boostCurve -->
-                                <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.05" /></td>
+                                <td><input class="form-control form-control-sm" data-bind="value: ter" type="number" min="1" step="0.01" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Wastegating Amount</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="numeric: wastegateFlowPercent, precision: 1, css: { 'is-invalid': wastegateFlowPercent < 0 }" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                         </tbody>
