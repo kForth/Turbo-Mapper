@@ -60,6 +60,8 @@ class ViewModel {
     self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
     self.resultFuelMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultFuelVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
+    self.resultPowerUnit = ko.observable(UNITS.power.find(e => e.default));
+    self.resultTorqueUnit = ko.observable(UNITS.torque.find(e => e.default));
 
     // Compressor Chart Data
 
@@ -69,11 +71,11 @@ class ViewModel {
     self._compChartX = function (pt) {
       switch (self.turbo().map_unit) {
         case 'lb_min':
-          return pt.compInletAirMassFlow__lb_min;
+          return pt.compAirMassFlowCorrected__lb_min;
         case 'kg_s':
-          return pt.compInletAirMassFlow__kg_s;
+          return pt.compInletAirMassFlowCorrected__kg_s;
         case 'cfm':
-          return pt.compInletAirFlow__cfm;
+          return pt.compAirFlow__cfm;
         case 'm3_s':
           return pt.compInletAirFlow__m3_s;
       }
@@ -139,7 +141,7 @@ class ViewModel {
     self.boostCurve = ko.observableArray([]);
     self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
-    self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.manifoldAirMassFlow__lb_min }; }))
+    self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.compAirMassFlow__lb_min }; }))
     self.boostCurveChart = {
       type: 'scatter',
       data: ko.computed(() => {
@@ -282,13 +284,6 @@ class ViewModel {
       ];
     };
 
-    self.calcAirDensity = function (temp, pr) {
-      let pd = self.ambientPressure_Pa() * pr; //Dry Air Pressure (Pa)
-      let pv = Math.exp(20.386 - (5132 / temp)) * 133.32239; //Water Vapor Pressure (Pa)
-      let density = (pd / (287.058 * temp)) + (pv / (461.495 * temp)); //Air Density (kg/m^3)
-      return _convert(density, 'kg/m3', 'lb/cuft'); // Convert to lb/cu.ft
-    };
-
     self.updateCompressorMapPoints = function () {
       var i_ = 0;
       let pts = [];
@@ -297,6 +292,7 @@ class ViewModel {
 
       for (let pt of self.boostCurve()) {
         let rpm = pt.rpm();
+        let intakeAirPressure__Pa = ambientPressure__Pa; // - intakeRestriction__Pa // TODO
         let boostPressure__psi = _convert(pt.boost(), self.inputBoostPressureUnit().value, "psi");
         let volumetricEfficiency = pt.ve();
         let turbineExpansionRatio = pt.ter();
@@ -306,42 +302,43 @@ class ViewModel {
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
         let mufflerSystemBackpressure__psi = 1.5; // TODO
 
-        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100);
-        let compOutletPressure__Pa = ambientPressure__Pa + _convert(boostPressure__psi, "psi", "Pa")
-        let compPressureRatio = compOutletPressure__Pa / ambientPressure__Pa;
+        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100); // TODO: Intake restriction?
+        let compOutletPressure__Pa = intakeAirPressure__Pa + _convert(boostPressure__psi, "psi", "Pa")
+        let compPressureRatio = compOutletPressure__Pa / intakeAirPressure__Pa;
+        let compOutletTemp__K = (ambientTemp__K * Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - ambientTemp__K) / (compressorEfficiency / 100) + ambientTemp__K;
 
-        let compInletAirFlow__cfm = airFlow__cfm / self.numberOfTurbos(); // TODO: Intake restriction?
-        let compInletAirDensity__lb_cuft = self.calcAirDensity(ambientTemp__K, compPressureRatio);
-        let compInletAirMassFlow__lb_min = compInletAirFlow__cfm * compInletAirDensity__lb_cuft;
+        let compAirFlow__cfm = airFlow__cfm / self.numberOfTurbos();
+        let compAirDensity__lb_cuft = _convert(compOutletPressure__Pa / 287.055 / ambientTemp__K, "kg/m^3", "lb/ft^3");
+        let compAirMassFlow__lb_min = compAirFlow__cfm * compAirDensity__lb_cuft;
 
-        let compOutletTemp__K = ambientTemp__K * Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) / (compressorEfficiency / 100);
+        let compAirMassFlowCorrected__lb_min = compAirMassFlow__lb_min * Math.sqrt(ambientTemp__K / 298.15) * (intakeAirPressure__Pa / 101325); // TODO: Intake restriction?
+        let compAirFlowCorrected__cfm = compAirMassFlowCorrected__lb_min / compAirDensity__lb_cuft;
 
         let manifoldAirTemp__K = compOutletTemp__K - (intercoolerEfficiency * (compOutletTemp__K - ambientTemp__K));
         let manifoldAbosultePressure__Pa = compOutletPressure__Pa - 0; // TODO: Intercooler pressure drop?
-        let manifoldPressureRatio = manifoldAbosultePressure__Pa / ambientPressure__Pa;
-        let manifoldAirDensity__lb_cuft = self.calcAirDensity(manifoldAirTemp__K, manifoldPressureRatio);
-        let manifoldAirMassFlow__lb_min = airFlow__cfm * manifoldAirDensity__lb_cuft;
+        let manifoldPressureRatio = manifoldAbosultePressure__Pa / intakeAirPressure__Pa;
+        let manifoldAirDensity__lb_cuft = _convert(manifoldAbosultePressure__Pa / 287.055 / manifoldAirTemp__K, "kg/m^3", "lb/ft^3");
 
-        let fuelMassFlowRate__lb_min = manifoldAirMassFlow__lb_min / pt.afr();
+        let fuelMassFlowRate__lb_min = compAirMassFlow__lb_min / pt.afr();
         let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density__kg_L;
-        let approxPower__hp = _convert(manifoldAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
+        let approxPower__hp = _convert(compAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
         //https://www.grc.nasa.gov/www/k-12/airplane/compth.html
         let compressorShaftPower__kW =
-          _convert(compInletAirMassFlow__lb_min, "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_AIR *
+          _convert(compAirMassFlow__lb_min, "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_AIR *
           ambientTemp__K *
           (Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1) /
           (compressorEfficiency / 100);
 
         let turbineShaftPower__kW =
-          _convert(compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
+          _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
           exhGasTemp_K *
           (Math.pow(1 / turbineExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH) - 1) *
           (turbineEfficiency / 100) * -1;
 
         let wastegateFlowPercent = (turbineShaftPower__kW - compressorShaftPower__kW) / turbineShaftPower__kW * 100;
-        let exhaustMassFlow__kg_s = _convert(compInletAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
+        let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
         let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
         let exhaustManifoldPressure_Pa = (_convert(mufflerSystemBackpressure__psi, "psi", "Pa") + ambientPressure__Pa) * turbineExpansionRatio;
         let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
@@ -354,17 +351,20 @@ class ViewModel {
           turbineExpansionRatio: turbineExpansionRatio,
           exhGasTemp_K: exhGasTemp_K,
           airFlow__cfm: airFlow__cfm,
-          compInletAirFlow__cfm: compInletAirFlow__cfm,
-          compInletAirFlow__m3_s: _convert(compInletAirFlow__cfm, "cuft/min", "m3/s"),
-          compInletAirDensity__lb_cuft: compInletAirDensity__lb_cuft,
-          compInletAirMassFlow__lb_min: compInletAirMassFlow__lb_min,
-          compInletAirMassFlow__kg_s: _convert(compInletAirMassFlow__lb_min, "lb/min", "kg/s"),
+          compAirFlow__cfm: compAirFlow__cfm,
+          compInletAirFlow__m3_s: _convert(compAirFlow__cfm, "cuft/min", "m3/s"),
+          compAirDensity__lb_cuft: compAirDensity__lb_cuft,
+          compAirMassFlow__lb_min: compAirMassFlow__lb_min,
+          compInletAirMassFlow__kg_s: _convert(compAirMassFlow__lb_min, "lb/min", "kg/s"),
+          compAirMassFlowCorrected__lb_min: compAirMassFlowCorrected__lb_min,
+          compInletAirMassFlowCorrected__kg_s: _convert(compAirMassFlowCorrected__lb_min, "lb/min", "kg/s"),
+          compAirFlowCorrected__cfm: compAirFlowCorrected__cfm,
           compOutletTemp__K: compOutletTemp__K,
           manifoldAirTemp__K: manifoldAirTemp__K,
           manifoldAbosultePressure__Pa: manifoldAbosultePressure__Pa,
           manifoldPressureRatio: manifoldPressureRatio,
           manifoldAirDensity__lb_cuft: manifoldAirDensity__lb_cuft,
-          manifoldAirMassFlow__lb_min: manifoldAirMassFlow__lb_min,
+          // manifoldAirMassFlow__lb_min: manifoldAirMassFlow__lb_min,
           fuelMassFlowRate__lb_min: fuelMassFlowRate__lb_min,
           fuelVolFlowRate__L_hr: fuelVolFlowRate__L_hr,
           approxPower__hp: approxPower__hp,

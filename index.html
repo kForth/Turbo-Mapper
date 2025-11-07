@@ -174,6 +174,13 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
+                                <td class="table-title-col">Pressure Ratio</td>
+                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="N:1" readonly disabled /></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="numeric: compPressureRatio, precision: 2" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
                             <tr>
                                 <td class="table-title-col">Outlet Temperature</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirTemperatureUnit, options: UNITS.temperature, optionsText: 'label'"></select></td>
@@ -189,31 +196,31 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
-                                <td class="table-title-col">Air Mass Flow</td>
+                                <td class="table-title-col">Actual Air Mass Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: compInletAirMassFlow__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: compAirMassFlow__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Air Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: compInletAirFlow__cfm, from: 'ft^3/min', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: compAirFlow__cfm, from: 'ft^3/min', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
-                                <td class="table-title-col">Total Air Mass Flow</td>
+                                <td class="table-title-col">Corrected Air Mass Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: manifoldAirMassFlow__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: compAirMassFlowCorrected__lb_min, from: 'lb/min', to: $root.resultAirMassFlowUnit().value, precision: $root.resultAirMassFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
-                                <td class="table-title-col">Total Air Flow</td>
+                                <td class="table-title-col">Corrected Air Flow</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultAirVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="converted: airFlow__cfm, from: 'ft^3/min', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: compAirFlowCorrected__cfm, from: 'ft^3/min', to: $root.resultAirVolFlowUnit().value, precision: $root.resultAirVolFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
@@ -232,30 +239,44 @@ js:
                             </tr>
                             <tr>
                                 <td class="table-title-col">Turbo Shaft Power</td>
-                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="kW" readonly disabled /></td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultPowerUnit, options: UNITS.power, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="value: compressorShaftPower__kW" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: compressorShaftPower__kW, from: 'kW', to: $root.resultPowerUnit().value, precision: $root.resultPowerUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Wastegating Amount</td>
                                 <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="%" readonly disabled /></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="value: wastegateFlowPercent" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="numeric: wastegateFlowPercent, precision: 1" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Exhaust Manifold Pressure</td>
-                                <td class="table-unit-col"><input class="form-control form-control-sm" type="text" value="Pa" readonly disabled /></td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultPressureUnit, options: UNITS.pressure, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="value: exhaustManifoldPressure_Pa" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="converted: exhaustManifoldPressure_Pa, from: 'Pa', to: $root.resultPressureUnit().value, precision: $root.resultPressureUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
                                 <td class="table-title-col">Turbine Swallowing Parameter</td>
                                 <td class="table-unit-col"></td>
                                 <!-- ko foreach: compressorData -->
-                                <td><input class="form-control form-control-sm" data-bind="value: phi" disabled readonly /></td>
+                                <td><input class="form-control form-control-sm" data-bind="numeric: phi, precision: 3" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Estimated Power</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultPowerUnit, options: UNITS.power, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: approxPower__hp, from: 'hp', to: $root.resultPowerUnit().value, precision: $root.resultPowerUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Estimated Torque</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultTorqueUnit, options: UNITS.torque, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: approxTorque__ftlb, from: 'ft*lb', to: $root.resultTorqueUnit().value, precision: $root.resultTorqueUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                         </tbody>
