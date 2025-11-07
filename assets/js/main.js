@@ -23,14 +23,17 @@ class ViewModel {
     });
     self.fuelTypeList = FUEL_TYPES;
 
+    // Turbo Selection
+    self.turbo = ko.observable(self.turboList[0]);
+    self.numberOfTurbos = ko.observable(1);
+
     // Engine Specs
     self.engineDisplacementRaw = ko.observable(2.5);
     self.engineDisplacementUnit = ko.observable("L");
     self.engineDisplacement_L = ko.computed(() => {
       return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
     }); // L
-    self.turbo = ko.observable(self.turboList[0]);
-    self.numberOfTurbos = ko.observable(1);
+    self.numberOfCylinders = ko.observable(5);
     self.fuelType = ko.observable(self.fuelTypeList[0])
 
     /// Environment
@@ -49,6 +52,13 @@ class ViewModel {
     });
     self.ambientPressureDisplayUnit = ko.observable(UNITS.pressure.find(e => e.default));
 
+    // Result Data
+    self.compressorData = ko.observableArray([]);
+    self.minInjectorSize = ko.computed(() => {
+      let minFlow = Math.max(...self.compressorData().map(pt => pt.injectorVolFlowRate__L_hr)) / 0.8;
+      return Math.ceil(_convert(minFlow, "L/hr", "cm^3/min") / 50) * 50
+    });
+
     // Input Table Units
     self.inputBoostPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
 
@@ -64,10 +74,8 @@ class ViewModel {
     self.resultTorqueUnit = ko.observable(UNITS.torque.find(e => e.default));
 
     // Compressor Chart Data
-
     self.mapImg = new Image;
     self.mapImg.src = self.turbo().map_img;
-    self.compressorData = ko.observableArray([]);
     self._compChartX = function (pt) {
       switch (self.turbo().map_unit) {
         case 'lb_min':
@@ -321,6 +329,7 @@ class ViewModel {
 
         let fuelMassFlowRate__lb_min = compAirMassFlow__lb_min / pt.afr();
         let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density__kg_L;
+        let injectorVolFlowRate__L_hr = fuelVolFlowRate__L_hr / self.numberOfCylinders();
         let approxPower__hp = _convert(compAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
@@ -364,9 +373,9 @@ class ViewModel {
           manifoldAbosultePressure__Pa: manifoldAbosultePressure__Pa,
           manifoldPressureRatio: manifoldPressureRatio,
           manifoldAirDensity__lb_cuft: manifoldAirDensity__lb_cuft,
-          // manifoldAirMassFlow__lb_min: manifoldAirMassFlow__lb_min,
           fuelMassFlowRate__lb_min: fuelMassFlowRate__lb_min,
           fuelVolFlowRate__L_hr: fuelVolFlowRate__L_hr,
+          injectorVolFlowRate__L_hr: injectorVolFlowRate__L_hr,
           approxPower__hp: approxPower__hp,
           approxTorque__ftlb: approxTorque__ftlb,
 

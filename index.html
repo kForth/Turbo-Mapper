@@ -60,16 +60,38 @@ js:
                             </span>
                         </div>
                         <div class="col-3">
-                            <label for="engDispl"># Turbos:</label>
-                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
+                            <label for="mapSelect">Fuel:</label>
+                            <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
                         </div>
                         <div class="col-3">
+                            <label for="mapSelect"># Cylinders:</label>
+                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
+                        </div>
+                        <div class="col-3">
+                            <label for="mapSelect">Min. Injector Size:</label>
+                            <span class="input-group input-group-sm">
+                                <input class="form-control form-control-sm" type="number" data-bind="value: minInjectorSize" readonly disabled>
+                                <input class="form-control form-control-sm" type="text" value="cc/min" readonly disabled />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-2 pb-2 border-bottom">
+                <a class="h4 text-decoration-none clickable" data-bs-toggle="collapse" data-bs-target="#eng-collapse">
+                    Turbocharger
+                    <i class="caret bi bi-chevron-up fs-5"></i>
+                </a>
+                <div class="mb-2 pb-1 collapse show" id="eng-collapse">
+                    <div class="row">
+                        <div class="col-6">
                             <label for="mapSelect">Turbo:</label>
                             <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
                         </div>
                         <div class="col-3">
-                            <label for="mapSelect">Fuel:</label>
-                            <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
+                            <label for="engDispl"># Turbos:</label>
+                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
                         </div>
                     </div>
                 </div>
@@ -235,6 +257,13 @@ js:
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultFuelVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
                                 <td><input class="form-control form-control-sm" data-bind="converted: fuelVolFlowRate__L_hr, from: 'L/hr', to: $root.resultFuelVolFlowUnit().value, precision: $root.resultFuelVolFlowUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <td class="table-title-col">Injector Volume Flow</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultFuelVolFlowUnit, options: UNITS.volumetricFlow, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: injectorVolFlowRate__L_hr, from: 'L/hr', to: $root.resultFuelVolFlowUnit().value, precision: $root.resultFuelVolFlowUnit().precision" disabled readonly /></td>
                                 <!-- /ko -->
                             </tr>
                             <tr>
