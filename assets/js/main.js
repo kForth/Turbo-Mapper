@@ -211,37 +211,14 @@ class ViewModel {
       }
     };
 
-    // Subscriptions
-    [
-      self.engineDisplacementRaw,
-      self.engineDisplacementUnit,
-      self.numberOfTurbos,
-      self.turbo,
-      self.fuelType,
-      self.altitudeRaw,
-      self.altitudeUnit,
-      self.ambientTempRaw,
-      self.ambientTempUnit,
-      self.inputBoostPressureUnit,
-      self.inputRestrictionPressureUnit,
-      self.inputIntercoolerPressureUnit,
-      self.inputBackpressureUnit,
-    ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
-    self.boostCurve.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
-    ko.utils.arrayForEach(self.boostCurve(), (item) => {
-      [item.rpm, item.boost, item.ve, item.afr, item.ter].forEach(e => e.subscribe(() => self.updateCompressorMap()));
-    });
-    self.turbo.subscribe(() => {
-      self.mapImg.src = self.turbo().map_img;
-      self.flowImg.src = self.turbo().flow_img;
-    });
-
     // Main Update Function
     self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());
     };
 
     self.updateCompressorMapPoints = function () {
+      self.updateUrlParams();
+
       var i_ = 0;
       let pts = [];
       let ambientTemp__K = self.ambientTemp_K();
@@ -344,7 +321,7 @@ class ViewModel {
       return pts;
     };
 
-    // Initialize Boost Curve
+    // Boost Curve Helper
     self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ir, ie, ipd, ce, te, ebp) {
       let pt = {
         rpm: ko.observable(rpm),
@@ -359,11 +336,87 @@ class ViewModel {
         te: ko.observable(te),
         ebp: ko.observable(ebp),
       };
-      Object.values(pt).forEach(
-        e => e.subscribe(() => self.updateCompressorMap())
-      );
       return pt;
     };
+
+    // URL Parameters
+    self.updateUrlParams = function () {
+      let params = new URLSearchParams();
+      params.set("tn", self.turbo().name);
+      params.set("nt", self.numberOfTurbos());
+      params.set("ed", self.engineDisplacementRaw());
+      params.set("edu", self.engineDisplacementUnit());
+      params.set("nc", self.numberOfCylinders());
+      params.set("ft", self.fuelType().name);
+      params.set("alt", self.altitudeRaw());
+      params.set("altu", self.altitudeUnit());
+      params.set("at", self.ambientTempRaw());
+      params.set("atu", self.ambientTempUnit());
+      params.set("rpm", self.boostCurve().map(pt => pt.rpm()).join(" "));
+      params.set("bp", self.boostCurve().map(pt => pt.boost()).join(" "));
+      params.set("ve", self.boostCurve().map(pt => pt.ve()).join(" "));
+      params.set("afr", self.boostCurve().map(pt => pt.afr()).join(" "));
+      params.set("ter", self.boostCurve().map(pt => pt.ter()).join(" "));
+      params.set("ir", self.boostCurve().map(pt => pt.ir()).join(" "));
+      params.set("ie", self.boostCurve().map(pt => pt.ie()).join(" "));
+      params.set("ipd", self.boostCurve().map(pt => pt.ipd()).join(" "));
+      params.set("ce", self.boostCurve().map(pt => pt.ce()).join(" "));
+      params.set("te", self.boostCurve().map(pt => pt.te()).join(" "));
+      params.set("ebp", self.boostCurve().map(pt => pt.ebp()).join(" "));
+      history.replaceState(null, "", "?" + params.toString());
+    };
+
+    self.loadFromUrlParams = function () {
+      let params = new URLSearchParams(window.location.search);
+      if (params.has("tn")) {
+        let turboName = params.get("tn");
+        let turbo = self.turboList.find(t => t.name == turboName);
+        if (turbo) self.turbo(turbo);
+      }
+      if (params.has("nt")) self.numberOfTurbos(parseInt(params.get("nt")));
+      if (params.has("ed")) self.engineDisplacementRaw(parseFloat(params.get("ed")));
+      if (params.has("edu")) self.engineDisplacementUnit(params.get("edu"));
+      if (params.has("nc")) self.numberOfCylinders(parseInt(params.get("nc")));
+      if (params.has("ft")) {
+        let ftName = params.get("ft");
+        let ft = self.fuelTypeList.find(f => f.name == ftName);
+        if (ft) self.fuelType(ft);
+      }
+      if (params.has("alt")) self.altitudeRaw(parseFloat(params.get("alt")));
+      if (params.has("altu")) self.altitudeUnit(params.get("altu"));
+      if (params.has("at")) self.ambientTempRaw(parseFloat(params.get("at")));
+      if (params.has("atu")) self.ambientTempUnit(params.get("atu"));
+
+      let rpms = params.has("rpm") ? params.get("rpm").split(" ").map(v => parseFloat(v)) : [];
+      let bps = params.has("bp") ? params.get("bp").split(" ").map(v => parseFloat(v)) : [];
+      let ves = params.has("ve") ? params.get("ve").split(" ").map(v => parseFloat(v)) : [];
+      let afrs = params.has("afr") ? params.get("afr").split(" ").map(v => parseFloat(v)) : [];
+      let ters = params.has("ter") ? params.get("ter").split(" ").map(v => parseFloat(v)) : [];
+      let irs = params.has("ir") ? params.get("ir").split(" ").map(v => parseFloat(v)) : [];
+      let ies = params.has("ie") ? params.get("ie").split(" ").map(v => parseFloat(v)) : [];
+      let ipds = params.has("ipd") ? params.get("ipd").split(" ").map(v => parseFloat(v)) : [];
+      let ces = params.has("ce") ? params.get("ce").split(" ").map(v => parseFloat(v)) : [];
+      let tes = params.has("te") ? params.get("te").split(" ").map(v => parseFloat(v)) : [];
+      let ebps = params.has("ebp") ? params.get("ebp").split(" ").map(v => parseFloat(v)) : [];
+      let newBoostCurve = self.boostCurve();
+      for (let i = 0; i < newBoostCurve.length; i++) {
+        let pt = newBoostCurve[i];
+        if (rpms && rpms[i] !== undefined) pt.rpm(rpms[i]);
+        if (bps && bps[i] !== undefined) pt.boost(bps[i]);
+        if (ves && ves[i] !== undefined) pt.ve(ves[i]);
+        if (afrs && afrs[i] !== undefined) pt.afr(afrs[i]);
+        if (ters && ters[i] !== undefined) pt.ter(ters[i]);
+        if (irs && irs[i] !== undefined) pt.ir(irs[i]);
+        if (ies && ies[i] !== undefined) pt.ie(ies[i]);
+        if (ipds && ipds[i] !== undefined) pt.ipd(ipds[i]);
+        if (ces && ces[i] !== undefined) pt.ce(ces[i]);
+        if (tes && tes[i] !== undefined) pt.te(tes[i]);
+        if (ebps && ebps[i] !== undefined) pt.ebp(ebps[i]);
+      }
+      self.boostCurve(newBoostCurve);
+    };
+
+    // Initialize Boost Curve
     self.boostCurve([
       self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 0.50, 99, 0.2, 60, 75, 0.5),
       self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 0.52, 95, 0.2, 65, 73, 1.2),
@@ -371,7 +424,36 @@ class ViewModel {
       self._newBoostDataPoint(5000, 16, 100, 12.2, 1.87, 0.68, 92, 0.4, 75, 71, 3.3),
       self._newBoostDataPoint(6000, 16, 105, 12.2, 1.94, 0.82, 90, 0.5, 80, 70, 4.8),
       self._newBoostDataPoint(7000, 16, 105, 12.2, 2.05, 1.0, 90, 0.6, 75, 70, 6.5),
-    ])
+    ]);
+    self.loadFromUrlParams();
+
+    // Setup Subscriptions
+    [
+      self.engineDisplacementRaw,
+      self.engineDisplacementUnit,
+      self.numberOfTurbos,
+      self.turbo,
+      self.fuelType,
+      self.altitudeRaw,
+      self.altitudeUnit,
+      self.ambientTempRaw,
+      self.ambientTempUnit,
+      self.inputBoostPressureUnit,
+      self.inputRestrictionPressureUnit,
+      self.inputIntercoolerPressureUnit,
+      self.inputBackpressureUnit,
+    ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
+    self.boostCurve.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
+    ko.utils.arrayForEach(self.boostCurve(), (item) => {
+      Object.values(item).forEach(e => e.subscribe(() => self.updateCompressorMap()));
+    });
+    self.turbo.subscribe(() => {
+      self.mapImg.src = self.turbo().map_img;
+      self.flowImg.src = self.turbo().flow_img;
+    });
+
+    // Initial Calculation
+    self.updateCompressorMap();
   }
 }
 
