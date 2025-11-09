@@ -21,6 +21,13 @@ js:
                 <div class="mb-2 pb-1 collapse show" id="env-collapse">
                     <div class="row">
                         <div class="col-4">
+                            <label for="ambient-temp">Ambient Temperature:</label>
+                            <span class="input-group input-group-sm" id="ambient-temp">
+                                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
+                                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
+                            </span>
+                        </div>
+                        <div class="col-4">
                             <label for="altitude">Altitude:</label>
                             <span class="input-group input-group-sm" id="altitude">
                                 <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
@@ -32,13 +39,6 @@ js:
                             <span class="input-group input-group-sm" id="ambient-pressue">
                                 <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
-                            </span>
-                        </div>
-                        <div class="col-4">
-                            <label for="ambient-temp">Ambient Temperature:</label>
-                            <span class="input-group input-group-sm" id="ambient-temp">
-                                <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
-                                <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                     </div>
