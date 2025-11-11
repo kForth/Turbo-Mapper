@@ -1,156 +1,1130 @@
 const TURBOS = [
+  // Template
+  // {
+  //   name: "",
+  //   description: "",
+  //   map_img: "",
+  //   map_range: [],
+  //   map_unit: "lb_min",
+  //   flow_img: "",
+  //   flow_range: [],
+  //   flow_unit: "kg_s",
+  //   product_url: ""
+  // },
+
   // Garrett Maps
   // https://www.garrettmotion.com/racing-and-performance/performance-turbos/
   {
-    name: "G30-900 62mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-900-35-900-Comp-Map-kg-sec-scaled.jpg",
-    map_range: [-14.122340425531913, 95.9202137399227, 0.5991849881090541, 4.044098655732842],
-    map_unit: "lb_min",
-    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G35-scaled.jpg",
-    flow_range: [0.5406562054208274, 4.574893009985734, 0.036530127672146924, 0.32283200183546684],
-    flow_unit: "kg_s"
-  },
-  {
-    name: "G30-770 58mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-770-Comp-Map-kg-sec-scaled.jpg",
-    map_range: [-12.397350993377481, 85.02958143625827, 0.602697841112418, 4.049774038095766],
-    map_unit: "lb_min",
-    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
-    flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
-    flow_unit: "kg_s"
-  },
-  // Bad img link on garrett website
-  // {
-  //   name: "G30-660 54mm",
-  //   map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
-  //   map_range: [-9.671052631578949, 75.01666741622124, 0.6258296729123445, 4.045014087489065],
-  //   map_unit: "lb_min",
-    // flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
-    // flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
-    // flow_unit: "kg_s"
-  // },
-  {
-    name: "G25-660 54mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
-    map_range: [-9.79150167606058, 75.14207839405213, 0.6226354665507113, 4.0482161502295595],
+    name: "G-Series II G25-585 48mm",
+    description: "Horsepower: 300 - 585 | Displacement: 1.4L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/03/G-Series-II-Compressor-Map-G25-585-1-scaled.jpg",
+    map_range: [],
     map_unit: "lb_min",
     flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
     flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
-    flow_unit: "kg_s"
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g25-585-48mm/"
+  },
+  {
+    name: "G-Series II G25-700 54mm",
+    description: "Horsepower: 350 - 700 | Displacement: 1.4L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/03/Garrett_Performanmce_G25-700_Compressor_Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g25-700-54mm/"
+  },
+  {
+    name: " G-Series II G30-725 54mm ",
+    description: "Horsepower: 350 - 725 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/03/Garrett_Performanmce_G30-725_Compressor_Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g30-725-54mm/"
+  },
+  {
+    name: "G-Series II G30-825 58mm",
+    description: "Horsepower: 475 - 825 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/03/G-Series-II-Compressor-Map-G30-825-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g30-825-58mm/"
+  },
+  {
+    name: "G-Series II G35-990 62mm",
+    description: "Horsepower: 550 - 990 | Displacement: 2.0L - 5.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/03/G-Series-II-Compressor-Map-G35-990-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g35-990-62mm/"
+  },
+  {
+    name: "G-Series II G40-1000 62mm",
+    description: "Horsepower: 500 - 1000 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G40-1000-G-Series-II-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G40-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g40-1000-62mm/"
+  },
+  {
+    name: "G-Series II G40-1250 71mm",
+    description: "Horsepower: 500 - 1250 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G40-1250-G-Series-II-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G40-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g40-1250-71mm/"
+  },
+  {
+    name: "G-Series II G42-1325C Compact 73mm",
+    description: "Horsepower: 475 - 1325 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G42-1325C-G-Series-II-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g42-1325c-compact-73mm/"
+  },
+  {
+    name: "G-Series II G42-1325 73mm",
+    description: "Horsepower: 475 - 1325 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G42-1325-G-Series-II-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g42-1325-73mm/"
+  },
+  {
+    name: "G-Series II G42-1585 79mm",
+    description: "Horsepower: 475 - 1585 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G42-1585-G-Series-II-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g42-1585-79mm/"
+  },
+  {
+    name: "G-Series II G45-1610 79mm",
+    description: "Horsepower: 750 - 1610 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/07/G45-1610-G-Series-II-Compressor-Map-1-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/Turbine-Flow-Maps-G45-T4-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-ii-g45-1610-79mm/"
+  },
+  {
+    name: "GXR40-64",
+    description: "Horsepower: 500 - 1150 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/GXR40-64-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/Garrett_Performance_Turbine_Flow_GXR40-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr40-64-64-9mm/"
+  },
+  {
+    name: "GXR42-68",
+    description: "Horsepower: 650 - 1400 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/GXR42-68-comp-map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/Turbine-Flow-Maps-G-XRace-42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr42-68-68-9mm/"
+  },
+  {
+    name: "GXR42-72",
+    description: "Horsepower: 700 - 1450 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/GXR42-72-comp-map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/Turbine-Flow-Maps-G-XRace-42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr42-72-72-9mm/"
+  },
+  {
+    name: "GXR45-67",
+    description: "Horsepower: 725 - 1475 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/GXR45-67-comp-map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/Turbine-Flow-Maps-G-XRace-GXR45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr45-67-67-9mm/"
+  },
+  {
+    name: "GXR45-73",
+    description: "Horsepower: 750 - 1550 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/GXR45-73.9-comp-map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2024/10/Turbine-Flow-Maps-G-XRace-GXR45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr45-73-73-9mm/"
+  },
+  {
+    name: "GXR55-88 .25\" Map Groove 106MM Turbine Wheel",
+    description: "Horsepower: 1000 - 2350 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/GXR55-88-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/Turbine-Flow-Maps-GXR55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr55-88-0-25-map-groove-106mm-turbine/"
+  },
+  {
+    name: "GXR55-88 .18\" Map Groove 106MM Turbine Wheel",
+    description: "Horsepower: 1000 - 2350 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/GXR55-88-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/Turbine-Flow-Maps-GXR55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr55-88-0-18-map-groove-106mm-turbine/"
+  },
+  {
+    name: "GXR55-88 .18\" Map Groove 103MM Turbine Wheel",
+    description: "Horsepower: 1000 - 2350 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/GXR55-88-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/Turbine-Flow-Maps-GXR55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr55-88-0-18-map-groove-103mm-turbine/"
+  },
+  {
+    name: "GXR55-88 .25\" Map Groove 103MM Turbine Wheel",
+    description: "Horsepower: 1000 - 2350 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/GXR55-88-Compressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2025/01/Turbine-Flow-Maps-GXR55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-xrace-gxr55-88-0-25-map-groove-103mm-turbine/"
   },
   {
     name: "G25-550 48mm",
+    description: "Horsepower: 300 - 550 | Displacement: 1.4L - 3.0L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-550-Comp-Map-kg-sec-scaled.jpg",
     map_range: [-8.192161820480404, 61.5524658511773, 0.5900502573173779, 4.209551591914949],
     map_unit: "lb_min",
     flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
     flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
-    flow_unit: "kg_s"
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g25-550/"
   },
   {
-    name: "GBC22-350 44mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-22-Comp-scaled.jpg",
-    map_range: [-8.237704918032787, 48.28688574618981, 0.509899084810979, 4.0563735461609625],
-    map_unit: "lb_min"
+    name: "G25-660 54mm",
+    description: "Horsepower: 350 - 660 | Displacement: 1.4L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [-9.79150167606058, 75.14207839405213, 0.6226354665507113, 4.0482161502295595],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G25-2-scaled.jpg",
+    flow_range: [0.6340425531914894, 4.072340425531915, -0.03950506036931818, 0.25890403053977273],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g25-660/"
   },
   {
-    name: "GBC20-300 39mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-20-Comp-scaled.jpg",
-    map_range: [-7.312414733969986, 42.863120043912005, 0.5035405629694207, 4.040121867317016],
-    map_unit: "lb_min"
+    name: "G-Series G30-660 54mm",
+    description: "Horsepower: 350 - 660 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [-9.79150167606058, 75.14207839405213, 0.6226354665507113, 4.0482161502295595],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
+    flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g30-660/"
+  },
+  {
+    name: "G-Series G30-770 58mm",
+    description: "Horsepower: 475 - 770 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-770-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [-12.397350993377481, 85.02958143625827, 0.602697841112418, 4.049774038095766],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
+    flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g30-770/"
+  },
+  {
+    name: "G-Series G30-900 62mm",
+    description: "Horsepower: 550 - 900 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-900-35-900-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [-14.122340425531913, 95.9202137399227, 0.5991849881090541, 4.044098655732842],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
+    flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g30-900/"
+  },
+  {
+    name: "G-Series G35-900 62mm",
+    description: "Horsepower: 550 - 900 | Displacement: 2.0L - 5.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2019/11/G30-900-35-900-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G35-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g35-900/"
+  },
+  {
+    name: "G-Series G35-1050 68mm",
+    description: "Horsepower: 700 - 1050 | Displacement: 2.0L - 5.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/35-1050-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G35-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g35-1050/"
+  },
+  {
+    name: "G40-900 62MM",
+    description: "Horsepower: 500 - 900 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G40-900-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G40-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g40-900-62mm/"
+  },
+  {
+    name: "G40-1150 71MM",
+    description: "Horsepower: 500 - 1150 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G40-1150-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G40-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g40-1150-71mm/"
+  },
+  {
+    name: "G42-1200 COMPACT",
+    description: "Horsepower: 475 - 1200 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G42-1200C-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g42-1200-compact/"
+  },
+  {
+    name: "G42-1200 73MM",
+    description: "Horsepower: 475 - 1200 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G42-1200-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g42-1200/"
+  },
+  {
+    name: "G42-1450 79MM",
+    description: "Horsepower: 525 - 1450 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G42-1450C-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g42-1450/"
+  },
+  {
+    name: "G45-1125 67MM",
+    description: "Horsepower: 600 - 1125 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G45-1125-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g45-1125/"
+  },
+  {
+    name: "G45-1350 72MM",
+    description: "Horsepower: 650 - 1350 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G45-1350-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g45-1350/"
+  },
+  {
+    name: "G45-1475 79MM",
+    description: "Horsepower: 750 - 1475 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2024/12/G45-1475-Comp-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g45-1475-79mm/"
+  },
+  {
+    name: "G45-1500 76MM",
+    description: "Horsepower: 750 - 1500 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G45-1500-Comp-Map-kg-sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g45-1500/"
+  },
+  {
+    name: "G45-1600 80MM",
+    description: "Horsepower: 750 - 1600 | Displacement: 2.0L - 8.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/G45-1600-Comp-Map-lbsmin-kgsec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G45-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g45-1600-80mm/"
+  },
+  {
+    name: "G47-1550 76MM",
+    description: "Horsepower: 825 - 1550 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g47-1550-76mm/"
+  },
+  {
+    name: "G47-1650 80|109MM",
+    description: "Horsepower: 825 - 1650 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g47-1650-80109mm/"
+  },
+  {
+    name: "G47-1650 80|120MM",
+    description: "Horsepower: 825 - 1650 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/GTX4720R-Comp-Map-Kg-Sec-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g47-1650-80mm/"
+  },
+  {
+    name: "G47-1850 88|120MM",
+    description: "Horsepower: 975 - 1850 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/GTX4720R-Comp-Map-Kg-Sec-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g47-1850-88120mm/"
+  },
+  {
+    name: "G50-1700 80|109MM",
+    description: "Horsepower: 875 - 1700 | Displacement: 2.5L - 11.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/G5009R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g50-1700-80109mm/"
+  },
+  {
+    name: "G50-1900 88|120MM",
+    description: "Horsepower: 1000 - 1900 | Displacement: 2.5L - 11.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/G5020R-Comp-Map-Kg-Sec-1-scaled-1.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/11/Turbine-Flow-Maps-G50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g50-1900-88120mm/"
+  },
+  {
+    name: "G-Series G55-1850 85MM",
+    description: "Horsepower: 1000 - 1850 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-85mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-1850-85mm/"
+  },
+  {
+    name: "G-Series G55-1950 88MM",
+    description: "Horsepower: 1000 - 1950 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-88mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-1950-88mm/"
+  },
+  {
+    name: "G-Series G55-2100 91MM",
+    description: "Horsepower: 1000 - 2100 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-91mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-2100-91mm/"
+  },
+  {
+    name: "G-Series G55-2250 94MM",
+    description: "Horsepower: 1000 - 2250 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-94mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-2250-94mm/"
+  },
+  {
+    name: "G-Series G55-2450 98MM",
+    description: "Horsepower: 1000 - 2450 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-98mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-2450-98mm/"
+  },
+  {
+    name: "G-Series G55-2650 102MM",
+    description: "Horsepower: 1000 - 2650 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544_G57_102mm_Comp_Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-2650-102mm/"
+  },
+  {
+    name: "G-Series G55-2900 106MM",
+    description: "Horsepower: 1000 - 2900 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544R-Gen-II-Compressor-106mm-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g55-2900-106mm/"
+  },
+  {
+    name: "G-Series G57-2000 88MM",
+    description: "Horsepower: 1400 - 2000 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-88mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G57-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g57-3000/"
+  },
+  {
+    name: "G-Series G57-2350 94MM",
+    description: "Horsepower: 1400 - 2350 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-94mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G57-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g57-3000-94mm/"
+  },
+  {
+    name: "G-Series G57-2550 98MM",
+    description: "Horsepower: 1400 - 2550 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-98mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G57-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g57-3000-98mm/"
+  },
+  {
+    name: "G-Series G57-2750 102MM",
+    description: "Horsepower: 1400 - 2750 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544_G57_102mm_Comp_Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G57-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g57-2750-102mm/"
+  },
+  {
+    name: "G-Series G57-3000 106MM",
+    description: "Horsepower: 1400 - 3000 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544R-Gen-II-Compressor-106mm-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G57-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/g-series-g57-2750-106mm/"
+  },
+  {
+    name: "GBC14-200 34MM",
+    description: "Horsepower: 140 - 200 | Displacement: 0.4L - 1.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-14-Comp-scaled.jpg",
+    map_range: [-5.506849315068493, 32.27945238923373, 0.6700490860556394, 3.042021857390435],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-14-Turbine-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/garrett-boost-club-line-gbc14-200/"
   },
   {
     name: "GBC17-250 36mm",
+    description: "Horsepower: 150 - 250 | Displacement: 0.6L - 1.5L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-17-Comp-scaled.jpg",
     map_range: [-5.48431105047749, 32.147340032934004, 0.5072014292091169, 4.049864117107564],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-17-Turbine-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/garrett-boost-club-line-gbc17-250/"
   },
   {
-    name: "GBC14-200 34mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-14-Comp-scaled.jpg",
-    map_range: [-5.506849315068493, 32.27945238923373, 0.6700490860556394, 3.042021857390435],
-    map_unit: "lb_min"
+    name: "GBC20-300",
+    description: "Horsepower: 170 - 300 | Displacement: 0.8L - 2.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-20-Comp-scaled.jpg",
+    map_range: [-7.312414733969986, 42.863120043912005, 0.5035405629694207, 4.040121867317016],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-20-Turbine-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/garrett-boost-club-line-gbc20-300/"
+  },
+  {
+    name: "GBC22-350 44MM",
+    description: "Horsepower: 200 - 350 | Displacement: 1.0L - 2.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-22-Comp-scaled.jpg",
+    map_range: [-8.237704918032787, 48.28688574618981, 0.509899084810979, 4.0563735461609625],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2021/07/GBC-22-Turbine-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/garrett-boost-club-line-gbc22-350/"
+  },
+  {
+    name: "GBC35-700 58MM",
+    description: "Horsepower: 400 - 700 | Displacement: 2.0L - 5.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC35-700-Conmpressor-Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC35-700-Turbine-Map--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gbc35-700-58mm/"
   },
   {
     name: "GBC37-900 67MM",
+    description: "Horsepower: 450 - 900 | Displacement: 2.0L - 5.5L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC37-900-Comp-Map--scaled.jpg",
     map_range: [-14.522292993630574, 102.60721972034236, 0.46240372213539027, 5.278839962321797],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2023/02/GBC37-900-Turbine-Map--scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gbc37-900-67mm/"
   },
   {
-    name: "GT2860RS",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT2860RS-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-6.059050064184852, 41.15361616455392, 0.7687842572321657, 3.02021443185782],
-    map_unit: "lb_min"
+    name: "GTX2860R GEN II",
+    description: "Horsepower: 200 - 475 | Displacement: 1.4L - 2.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX2860R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX28-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx2860r-gen-ii/"
   },
   {
-    name: "GT2871R",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2871R.jpg",
-    map_range: [-6.908866995073891, 55.37027969736184, 0.7289330863097323, 3.7412939595974035],
-    map_unit: "lb_min"
+    name: "GTX2867R GEN II",
+    description: "Horsepower: 275 - 550 | Displacement: 1.4L - 2.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX2867R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX28-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx2867r-gen-ii/"
   },
   {
-    name: "GT3071R",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3071-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-9.08366533864542, 64.18061153822212, 0.6309051037330906, 4.060763351029614],
-    map_unit: "lb_min"
+    name: "GTX3071R GEN II 54mm",
+    description: "Horsepower: 340 - 675 | Displacement: 1.8L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3071R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX30-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx3071r-gen-ii/"
   },
   {
-    name: "GT3076R",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3076-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-9.02127659574468, 69.23120636635637, 0.5701308747165776, 4.578305018395442],
-    map_unit: "lb_min"
+    name: "GTX3076R GEN II",
+    description: "Horsepower: 400 - 750 | Displacement: 1.8L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3076R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-12.542819499341238, 84.37066401103426, 0.5468347492176978, 4.541684857131669],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX30-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx3076r-gen-ii/"
   },
   {
-    name: "GT3582R",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3582-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-10.760351011115905, 81.53241433941736, 0.5607368265137205, 4.568076108452972],
-    map_unit: "lb_min"
+    name: "GTX3576R GEN II",
+    description: "Horsepower: 400 - 750 | Displacement: 2.0L - 4.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3076R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-12.542819499341238, 84.37066401103426, 0.5468347492176978, 4.541684857131669],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX35-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx3576r-gen-ii/"
+  },
+  {
+    name: "GTX3582R GEN II",
+    description: "Horsepower: 450 - 900 | Displacement: 2.0L - 4.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3582R-G2-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-11.417910447761193, 91.50746359753964, 0.5893899745377033, 4.559493953506346],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX35-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx3582r-gen-ii/"
+  },
+  {
+    name: "GTX3584RS",
+    description: "Horsepower: 550 - 1000 | Displacement: 2.0L - 5.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3584R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-13.83812010443864, 106.19669383873205, 0.6015003620363586, 4.544735278079658],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX3584-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx3584rs/"
+  },
+  {
+    name: "GTX4294R",
+    description: "Horsepower: 475 - 950 | Displacement: 2.0L - 7.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4294R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX42-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4294r/"
+  },
+  {
+    name: "GTX4709R GEN II 76MM",
+    description: "Horsepower: 825 - 1575 | Displacement: 2.0L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4709r-gen-ii/"
+  },
+  {
+    name: "GTX4709R GEN II 80MM",
+    description: "Horsepower: 825 - 1625 | Displacement: 2.0L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4709r-gen-ii-80mm/"
+  },
+  {
+    name: "GTX4720R GEN II 76MM",
+    description: "Horsepower: 1025 - 1850 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4720R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4720r-gen-ii/"
+  },
+  {
+    name: "GTX4720R GEN II 80MM",
+    description: "Horsepower: 1025 - 1900 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4720R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4720r-gen-ii-80mm/"
+  },
+  {
+    name: "GTX4720R GEN II 88MM",
+    description: "Horsepower: 1025 - 1950 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4720R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX47-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx4720r-gen-ii-88mm/"
+  },
+  {
+    name: "GTX5009R GEN II 76MM",
+    description: "Horsepower: 875 - 1700 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5009r-gen-ii/"
+  },
+  {
+    name: "GTX5009R GEN II 80MM",
+    description: "Horsepower: 875 - 1700 | Displacement: 2.5L - 10.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4709R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5009r-gen-ii-80mm/"
+  },
+  {
+    name: "GTX5020R GEN II 76MM",
+    description: "Horsepower: 1075 - 1950 | Displacement: 2.8L - 11.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4720R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5020r-gen-ii/"
+  },
+  {
+    name: "GTX5020R GEN II 80MM",
+    description: "Horsepower: 1075 - 2000 | Displacement: 2.8L - 11.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX4720R-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5020r-gen-ii-80mm/"
+  },
+  {
+    name: "GTX5020R GEN II 88MM",
+    description: "Horsepower: 1075 - 2050 | Displacement: 2.8L - 11.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2021/01/Comp-Map-GTX4020-5020-88mm-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX50-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5020r-gen-ii-88mm/"
+  },
+  {
+    name: "GTX5533R GEN II 85MM",
+    description: "Horsepower: 1000 - 1760 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-85mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5533r-gen-ii/"
+  },
+  {
+    name: "GTX5533R GEN II 88MM",
+    description: "Horsepower: 1000 - 1900 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-88mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5533r-gen-ii-88mm/"
+  },
+  {
+    name: "GTX5533R GEN II 91MM",
+    description: "Horsepower: 1000 - 2100 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-91mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5533r-gen-ii-91mm/"
+  },
+  {
+    name: "GTX5533R GEN II 94MM",
+    description: "Horsepower: 1000 - 2250 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-94mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5533r-gen-ii-94mm/"
+  },
+  {
+    name: "GTX5533R GEN II 98MM",
+    description: "Horsepower: 1000 - 2500 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-98mm-2-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5533r-gen-ii-98mm/"
+  },
+  {
+    name: "GTX5544R GEN II 102MM",
+    description: "Horsepower: 1400 - 2700 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544_G57_102mm_Comp_Map-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5544r-gen-ii/"
+  },
+  {
+    name: "GTX5544R GEN II 106MM",
+    description: "Horsepower: 1400 - 2850 | Displacement: 3.0L - 12.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/11/GTX5544R-Gen-II-Compressor-106mm-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GTX55-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtx5544r-gen-ii-106mm/"
   },
   {
     name: "GTW3476R 58MM",
+    description: "Horsepower: 450 - 700 | Displacement: 2.0L - 4.5L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3476-Comp-Map-Kg-Sec-scaled.jpg",
     map_range: [-11.640211640211641, 85.65784918568121, 0.5799949454073912, 4.570699297735423],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GTW3476-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtw3476r/"
   },
   {
     name: "GTW3684R 62MM",
+    description: "Horsepower: 425 - 750 | Displacement: 2.0L - 5.3L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3684-Comp-Map-Kg-Sec-scaled.jpg",
     map_range: [-12.126315468236019, 84.65965030067845, 0.5789842506195657, 4.544993650427752],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-FLow-GTW3684-1-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtw3684r/"
   },
   {
-    name: "GTW3884R 62mm",
+    name: "GTW3884R",
+    description: "Horsepower: 450 - 950 | Displacement: 2.0L - 6.0L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3884-Comp-Map-Kg-Sec-scaled.jpg",
     map_range: [-13.561103409755875, 107.26237553961175, 0.640885483715242, 4.0354207830478455],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GTW3884-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtw3884r/"
   },
   {
-    name: "GTX3076R GEN II 58mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3076R-G2-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-12.542819499341238, 84.37066401103426, 0.5468347492176978, 4.541684857131669],
-    map_unit: "lb_min"
-  },
-  /// Bad img links on website
-  // {
-  //   name: "GTX3576R GEN II 58mm",
-  //   map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3076R-G2-Comp-Map-Kg-Sec-scaled.jpg",
-  //   map_range: [-12.542819499341238, 84.37066401103426, 0.5462691189776211, 4.54610550512389],
-  //   map_unit: "lb_min"
-  // },
-  {
-    name: "GTX3582R GEN II 66mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3582R-G2-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-11.417910447761193, 91.50746359753964, 0.5893899745377033, 4.559493953506346],
-    map_unit: "lb_min"
+    name: "GTW3884R 64mm",
+    description: "Horsepower: 450 - 950 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3884-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-13.561103409755875, 107.26237553961175, 0.640885483715242, 4.0354207830478455],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GTW3884-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtw3884r-64mm/"
   },
   {
-    name: "GTX3584RS 67mm",
-    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTX3584R-Comp-Map-Kg-Sec-scaled.jpg",
-    map_range: [-13.83812010443864, 106.19669383873205, 0.6015003620363586, 4.544735278079658],
-    map_unit: "lb_min"
+    name: "GTW3884R 67mm",
+    description: "Horsepower: 450 - 950 | Displacement: 2.0L - 6.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GTW3884-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-13.561103409755875, 107.26237553961175, 0.640885483715242, 4.0354207830478455],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GTW3884-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gtw3884r-67mm/"
   },
-
+  {
+    name: "GT2052",
+    description: "Horsepower: 140 - 230 | Displacement: 1.4L - 2.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2052R-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT2052-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2052/"
+  },
+  {
+    name: "GT2252",
+    description: "Horsepower: 150 - 260 | Displacement: 1.7L - 2.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2252R-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT2252-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2252/"
+  },
+  {
+    name: "GT2554R",
+    description: "Horsepower: 170 - 270 | Displacement: 1.4L - 2.2L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2554R-scaled.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT2554-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2554r/"
+  },
+  {
+    name: "GT2560R",
+    description: "Horsepower: 170 - 270 | Displacement: 1.4L - 2.2L",
+    map_img: "",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT2554-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2560r/"
+  },
+  {
+    name: "GT2860R",
+    description: "Horsepower: 250 - 360 | Displacement: 1.8L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2860R.jpg",
+    map_range: [],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT28-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2860r/"
+  },
+  {
+    name: "GT2860RS",
+    description: "Horsepower: 250 - 360 | Displacement: 1.8L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT2860RS-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-6.059050064184852, 41.15361616455392, 0.7687842572321657, 3.02021443185782],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GT28-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2860rs/"
+  },
+  {
+    name: "GT2871R",
+    description: "Horsepower: 280 - 475 | Displacement: 1.8L - 3.0L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GT-2871R.jpg",
+    map_range: [-6.908866995073891, 55.37027969736184, 0.7289330863097323, 3.7412939595974035],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Turbine-Flow-GT28-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt2871r/"
+  },
+  {
+    name: "GT3071R",
+    description: "Horsepower: 280 - 480 | Displacement: 2.5L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3071-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-9.08366533864542, 64.18061153822212, 0.6309051037330906, 4.060763351029614],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GT30-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt3071r/"
+  },
+  {
+    name: "GT3076R",
+    description: "Horsepower: 310 - 525 | Displacement: 2.0L - 3.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3076-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-9.02127659574468, 69.23120636635637, 0.5701308747165776, 4.578305018395442],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GT30-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt3076r/"
+  },
+  {
+    name: "GT3582R",
+    description: "Horsepower: 400 - 675 | Displacement: 2.0L - 4.5L",
+    map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/GT3582-Comp-Map-Kg-Sec-scaled.jpg",
+    map_range: [-10.760351011115905, 81.53241433941736, 0.5607368265137205, 4.568076108452972],
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-GT35-scaled.jpg",
+    flow_range: [],
+    flow_unit: "kg_s",
+    product_url: "https://www.garrettmotion.com/racing-and-performance/performance-catalog/turbo/gt3582r/"
+  },
 
   // MHI Maps
   {
@@ -185,7 +1159,7 @@ const TURBOS = [
   },
 
   // BorgWarner Maps
-  // https://www.borgwarner.com/matchbot/#version=1.4&displacement=1.5&CID=91.53&altitude=500&baro=14.502&aat=75&fueltype=1&turboconfig=1&compressor=62k80&pt1_rpm=2000&pt1_ve=85&pt1_boost=5&pt1_ie=99&pt1_filres=0.08&pt1_ipd=0.2&pt1_mbp=0.5&pt1_ce=66&pt1_te=75&pt1_egt=1550&pt1_ter=1.21&pt1_pw=14.54&pt1_bsfc=0.43&pt1_afr=11.5&pt1_wts=300&pt1_wd=83&pt1_wd2=74&pt1_wrsin=69033&pt2_rpm=3000&pt2_ve=95&pt2_boost=10&pt2_ie=95&pt2_filres=0.1&pt2_ipd=0.2&pt2_mbp=1&pt2_ce=70&pt2_te=73&pt2_egt=1600&pt2_ter=1.38&pt2_pw=13.14&pt2_bsfc=0.45&pt2_afr=11.5&pt2_wts=320&pt2_wd=83&pt2_wd2=74&pt2_wrsin=73635&pt3_rpm=4000&pt3_ve=100&pt3_boost=15&pt3_ie=95&pt3_filres=0.12&pt3_ipd=0.3&pt3_mbp=1.3&pt3_ce=74&pt3_te=72&pt3_egt=1650&pt3_ter=1.61&pt3_pw=22.16&pt3_bsfc=0.48&pt3_afr=11.5&pt3_wts=340&pt3_wd=83&pt3_wd2=74&pt3_wrsin=78238&pt4_rpm=5000&pt4_ve=100&pt4_boost=17&pt4_ie=92&pt4_filres=0.15&pt4_ipd=0.4&pt4_mbp=1.5&pt4_ce=76&pt4_te=71&pt4_egt=1650&pt4_ter=1.81&pt4_pw=30.66&pt4_bsfc=0.5&pt4_afr=11.5&pt4_wts=368&pt4_wd=83&pt4_wd2=74&pt4_wrsin=84681&pt5_rpm=6000&pt5_ve=105&pt5_boost=17&pt5_ie=90&pt5_filres=0.18&pt5_ipd=0.5&pt5_mbp=1.8&pt5_ce=72&pt5_te=70&pt5_egt=1650&pt5_ter=1.98&pt5_pw=34.33&pt5_bsfc=0.52&pt5_afr=11.5&pt5_wts=400&pt5_wd=83&pt5_wd2=74&pt5_wrsin=92044&pt6_rpm=7000&pt6_ve=105&pt6_boost=17&pt6_ie=90&pt6_filres=0.2&pt6_ipd=0.6&pt6_mbp=2&pt6_ce=66&pt6_te=70&pt6_egt=1650&pt6_ter=2.18&pt6_pw=36.06&pt6_bsfc=0.55&pt6_afr=11.5&pt6_wts=400&pt6_wd=83&pt6_wd2=74&pt6_wrsin=92044&
+  // https://www.borgwarner.com/matchbot/
   {
     name: "62K80 (EFR 6258)",
     map_img: "https://www.borgwarner.com/matchbot/images/62k80.jpg",
