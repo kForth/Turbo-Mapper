@@ -296,6 +296,7 @@ class ViewModel {
           compAirMassFlowCorrected__lb_min: compAirMassFlowCorrected__lb_min,
           compInletAirMassFlowCorrected__kg_s: _convert(compAirMassFlowCorrected__lb_min, "lb/min", "kg/s"),
           compAirFlowCorrected__cfm: compAirFlowCorrected__cfm,
+          compAirFlowCorrected__m3_s: _convert(compAirFlowCorrected__cfm, "cuft/min", "m^3/s"),
           compOutletTemp__K: compOutletTemp__K,
           manifoldAirTemp__K: manifoldAirTemp__K,
           manifoldAbosultePressure__Pa: manifoldAbosultePressure__Pa,
