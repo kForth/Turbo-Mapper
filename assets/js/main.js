@@ -78,7 +78,6 @@ class ViewModel {
 
     // Compressor Chart Data
     self.mapImg = new Image;
-    self.mapImg.src = self.turbo().map_img;
     self._compChartX = function (pt) {
       switch (self.turbo().map_unit) {
         case 'lb_min':
@@ -120,7 +119,6 @@ class ViewModel {
 
     // Exhaust Flow Chart Data
     self.flowImg = new Image;
-    self.flowImg.src = self.turbo().flow_img;
     self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({
       x: pt.turbineExpansionRatio,
       y: self.turbo().flow_unit == "phi" ? pt.phi : pt.correctedGasFlow__kg_s
@@ -451,6 +449,10 @@ class ViewModel {
       self.mapImg.src = self.turbo().map_img;
       self.flowImg.src = self.turbo().flow_img;
     });
+
+    // Init Map Backgrounds
+    self.mapImg.src = self.turbo().map_img;
+    self.flowImg.src = self.turbo().flow_img;
 
     // Initial Calculation
     self.updateCompressorMap();
