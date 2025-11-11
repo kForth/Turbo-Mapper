@@ -209,7 +209,7 @@ class ViewModel {
       }
     };
 
-    // Main Update Function
+    // Main Update Functions
     self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());
     };
@@ -318,6 +318,11 @@ class ViewModel {
 
       return pts;
     };
+
+    self.updateMapBgs = function () {
+      self.mapImg.src = self.turbo().map_img;
+      self.flowImg.src = self.turbo().flow_img;
+    }
 
     // Boost Curve Helper
     self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ir, ie, ipd, ce, te, ebp) {
@@ -445,16 +450,10 @@ class ViewModel {
     ko.utils.arrayForEach(self.boostCurve(), (item) => {
       Object.values(item).forEach(e => e.subscribe(() => self.updateCompressorMap()));
     });
-    self.turbo.subscribe(() => {
-      self.mapImg.src = self.turbo().map_img;
-      self.flowImg.src = self.turbo().flow_img;
-    });
-
-    // Init Map Backgrounds
-    self.mapImg.src = self.turbo().map_img;
-    self.flowImg.src = self.turbo().flow_img;
+    self.turbo.subscribe(self.updateMapBgs);
 
     // Initial Calculation
+    self.updateMapBgs();
     self.updateCompressorMap();
   }
 }
