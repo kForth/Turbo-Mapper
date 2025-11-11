@@ -1,5 +1,4 @@
 var canvas = undefined;
-var ctx = undefined;
 var mapImg = undefined;
 
 var mouseMode = undefined;
@@ -54,6 +53,7 @@ function loadImg(url){
 }
 
 function redraw(){
+    let ctx = canvas.getContext("2d");
     let scale = canvas.width / mapImg.width;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -77,16 +77,20 @@ function redraw(){
 
     let output = `{
   name: "${$("#name").val()}",
+  description: "",
   map_img: "${mapImg.src.replace('http://localhost:4000/', '/')}",
   map_range: [${x_min}, ${x_max}, ${y_min}, ${y_max}],
-  map_unit: "${$("#x_units").val()}"
+  map_unit: "${$("#x_units").val()}",
+  flow_img: "",
+  flow_range: [],
+  flow_unit: "",
+  product_url: ""
 },`;
     $("#output").text(output);
 }
 
 $(window).on('load', (e) => {
     canvas = $("#map")[0];
-    ctx = canvas.getContext("2d");
     mapImg = new Image;
     loadImg("maps/td04h-16t.gif");
 });
