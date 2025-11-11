@@ -5,20 +5,29 @@ const TURBOS = [
     name: "G30-900 62mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-900-35-900-Comp-Map-kg-sec-scaled.jpg",
     map_range: [-14.122340425531913, 95.9202137399227, 0.5991849881090541, 4.044098655732842],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G35-scaled.jpg",
+    flow_range: [0.5406562054208274, 4.574893009985734, 0.036530127672146924, 0.32283200183546684],
+    flow_unit: "kg_s"
   },
   {
     name: "G30-770 58mm",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G30-770-Comp-Map-kg-sec-scaled.jpg",
     map_range: [-12.397350993377481, 85.02958143625827, 0.602697841112418, 4.049774038095766],
-    map_unit: "lb_min"
+    map_unit: "lb_min",
+    flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
+    flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
+    flow_unit: "kg_s"
   },
   // Bad img link on garrett website
   // {
   //   name: "G30-660 54mm",
   //   map_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/G25-660-Comp-Map-kg-sec-scaled.jpg",
   //   map_range: [-9.671052631578949, 75.01666741622124, 0.6258296729123445, 4.045014087489065],
-  //   map_unit: "lb_min"
+  //   map_unit: "lb_min",
+    // flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G30-scaled.jpg",
+    // flow_range: [0.6022808267997148, 4.057733428367783, -0.0031753609490043425, 0.2831265132143156],
+    // flow_unit: "kg_s"
   // },
   {
     name: "G25-660 54mm",
