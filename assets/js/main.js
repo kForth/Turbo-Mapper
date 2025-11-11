@@ -121,7 +121,9 @@ class ViewModel {
     self.flowImg = new Image;
     self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({
       x: pt.turbineExpansionRatio,
-      y: self.turbo().flow_unit == "kg_s" ? pt.correctedGasFlow__kg_s : pt.phi
+      y: self.turbo().flow_unit == "phi" ? pt.phi :
+         self.turbo().flow_unit == "kg_s" ? pt.correctedGasFlow__kg_s :
+         pt.phi
     })));
     self.exhaustFlowChart = {
       type: 'scatter',
