@@ -93,13 +93,9 @@ class ViewModel {
     self.compressorChartPts = ko.computed(() => _foreach(self.compressorData(), pt => ({ x: self._compChartX(pt), y: pt.compPressureRatio })));
     self.compressorChart = {
       type: 'scatter',
-      data: ko.computed(() => {
-        return {
-          datasets: [
-            { label: "Compressor Curve", showLine: true, data: self.compressorChartPts() },
-          ]
-        };
-      }),
+      data: ko.computed(() => ({
+        datasets: [{ label: "Compressor Curve", showLine: true, data: self.compressorChartPts() }]
+      })),
       options: {
         observeChanges: true,
         responsive: true,
@@ -127,13 +123,9 @@ class ViewModel {
     })));
     self.exhaustFlowChart = {
       type: 'scatter',
-      data: ko.computed(() => {
-        return {
-          datasets: [
-            { label: "Phi", showLine: true, data: self.exhaustFlowPts() },
-          ]
-        };
-      }),
+      data: ko.computed(() => ({
+        datasets: [{ label: "Phi", showLine: true, data: self.exhaustFlowPts() }]
+      })),
       options: {
         observeChanges: true,
         responsive: true,
@@ -158,15 +150,13 @@ class ViewModel {
     self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.compAirMassFlow__lb_min }; }))
     self.boostCurveChart = {
       type: 'scatter',
-      data: ko.computed(() => {
-        return {
-          datasets: [
-            { label: "Boost", data: self.boostCurvePts(), showLine: true },
-            { label: "VE", data: self.veCurvePts(), showLine: true, yAxisID: "y2" },
-            { label: "Air Flow", data: self.airMassFlowPts(), showLine: true, yAxisID: "y3" },
-          ]
-        };
-      }),
+      data: ko.computed(() => ({
+        datasets: [
+          { label: "Boost", data: self.boostCurvePts(), showLine: true },
+          { label: "VE", data: self.veCurvePts(), showLine: true, yAxisID: "y2" },
+          { label: "Air Flow", data: self.airMassFlowPts(), showLine: true, yAxisID: "y3" },
+        ]
+      })),
       options: {
         observeChanges: true,
         responsive: true,
@@ -188,14 +178,12 @@ class ViewModel {
     self.powerCurvePtsTorque = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.approxTorque__ftlb }; }));
     self.powerCurveChart = {
       type: 'scatter',
-      data: ko.computed(() => {
-        return {
-          datasets: [
-            { label: "Power", data: self.powerCurvePtsPower(), showLine: true, yAxisID: "y" },
-            { label: "Torque", data: self.powerCurvePtsTorque(), showLine: true, yAxisID: "y2" },
-          ]
-        };
-      }),
+      data: ko.computed(() => ({
+        datasets: [
+          { label: "Power", data: self.powerCurvePtsPower(), showLine: true, yAxisID: "y" },
+          { label: "Torque", data: self.powerCurvePtsTorque(), showLine: true, yAxisID: "y2" },
+        ]
+      })),
       options: {
         observeChanges: true,
         responsive: true,
