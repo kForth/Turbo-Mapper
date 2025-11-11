@@ -15,12 +15,7 @@ class ViewModel {
   constructor() {
     var self = this;
 
-    self.turboList = TURBOS;
-    self.turboList.sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
-      return 0;
-    });
+    self.turboList = TURBOS.filter(e => e.map_range.length);
     self.fuelTypeList = FUEL_TYPES;
 
     // Turbo Selection
