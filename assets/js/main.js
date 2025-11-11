@@ -85,9 +85,9 @@ class ViewModel {
         case 'kg_s':
           return pt.compInletAirMassFlowCorrected__kg_s;
         case 'cfm':
-          return pt.compAirFlow__cfm;
+          return pt.compAirFlowCorrected__cfm;
         case 'm3_s':
-          return pt.compInletAirFlow__m3_s;
+          return pt.compAirFlowCorrected__m3_s;
       }
     };
     self.compressorChartPts = ko.computed(() => _foreach(self.compressorData(), pt => ({ x: self._compChartX(pt), y: pt.compPressureRatio })));
