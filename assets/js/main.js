@@ -103,7 +103,7 @@ class ViewModel {
       options: {
         observeChanges: true,
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         aspectRatio: () => self.mapImg.width / self.mapImg.height,
         scales: {
           x: {display: false, min: () => self.turbo().map_range[0], max: () => self.turbo().map_range[1]},
@@ -121,7 +121,7 @@ class ViewModel {
     self.flowImg = new Image;
     self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({
       x: pt.turbineExpansionRatio,
-      y: self.turbo().flow_unit == "phi" ? pt.phi : pt.correctedGasFlow__kg_s
+      y: self.turbo().flow_unit == "kg_s" ? pt.correctedGasFlow__kg_s : pt.phi
     })));
     self.exhaustFlowChart = {
       type: 'scatter',
@@ -135,18 +135,18 @@ class ViewModel {
       options: {
         observeChanges: true,
         responsive: true,
-        maintainAspectRatio: false,
-        aspectRatio: () => self.flowImg.width / self.flowImg.height,
+        maintainAspectRatio: true,
+        aspectRatio: () => self.flowImg.src ? (self.flowImg.width / self.flowImg.height) : undefined,
         scales: {
-          x: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[0] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[1] : 4, title: { display: false, text: 'Turbine Expansion Ratio' } },
-          y: {display: false, min: () => self.turbo().flow_range ? self.turbo().flow_range[2] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[3] : 0.1, title: { display: true, text: 'Phi (Turbine Swallowing)' }},
+          x: {display: () => !self.turbo().flow_range, min: () => self.turbo().flow_range ? self.turbo().flow_range[0] : 1, max: () => self.turbo().flow_range ? self.turbo().flow_range[1] : Math.max(...self.compressorData().map(pt => pt.turbineExpansionRatio)) * 1.1, title: { display: true, text: 'Turbine Expansion Ratio' } },
+          y: {display: () => !self.turbo().flow_range, min: () => self.turbo().flow_range ? self.turbo().flow_range[2] : 0, max: () => self.turbo().flow_range ? self.turbo().flow_range[3] : Math.max(...self.compressorData().map(pt => pt.phi)) * 1.1, title: { display: true, text: 'Phi (Turbine Swallowing)' }},
         },
         animation: false,
         animations: {colors: false, x: false},
         transitions: {active: {animation: {duration: 0}}},
-        plugins: { legend: { display: false } },
+        plugins: { legend: { display: () => !!self.turbo().flow_range } },
       },
-      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => self.flowImg.width ? drawMapBg(chart, self.flowImg, self.turbo().flow_range) : undefined}]
+      plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => drawMapBg(chart, self.flowImg, self.turbo().flow_range)}]
     };
 
     // Boost Curve Data

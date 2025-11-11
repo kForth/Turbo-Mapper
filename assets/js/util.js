@@ -47,6 +47,7 @@ function _foreach(arr, fn) {
 }
 
 function drawMapBg(chart, img, bounds) {
+  if (!bounds) return;
   if (img.src && img.complete) {
     const ctx = chart.ctx;
     const boxX = chart.boxes.filter(e => e.id == 'x')[0];
