@@ -12,50 +12,82 @@ js:
 ---
 <div class="container-fluid p-2 m-0 row h100">
     <div class="graph-col p-2 col-xxl-8 col-xl-12">
-        <canvas id="map" style="width: 100%; background-size: cover">
+        <canvas id="map" style="width: 100%; background-size: cover; cursor: crosshair" data-bind="click: handleCanvasClick, style: { 'background-image': 'url(' + imgUrl() + ')' }"></canvas>
     </div>
     <div class="config-col p-2 col-xxl-4 col-xl-12">
-        <button id="load_map_img">Load New Map Image</button>
-        <br><br>
+        <h3 class="mt-2">Selected Turbo</h3>
+        <div class="row">
+            <div class="col-6">
+                <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
+            </div>
+            <div class="col-6">
+                <select class="form-select form-select-sm" data-bind="value: mapType, options: ['Compressor Map', 'Exhaust Flow']"></select>
+            </div>
+        </div>
+        <h3 class="mt-2">Image URL</h3>
+        <div class="row">
+            <div class="col-12">
+                <input class="form-control" type="text" data-bind="value: imgUrl" />
+            </div>
+        </div>
 
-        <h3>Turbo</h3>
-        <label for="name">Name:</label>
-        <input class="form-control" type="text" id="name" />
+        <h3 class="mt-2">Bounding Box</h3>
+        <div class="row">
+            <div class="col-6">
+                <label>X Min:</label>
+                <input class="form-control" type="number" data-bind="value: minPosX" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label>X Max:</label>
+                <input class="form-control" type="number" data-bind="value: maxPosX" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label>Y Min:</label>
+                <input class="form-control" type="number" data-bind="value: minPosY" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label>Y Max:</label>
+                <input class="form-control" type="number" data-bind="value: maxPosY" step="1" min="0" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-4">
+                <button class="btn btn-primary w-100" data-bind="click: () => mouseMode('origin')">Select Origin</button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary w-100" data-bind="click: () => mouseMode('max')">Select Max</button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-danger w-100" data-bind="click: clearPos">Clear</button>
+            </div>
+        </div>
         <br>
 
-        <h3>Bounding Box</h3>
-        <label for="bbox_xmin">X Min:</label>
-        <input class="form-control" type="number" id="bbox_xmin" value="0" step="1" min="0" />
-        <label for="bbox_xmax">X Max:</label>
-        <input class="form-control" type="number" id="bbox_xmax" value="100" step="1" min="0" />
-        <label for="bbox_ymin">Y Min:</label>
-        <input class="form-control" type="number" id="bbox_ymin" value="0" step="1" min="0" />
-        <label for="bbox_ymax">Y Max:</label>
-        <input class="form-control" type="number" id="bbox_ymax" value="100" step="1" min="0" />
-        <button class="btn btn-primary" id="selectOrigin">Select Origin</button>
-        <button class="btn btn-primary" id="selectMax">Select Max</button>
-        <br>
+        <h3 class="mt-2">Values</h3>
+        <div class="row">
+            <div class="col-6">
+                <label >X Min:</label>
+                <input class="form-control" type="number" data-bind="value: minValX" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label >X Max:</label>
+                <input class="form-control" type="number" data-bind="value: maxValX" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label >Y Min:</label>
+                <input class="form-control" type="number" data-bind="value: minValY" step="1" min="0" />
+            </div>
+            <div class="col-6">
+                <label >Y Max:</label>
+                <input class="form-control" type="number" data-bind="value: maxValY" step="1" min="0" />
+            </div>
+        </div>
 
-        <h3>Values</h3>
-        <label for="x_units">X Axis Type:</label>
-        <select class="form-control" id="x_units">
-            <option value="cfm">CFM</option>
-            <option value="lb_min">lb/min</option>
-            <option value="m3_s">m3/s</option>
-            <option value="kg_s">kg/s</option>
-        </select>
-        <br>
-        <label for="val_xmin">X Min:</label>
-        <input class="form-control" type="number" id="val_xmin" value="0" step="1" min="0" />
-        <label for="val_xmax">X Max:</label>
-        <input class="form-control" type="number" id="val_xmax" value="300" step="1" min="0" />
-        <label for="val_ymin">Y Min:</label>
-        <input class="form-control" type="number" id="val_ymin" value="1" step="1" min="0" />
-        <label for="val_ymax">Y Max:</label>
-        <input class="form-control" type="number" id="val_ymax" value="3" step="1" min="0" />
-        <br><br>
-
-        <h3>Output</h3>
-        <textarea id="output" rows=5 readonly></textarea>
+        <h3 class="mt-2">Map Range</h3>
+        <div class="row">
+            <div class="col-12">
+                <input class="form-control w-100" data-bind="value: mapRange" readonly />
+            </div>
+        </div>
     </div>
 </div>
