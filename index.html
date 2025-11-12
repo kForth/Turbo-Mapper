@@ -21,21 +21,21 @@ js:
                 <div class="mb-2 pb-1 collapse show" id="env-collapse">
                     <div class="row">
                         <div class="col-4">
-                            <label for="ambient-temp">Ambient Temperature:</label>
+                            <labeltemp">Ambient Temperature:</label>
                             <span class="input-group input-group-sm" id="ambient-temp">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                         <div class="col-4">
-                            <label for="altitude">Altitude:</label>
+                            <label>Altitude:</label>
                             <span class="input-group input-group-sm" id="altitude">
                                 <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
                                 <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                         <div class="col-4">
-                            <label for="ambient-pressue">Ambient Pressure:</label>
+                            <labelpressue">Ambient Pressure:</label>
                             <span class="input-group input-group-sm" id="ambient-pressue">
                                 <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
@@ -53,22 +53,22 @@ js:
                 <div class="mb-2 pb-1 collapse show" id="eng-collapse">
                     <div class="row">
                         <div class="col-3">
-                            <label for="engDispl">Displacement:</label>
+                            <label>Displacement:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
                                 <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                         <div class="col-3">
-                            <label for="mapSelect">Fuel:</label>
+                            <label>Fuel:</label>
                             <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
                         </div>
                         <div class="col-3">
-                            <label for="mapSelect"># Cylinders:</label>
+                            <label># Cylinders:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
                         </div>
                         <div class="col-3">
-                            <label for="mapSelect">Min. Injector Size:</label>
+                            <label>Min. Injector Size:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: minInjectorSize" readonly disabled>
                                 <input class="form-control form-control-sm" type="text" value="cc/min" readonly disabled />
@@ -86,11 +86,11 @@ js:
                 <div class="mb-2 pb-1 collapse show" id="turbo-collapse">
                     <div class="row">
                         <div class="col-6">
-                            <label for="mapSelect">Turbo:</label>
+                            <label>Turbo:</label>
                             <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
                         </div>
                         <div class="col-3">
-                            <label for="engDispl"># Turbos:</label>
+                            <label># Turbos:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
                         </div>
                     </div>
