@@ -491,7 +491,7 @@ const TURBOS = [
     name: "G-Series G55-1850 85MM",
     description: "Horsepower: 1000 - 1850 | Displacement: 3.0L - 12.0L",
     map_img: "https://www.garrettmotion.com/wp-content/uploads/2018/05/Comp-Map-GTX5533-85mm-2-scaled.jpg",
-    map_range: [-25.051546391752577,192.49485291156574,0.40232876236873993,6.059764415349138-25.44891640866873,192.3219889826819,0.39327104191949847,6.059861121522841],
+    map_range: [-25.44891640866873,192.3219889826819,0.39327104191949847,6.059861121522841],
     map_unit: "lb_min",
     flow_img: "https://www.garrettmotion.com/wp-content/uploads/2022/06/Turbine-Flow-Maps-G55--scaled.jpg",
     flow_range: [0.4990291262135923,5.051780093294902,-13.37011414118204,96.14431702176941],
