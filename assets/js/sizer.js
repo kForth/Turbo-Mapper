@@ -52,11 +52,15 @@ class ViewModel {
       let canvas = self.canvas;
       let mapImg = self.mapImg;
 
+      $(canvas).attr("width", parseInt($(canvas).width()));
+      $(canvas).attr("height", parseInt($(canvas).height()));
+
       let ctx = canvas.getContext("2d");
       let scale = canvas.width / mapImg.width;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
       ctx.lineWidth = 1;
+      ctx.strokeStyle = "red";
       ctx.rect(
           self.minPosX() * scale,
           canvas.height - self.maxPosY() * scale,
