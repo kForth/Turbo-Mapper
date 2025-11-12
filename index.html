@@ -94,6 +94,20 @@ js:
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label>Manufacturer:</label>
+                            <input class="form-control form-control-sm" type="text" data-bind="value: turbo().manufacturer" readonly disabled>
+                        </div>
+                        <div class="col-6">
+                            <label>Description:</label>
+                            <input class="form-control form-control-sm" type="text" data-bind="value: turbo().description" readonly disabled>
+                        </div>
+                        <div class="col-3">
+                            <label>Product Link</label>
+                            <button class="btn btn-primary btn-sm d-inline-block w-100" data-bind="click: () => window.open(turbo().product_url), disable: !turbo().product_url">Open In New Tab</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
