@@ -2,11 +2,15 @@ class ViewModel {
   constructor() {
     var self = this;
 
-    // self.turboList = TURBOS.filter(t => t.map_range.length == 0);
-    self.turboList = TURBOS.filter(t => t.flow_img && t.flow_range.length == 0);
-
     self.canvas = $("#map")[0];
     self.mapImg = new Image;
+
+    self.mapType = ko.observable("Compressor Map")
+    self.turboList = ko.computed(() => TURBOS.filter(t =>
+      (self.mapType() === "Compressor Map") ?
+      (t.map_img && (!t.map_range || !t.map_range.length)) :
+      (t.flow_img && (!t.flow_range || !t.flow_range.length))
+    ));
 
     self.turbo = ko.observable();
     self.turbo.subscribe((t) => {
@@ -15,8 +19,7 @@ class ViewModel {
       else
         self.imgUrl(t.flow_img);
     });
-    self.imgUrl = ko.observable("/Turbo-Mapper/assets/img/maps/td04h-16t.gif");
-    self.mapType = ko.observable("Compressor Map")
+    self.imgUrl = ko.observable();
     self.mouseMode = ko.observable(undefined);
 
     self.minPosX = ko.observable(0);
