@@ -140,15 +140,15 @@ class ViewModel {
     };
 
     // Boost Curve Data
-    self.boostCurve = ko.observableArray([]);
-    self.boostCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
-    self.veCurvePts = ko.computed(() => _foreach(self.boostCurve(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
+    self.inputData = ko.observableArray([]);
+    self.inputDataPts = ko.computed(() => _foreach(self.inputData(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
+    self.veCurvePts = ko.computed(() => _foreach(self.inputData(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
     self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.compAirMassFlow__lb_min }; }))
-    self.boostCurveChart = {
+    self.inputDataChart = {
       type: 'scatter',
       data: ko.computed(() => ({
         datasets: [
-          { label: "Boost", data: self.boostCurvePts(), showLine: true },
+          { label: "Boost", data: self.inputDataPts(), showLine: true },
           { label: "VE", data: self.veCurvePts(), showLine: true, yAxisID: "y2" },
           { label: "Air Flow", data: self.airMassFlowPts(), showLine: true, yAxisID: "y3" },
         ]
@@ -159,7 +159,7 @@ class ViewModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
+          y: { min: 0, max: () => parseInt(Math.max(...self.inputDataPts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.veCurvePts().map(pt => pt.y)) * 1.1), startAtZero: true, title: { display: true, text: 'Volumetric Efficiency [%]' }, position: 'right' },
           y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
         },
@@ -208,7 +208,7 @@ class ViewModel {
       let ambientTemp__K = self.ambientTemp_K();
       let ambientPressure__Pa = self.ambientPressure_Pa();
 
-      for (let pt of self.boostCurve()) {
+      for (let pt of self.inputData()) {
         let rpm = pt.rpm();
         let boostPressure__Pa = _convert(pt.boost(), self.inputBoostPressureUnit().value, "Pa");
         let volumetricEfficiency = pt.ve();
@@ -342,17 +342,17 @@ class ViewModel {
       params.set("altu", self.altitudeUnit());
       params.set("at", self.ambientTempRaw());
       params.set("atu", self.ambientTempUnit());
-      params.set("rpm", self.boostCurve().map(pt => pt.rpm()).join(" "));
-      params.set("bp", self.boostCurve().map(pt => pt.boost()).join(" "));
-      params.set("ve", self.boostCurve().map(pt => pt.ve()).join(" "));
-      params.set("afr", self.boostCurve().map(pt => pt.afr()).join(" "));
-      params.set("ter", self.boostCurve().map(pt => pt.ter()).join(" "));
-      params.set("ir", self.boostCurve().map(pt => pt.ir()).join(" "));
-      params.set("ie", self.boostCurve().map(pt => pt.ie()).join(" "));
-      params.set("ipd", self.boostCurve().map(pt => pt.ipd()).join(" "));
-      params.set("ce", self.boostCurve().map(pt => pt.ce()).join(" "));
-      params.set("te", self.boostCurve().map(pt => pt.te()).join(" "));
-      params.set("ebp", self.boostCurve().map(pt => pt.ebp()).join(" "));
+      params.set("rpm", self.inputData().map(pt => pt.rpm()).join(" "));
+      params.set("bp", self.inputData().map(pt => pt.boost()).join(" "));
+      params.set("ve", self.inputData().map(pt => pt.ve()).join(" "));
+      params.set("afr", self.inputData().map(pt => pt.afr()).join(" "));
+      params.set("ter", self.inputData().map(pt => pt.ter()).join(" "));
+      params.set("ir", self.inputData().map(pt => pt.ir()).join(" "));
+      params.set("ie", self.inputData().map(pt => pt.ie()).join(" "));
+      params.set("ipd", self.inputData().map(pt => pt.ipd()).join(" "));
+      params.set("ce", self.inputData().map(pt => pt.ce()).join(" "));
+      params.set("te", self.inputData().map(pt => pt.te()).join(" "));
+      params.set("ebp", self.inputData().map(pt => pt.ebp()).join(" "));
       history.replaceState(null, "", "?" + params.toString());
     };
 
@@ -388,9 +388,9 @@ class ViewModel {
       let ces = params.has("ce") ? params.get("ce").split(" ").map(v => parseFloat(v)) : [];
       let tes = params.has("te") ? params.get("te").split(" ").map(v => parseFloat(v)) : [];
       let ebps = params.has("ebp") ? params.get("ebp").split(" ").map(v => parseFloat(v)) : [];
-      let newBoostCurve = self.boostCurve();
-      for (let i = 0; i < newBoostCurve.length; i++) {
-        let pt = newBoostCurve[i];
+      let newinputData = self.inputData();
+      for (let i = 0; i < newinputData.length; i++) {
+        let pt = newinputData[i];
         if (rpms && rpms[i] !== undefined) pt.rpm(rpms[i]);
         if (bps && bps[i] !== undefined) pt.boost(bps[i]);
         if (ves && ves[i] !== undefined) pt.ve(ves[i]);
@@ -403,11 +403,11 @@ class ViewModel {
         if (tes && tes[i] !== undefined) pt.te(tes[i]);
         if (ebps && ebps[i] !== undefined) pt.ebp(ebps[i]);
       }
-      self.boostCurve(newBoostCurve);
+      self.inputData(newinputData);
     };
 
     // Initialize Boost Curve
-    self.boostCurve([
+    self.inputData([
       self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 0.50, 99, 0.2, 60, 75, 0.5),
       self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 0.52, 95, 0.2, 65, 73, 1.2),
       self._newBoostDataPoint(4000, 14, 100, 12.2, 1.71, 0.58, 95, 0.3, 70, 72, 2.1),
@@ -433,8 +433,8 @@ class ViewModel {
       self.inputIntercoolerPressureUnit,
       self.inputBackpressureUnit,
     ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
-    self.boostCurve.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
-    ko.utils.arrayForEach(self.boostCurve(), (item) => {
+    self.inputData.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
+    ko.utils.arrayForEach(self.inputData(), (item) => {
       Object.values(item).forEach(e => e.subscribe(() => self.updateCompressorMap()));
     });
     self.turbo.subscribe(self.updateMapBgs);
