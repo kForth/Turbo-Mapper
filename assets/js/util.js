@@ -82,6 +82,15 @@ function val_to_px(c, x, y, range) {
   ];
 };
 
+async function loadImageAsync(imageUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = (error) => reject(error);
+    img.src = imageUrl;
+  });
+}
+
 // Collapse Carets
 $('.collapse').on('show.bs.collapse', function () {
   $(`*[data-bs-target="#${$(this).attr("id")}"] .caret`).removeClass("flip");
