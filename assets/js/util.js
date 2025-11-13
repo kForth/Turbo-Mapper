@@ -75,6 +75,10 @@ function drawMapBg(chart, img, bounds) {
     const im_h = pt2[1] - pt[1];
     ctx.drawImage(img, pt[0], chart.height - pt[1] - im_h, im_w, im_h);
   } else {
+    let canvas = $(chart.canvas);
+    let wd = canvas.parent().width();
+    canvas.attr("width", parseInt(wd))
+            .attr("height", parseInt(wd * (img.height / img.width)));
     img.onload = () => chart.draw();
   }
 };
