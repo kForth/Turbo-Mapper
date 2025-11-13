@@ -1792,11 +1792,54 @@ const TURBOS = [
     flow_unit: "phi",
     product_url: ""
   },
+  // Borgwarner (KKK)
+  {
+    manufacturer: "BorgWarner",
+    name: "K03-1870 EXA",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K03-1870_EXA.png",
+    map_range: [-0.004619940769990129,0.132010524557703,0.943710273230455,2.8129109799713765],
+    map_unit: "m^3/s"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "K04-0025",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K04-0025.jpg",
+    map_range: [-0.008040201005025126,0.2059631408998116,0.7201305912990197,3.0621362207450122],
+    map_unit: "m^3/s"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "K04-2078 EYE",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K04-2078_EYE.png",
+    map_range: [-0.005688073394495413,0.18966360109661695,0.9248401380565069,2.8076093849865646],
+    map_unit: "m^3/s"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "K14-2464",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K14-2464.jpg",
+    map_range: [-0.03834048640915593,0.2662851576470851,0.7368834456777185,2.8673501986844383],
+    map_unit: "m^3/s"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "K16-2467",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K16_2467.gif",
+    map_range: [-0.03798561151079137,0.26839327366232013,0.7311923887671494,2.862169537377774],
+    map_unit: "m^3/s"
+  },
   {
     manufacturer: "BorgWarner",
     name: "K24-2470 GGA",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/k24.jpg",
     map_range: [-0.018788775806060747, 0.25284096564288683, 0.8005406035252226, 2.5907960549088807],
+    map_unit: "m^3/s"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "K26-2672 GGCAA",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/K26-2672_GGCAA.jpg",
+    map_range: [-0.021880341880341884,0.3421082481971154,0.8074068142530786,3.480271425355488],
     map_unit: "m^3/s"
   },
 ];
