@@ -1230,6 +1230,76 @@ const TURBOS = [
   // MHI Maps
   {
     manufacturer: "MHI",
+    name: "TD04-09B",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td04-09b-cfm.gif",
+    map_range: [-59.314434368871645,358.8981398775842,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD04-13G",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td04-13g-cfm.gif",
+    map_range: [-92.07317073170732,557.1137963271723,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD04-15G",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td04-15g-cfm.gif",
+    map_range: [-92.07317073170732,557.1137963271723,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05H-14B",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05h-14b-cfm.gif",
+    map_range: [-116.6023166023166,705.5340741131757,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05H-14G",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05h-14g-cfm.gif",
+    map_range: [-116.6023166023166,705.5340741131757,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05H-16G (Large)",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05h-16glarge-cfm.gif",
+    map_range: [-116.6023166023166,705.5340741131757,0.7594356907572493,3.4564301851606274],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05H-16G (Small)",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05h-16gsmall-cfm.gif",
+    map_range: [-116.6023166023166,705.5340741131757,0.7624148153299148,3.426009997109102],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05H-18G",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05h-18g-cfm.gif",
+    map_range: [-114.23368939030796,707.5284501774881,0.7448699301861703,3.4567414627777464],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD05HR-16G6",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td05hr-16g6-cfm.gif",
+    map_range: [-111.92893401015229,698.7309334846924,0.7526298751230315,3.4623660757991814],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
+    name: "TD06H-20G",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/td06h-20g-cfm.gif",
+    map_range: [-103.97946084724006,716.04618175345,0.756719581547651,3.458412649623738],
+    map_unit: "cuft/min"
+  },
+  {
+    manufacturer: "MHI",
     name: "TD04H-20TK3S",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/mhi/TD04H-20TK3S.avif",
     map_range: [-5.7283625494783, 49.366178550669424, 0.7451761344192123, 3.3918293555138224],
