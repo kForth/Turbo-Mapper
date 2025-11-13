@@ -81,7 +81,7 @@ class ViewModel {
           return pt.compInletAirMassFlowCorrected__kg_s;
         case "cuft/min":
           return pt.compAirFlowCorrected__cfm;
-        case "m3/s":
+        case "m^3/s":
           return pt.compAirFlowCorrected__m3_s;
       }
     };
@@ -275,7 +275,7 @@ class ViewModel {
           exhGasTemp_K: exhGasTemp_K,
           airFlow__cfm: airFlow__cfm,
           compAirFlow__cfm: compAirFlow__cfm,
-          compInletAirFlow__m3_s: _convert(compAirFlow__cfm, "cuft/min", "m3/s"),
+          compInletAirFlow__m3_s: _convert(compAirFlow__cfm, "cuft/min", "m^3/s"),
           compAirDensity__lb_cuft: compAirDensity__lb_cuft,
           compAirMassFlow__lb_min: compAirMassFlow__lb_min,
           compInletAirMassFlow__kg_s: _convert(compAirMassFlow__lb_min, "lb/min", "kg/s"),
