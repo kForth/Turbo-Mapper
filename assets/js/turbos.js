@@ -1794,7 +1794,7 @@ const TURBOS = [
   },
   {
     manufacturer: "BorgWarner",
-    name: "K24",
+    name: "K24-2470 GGA",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/k24.jpg",
     map_range: [-0.018788775806060747, 0.25284096564288683, 0.8005406035252226, 2.5907960549088807],
     map_unit: "m^3/s"
