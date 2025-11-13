@@ -52,20 +52,12 @@ function drawMapBg(chart, img, bounds) {
     const ctx = chart.ctx;
     const boxX = chart.boxes.filter(e => e.id == 'x')[0];
     const boxY = chart.boxes.filter(e => e.id == 'y')[0];
-    const origin = { x: boxX.left, y: boxY.bottom };
-    const limit = { x: boxX.right, y: boxY.top };
-    const chartVals = {
-      minX: boxX.start,
-      maxX: boxX.end,
-      minY: boxY.start,
-      maxY: boxY.end,
-    };
 
-    const x_scale = (chartVals.maxX - chartVals.minX) / (limit.x - origin.x);
-    const y_scale = (chartVals.maxY - chartVals.minY) / (limit.y - origin.y);
-    const x_min = chartVals.minX - x_scale * origin.x;
+    const x_scale = (boxX.end - boxX.start) / (boxX.right - boxX.left);
+    const y_scale = (boxY.end - boxY.start) / (boxY.top - boxY.bottom);
+    const x_min = boxX.start - x_scale * boxX.left;
     const x_max = x_scale * chart.width + x_min;
-    const y_min = chartVals.minY - y_scale * origin.y;
+    const y_min = boxY.start - y_scale * boxY.bottom;
     const y_max = y_scale * chart.height + y_min;
     const chartRange = [x_min, x_max, y_max, y_min];
 
