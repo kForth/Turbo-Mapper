@@ -1,0 +1,25 @@
+---
+layout: default
+title: Map Compare
+permalink: /compare
+js:
+  - /assets/vendor/knockout-latest.js
+  - /assets/vendor/math.js
+  - /assets/js/turbos.js
+  - /assets/js/util.js
+  - /assets/js/compare.js
+---
+<div class="container-fluid p-2 m-0 row h100">
+    <div class="graph-col p-2 col-xxl-6 col-xl-12">
+        <canvas id="map" style="width: 100%; background-size: cover; cursor: crosshair"></canvas>
+    </div>
+    <div class="config-col p-2 col-xxl-6 col-xl-12">
+        <h3 class="mt-2">Turbos</h3>
+        <!-- ko foreach: turboList -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox"  data-bind="click: $root.toggleSelected, attr: { id: 'select_' + $index() }, checked: $root.selected().indexOf($data) >= 0">
+            <label class="form-check-label" data-bind="text: name, attr: { for: 'select_' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
