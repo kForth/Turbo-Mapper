@@ -75,13 +75,13 @@ class ViewModel {
     self.mapImg = new Image;
     self._compChartX = function (pt) {
       switch (self.turbo().map_unit) {
-        case 'lb_min':
+        case "lb/min":
           return pt.compAirMassFlowCorrected__lb_min;
-        case 'kg_s':
+        case "kg/s":
           return pt.compInletAirMassFlowCorrected__kg_s;
-        case 'cfm':
+        case "cuft/min":
           return pt.compAirFlowCorrected__cfm;
-        case 'm3_s':
+        case "m3/s":
           return pt.compAirFlowCorrected__m3_s;
       }
     };
@@ -113,8 +113,8 @@ class ViewModel {
     self.exhaustFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => ({
       x: pt.turbineExpansionRatio,
       y: self.turbo().flow_unit == "phi" ? pt.phi :
-         self.turbo().flow_unit == "lb_min" ? _convert(pt.correctedGasFlow__kg_s, "kg/s", "lb/min") :
-         self.turbo().flow_unit == "kg_s" ? pt.correctedGasFlow__kg_s :
+         self.turbo().flow_unit == "lb/min" ? _convert(pt.correctedGasFlow__kg_s, "kg/s", "lb/min") :
+         self.turbo().flow_unit == "kg/s" ? pt.correctedGasFlow__kg_s :
          pt.phi
     })));
     self.exhaustFlowChart = {
