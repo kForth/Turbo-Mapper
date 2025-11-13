@@ -21,22 +21,22 @@ js:
                 <div class="mb-2 pb-1 collapse show" id="env-collapse">
                     <div class="row">
                         <div class="col-4">
-                            <labeltemp">Ambient Temperature:</label>
-                            <span class="input-group input-group-sm" id="ambient-temp">
+                            <label>Ambient Temperature:</label>
+                            <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                         <div class="col-4">
                             <label>Altitude:</label>
-                            <span class="input-group input-group-sm" id="altitude">
+                            <span class="input-group input-group-sm">
                                 <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
                                 <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
                         <div class="col-4">
-                            <labelpressue">Ambient Pressure:</label>
-                            <span class="input-group input-group-sm" id="ambient-pressue">
+                            <label>Ambient Pressure:</label>
+                            <span class="input-group input-group-sm">
                                 <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientPressureDisplayUnit, options: UNITS.pressure, optionsText: 'label'"></select>
                             </span>
@@ -117,7 +117,7 @@ js:
                     <i class="caret bi bi-chevron-up fs-5"></i>
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="input-collapse">
-                    <table class="table table-sm" id="boost-data-table">
+                    <table class="table table-sm">
                         <thead><tr>
                             <th class="table-title-col"></th>
                             <th class="table-unit-col"></th>
@@ -221,7 +221,7 @@ js:
                     <i class="caret bi bi-chevron-up fs-5 flip"></i>
                 </a>
                 <div class="mb-2 pb-1 collapse" id="output-collapse">
-                    <table class="table table-sm" id="boost-data-table">
+                    <table class="table table-sm">
                         <thead><tr>
                             <th></th>
                             <th></th>
