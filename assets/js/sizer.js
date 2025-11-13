@@ -53,7 +53,7 @@ class ViewModel {
       let mapImg = self.mapImg;
 
       $(canvas).attr("width", parseInt($(canvas).width()));
-      $(canvas).attr("height", parseInt($(canvas).height()));
+      $(canvas).attr("height", parseInt($(canvas).width() * (mapImg.height / mapImg.width)));
 
       let ctx = canvas.getContext("2d");
       let scale = canvas.width / mapImg.width;
