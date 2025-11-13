@@ -134,7 +134,7 @@ class ViewModel {
         animation: false,
         animations: {colors: false, x: false},
         transitions: {active: {animation: {duration: 0}}},
-        plugins: { legend: { display: () => !!self.turbo().flow_range } },
+        plugins: { legend: { display: () => !self.turbo().flow_range } },
       },
       plugins: [{id: 'flowMapBackground', beforeDraw: (chart) => drawMapBg(chart, self.flowImg, self.turbo().flow_range)}]
     };
