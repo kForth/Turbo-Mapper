@@ -20,21 +20,21 @@ js:
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="env-collapse">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-12 col-md-4">
                             <label>Ambient Temperature:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: ambientTempRaw" />
                                 <select class="input-group-text btn-secondary" data-bind="value: ambientTempUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-md-4">
                             <label>Altitude:</label>
                             <span class="input-group input-group-sm">
                                 <input type="number" class="form-control form-control-sm" data-bind="value: altitudeRaw" step="100" />
                                 <select class="input-group-text btn-secondary" data-bind="value: altitudeUnit, options: UNITS.altitude, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-4">
+                        <div class="col-12 col-md-4">
                             <label>Ambient Pressure:</label>
                             <span class="input-group input-group-sm">
                                 <input type="number" class="form-control form-control-sm" data-bind="converted: ambientPressure_Pa, from: 'Pa', to: ambientPressureDisplayUnit().value, precision: ambientPressureDisplayUnit().precision" readonly disabled />
@@ -52,22 +52,22 @@ js:
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="eng-collapse">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label>Displacement:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: engineDisplacementRaw" min="0.1" step="0.1">
                                 <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label>Fuel:</label>
                             <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label># Cylinders:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label>Min. Injector Size:</label>
                             <span class="input-group input-group-sm">
                                 <input class="form-control form-control-sm" type="number" data-bind="value: minInjectorSize" readonly disabled>
@@ -85,25 +85,25 @@ js:
                 </a>
                 <div class="mb-2 pb-1 collapse show" id="turbo-collapse">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label>Turbo:</label>
                             <select class="form-select form-select-sm" data-bind="value: turbo, options: turboList, optionsText: 'name'"></select>
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label># Turbos:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfTurbos" min="1" step="1">
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label>Manufacturer:</label>
                             <input class="form-control form-control-sm" type="text" data-bind="value: turbo().manufacturer" readonly disabled>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                             <label>Description:</label>
                             <input class="form-control form-control-sm" type="text" data-bind="value: turbo().description" readonly disabled>
                         </div>
-                        <div class="col-3">
+                        <div class="col-12 col-md-3">
                             <label>Product Link</label>
                             <button class="btn btn-primary btn-sm d-inline-block w-100" data-bind="click: () => window.open(turbo().product_url), disable: !turbo().product_url">Open In New Tab</button>
                         </div>
@@ -116,8 +116,8 @@ js:
                     Input Values
                     <i class="caret bi bi-chevron-up fs-5"></i>
                 </a>
-                <div class="mb-2 pb-1 collapse show" id="input-collapse">
-                    <table class="table table-sm">
+                <div class="mb-2 pb-1 overflow-x-scroll collapse show" id="input-collapse">
+                    <table class="table table-sm data-table">
                         <thead><tr>
                             <th class="table-title-col"></th>
                             <th class="table-unit-col"></th>
@@ -220,8 +220,8 @@ js:
                     Output Values
                     <i class="caret bi bi-chevron-up fs-5 flip"></i>
                 </a>
-                <div class="mb-2 pb-1 collapse" id="output-collapse">
-                    <table class="table table-sm">
+                <div class="mb-2 pb-1 overflow-x-scroll collapse" id="output-collapse">
+                    <table class="table table-sm data-table">
                         <thead><tr>
                             <th></th>
                             <th></th>
