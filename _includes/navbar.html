@@ -1,13 +1,13 @@
 <!-- Navbar -->
-<header class="p-3 border-bottom">
+<header class="p-1 border-bottom">
   <div class="container-fluid">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <a href="{{ site.baseurl }}/" class="d-flex align-items-center me-2 mb-2 mb-lg-0 text-body text-decoration-none">
+      <a href="{{ site.baseurl }}/" class="d-flex align-items-center me-lg-2 mb-lg-0 text-body text-decoration-none">
         <i class="bi bi-gender-male fs-4 me-2"></i>
         <span class="fs-4">{{ site.title }}</span>
       </a>
       {% if site.data.navbar %}
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+      <ul class="nav col-12 col-lg-auto me-lg-auto mt-1 justify-content-center mb-lg-0">
         {%- for item in site.data.navbar %}
         <li {%- if item.dropdown %} class="dropdown"{% endif %}>
           <a {%- if item.href %} href="{{ site.baseurl }}{{ item.href }}"{% endif %} class="nav-link px-2 text-{% if item.href == page.permalink %}secondary{% else %}body{% endif %} {%- if item.dropdown %} dropdown-toggle{% endif %}" {% if item.dropdown %}  data-bs-toggle="dropdown" aria-expanded="false" {% endif %}>
@@ -24,5 +24,13 @@
         {%- endfor %}
       </ul>
       {% endif %}
+
+      <div class="d-flex my-1">
+        <ul class="justify-content-start list-unstyled d-flex mb-0">
+            <li class="me-3"><a class="btn btn-link text-body-secondary" href="{{ site.repo_url }}" aria-label="GitHub"><i class="bi bi-github"></i></a></li>
+            <li class="me-3">{% include kofi.html %}</li>
+            <li class="me-3">{% include color_mode_dropdown.html %}</li>
+        </ul>
+      </div>
   </div>
 </header>

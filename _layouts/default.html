@@ -19,14 +19,13 @@
     <link href="{{ site.baseurl }}/assets/css/style.css" rel="stylesheet" />
   </head>
   <body class="d-flex flex-column vh-100 mx-auto">
-    {% include color_mode.html %}
+    {% include color_mode_svg.html %}
 
     {% include navbar.html %}
     <main class="px-5 py-3">
       <!-- Main Content -->
       {{ content }}
     </main>
-    {% include footer.html %}
 
     <!-- Scripts -->
     <script type="text/javascript" src="{{ site.baseurl }}/assets/vendor/jquery.min.js"></script>
