@@ -344,6 +344,13 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
+                                <td class="table-title-col">Corrected Exhaust Gas Flow</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultExhGasMassFlowUnit, options: UNITS.massFlow, optionsText: 'label'"></select></td>
+                                <!-- ko foreach: compressorData -->
+                                <td><input class="form-control form-control-sm" data-bind="converted: correctedGasFlow__kg_s, from: 'kg/s', to: $root.resultExhGasMassFlowUnit().value, precision: $root.resultExhGasMassFlowUnit().precision" disabled readonly /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
                                 <td class="table-title-col">Estimated Power</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: resultPowerUnit, options: UNITS.power, optionsText: 'label'"></select></td>
                                 <!-- ko foreach: compressorData -->
