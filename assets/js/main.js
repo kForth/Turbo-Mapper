@@ -425,6 +425,7 @@ class ViewModel {
       self.numberOfTurbos,
       self.turbo,
       self.fuelType,
+      self.numberOfCylinders,
       self.altitudeRaw,
       self.altitudeUnit,
       self.ambientTempRaw,
