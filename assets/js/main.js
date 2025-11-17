@@ -142,14 +142,14 @@ class ViewModel {
 
     // Boost Curve Data
     self.inputData = ko.observableArray([]);
-    self.inputDataPts = ko.computed(() => _foreach(self.inputData(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
+    self.boostCurvePts = ko.computed(() => _foreach(self.inputData(), pt => { return { x: pt.rpm(), y: pt.boost() }; }));
     self.veCurvePts = ko.computed(() => _foreach(self.inputData(), pt => { return { x: pt.rpm(), y: pt.ve() }; }));
     self.airMassFlowPts = ko.computed(() => _foreach(self.compressorData(), pt => { return { x: pt.rpm, y: pt.compAirMassFlow__lb_min }; }))
     self.inputDataChart = {
       type: 'scatter',
       data: ko.computed(() => ({
         datasets: [
-          { label: "Boost", data: self.inputDataPts(), showLine: true },
+          { label: "Boost", data: self.boostCurvePts(), showLine: true },
           { label: "VE", data: self.veCurvePts(), showLine: true, yAxisID: "y2" },
           { label: "Air Flow", data: self.airMassFlowPts(), showLine: true, yAxisID: "y3" },
         ]
@@ -160,7 +160,7 @@ class ViewModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, max: () => parseInt(Math.max(...self.inputDataPts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: 'Boost [psi]' } },
+          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: () => `Boost [${self.inputBoostPressureUnit().label}]` } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.veCurvePts().map(pt => pt.y)) * 1.1), startAtZero: true, title: { display: true, text: 'Volumetric Efficiency [%]' }, position: 'right' },
           y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
         },
