@@ -1842,4 +1842,55 @@ const TURBOS = [
     map_range: [-0.021880341880341884,0.3421082481971154,0.8074068142530786,3.480271425355488],
     map_unit: "m^3/s"
   },
+
+  // Precision Turbo Maps
+  // https://www.precisionturbo.com/precision-turbo-compressor-map
+  {
+    manufacturer: "Precision Turbo",
+    name: "GEN 2 - 60mm Inducer",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/precision/60mm.jpg",
+    map_range: [-10.460299194476411,94.62600901157042,-0.02083329674151302,7.036336818752194],
+    map_unit: "lb/min",
+    flow_img: undefined,
+    flow_range: undefined,
+    flow_unit: undefined,
+    product_url: ""
+  },
+  {
+    manufacturer: "Precision Turbo",
+    name: "GEN 2 - 64mm Inducer",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/precision/64mm.jpg",
+    map_range: [-17.57425742574257,108.00330284798497,0.16369556368712845,6.825472446903601],
+    map_unit: "lb/min",
+    flow_img: undefined,
+    flow_range: undefined,
+    flow_unit: undefined,
+    product_url: ""
+  },
+  {
+    manufacturer: "Precision Turbo",
+    name: "GEN 2 - 68mm Inducer",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/precision/68mm.jpg",
+    map_range: [-20.419235511713936,129.71640251714706,0.1735876051046079,6.82407334106139],
+    map_unit: "kg/s",
+    flow_img: undefined,
+    flow_range: undefined,
+    flow_unit: undefined,
+    product_url: ""
+  },
+  {
+    manufacturer: "Precision Turbo",
+    name: "GEN 2 - 76mm Inducer",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/precision/76mm.jpg",
+    map_range: [-24.8811013767209,152.90780498327987,0.12786372338783303,6.869765070835429],
+    map_unit: "lb/min",
+    flow_img: undefined,
+    flow_range: undefined,
+    flow_unit: undefined,
+    product_url: ""
+  },
 ];
