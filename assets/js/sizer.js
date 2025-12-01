@@ -1,5 +1,6 @@
-class ViewModel {
+class ViewModel extends BaseModel {
   constructor() {
+    super();
     var self = this;
 
     self.canvas = $("#map")[0];
