@@ -44,11 +44,6 @@ class ViewModel extends BaseModel {
     self.mapRange = ko.computed(() => [self.imgMinX(), self.imgMaxX(), self.imgMinY(), self.imgMaxY()]);
 
 
-    self.loadNewImg = function() {
-      var newUrl = window.prompt("Enter Map Image URL:");
-      self.imgUrl(newUrl);
-    }
-
     self.redraw = function () {
       let canvas = self.canvas;
       let mapImg = self.mapImg;
