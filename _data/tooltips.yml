@@ -1,12 +1,12 @@
-engine_speed: The rotational speed of the engine, in revolutions per minute.
-boost_pressure: Desired pressure increase over ambient from turbocharger.
-volumetric_efficiency: Fill percentage of each cylinder on the intake stroke. Likely less than 100% at low RPMs and possibly over 100% at higher RPMs due to air inertia and exhaust scavenging.
-intake_restriction: Approximate restriction from the intake air filter, likely less than 1psi.
-intercooler_efficiency: How effectively the intercooler can cool the charge air back to ambient temperature.
-intercooler_pressure_drop: The boost pressure loss across the intercooler.
-compressor_efficiency: The compressor efficiency from the demand line on the compressor map.
-turbine_efficiency: The turbine efficiency, not often published by manufacturers.<br>Leave these values alone unless you know what you're doing.
-exhaust_backpressure: The backpressure of the entire turbo-back exhaust system. Will be fairly low for a straight pipe system, and higher for one with a catalytic converter.
-air_fuel_ratio: The target air-to-fuel ratio, likely richer than the ideal stoichiometric ratio.
-turbine_expansion_ratio: The turbine expansion ratio is the inverse of a pressure ratio, should be tuned to make sure the wastegating percentage is reasonble.
-wastegating_amount: The amount of exhaust gas that need to bypass the turbine, thru the wastegate, to create the required amount of boost.
+engine_speed: The rotational speed of the engine in revolutions per minute (RPM). Used as the primary input for calculating air mass flow and power output across the operating range.
+boost_pressure: The target pressure increase above ambient air pressure produced by the turbocharger compressor.
+volumetric_efficiency: The percentage of theoretical cylinder volume actually filled with air during the intake stroke. Typically less than 100% at low RPMs due to restriction and heat, but can exceed 100% at higher RPMs due to air inertia and exhaust scavenging effects.
+intake_restriction: The pressure drop caused by the intake air filter and intake tract before the turbocharger compressor inlet. Typically less than 1 psi for a clean filter.
+intercooler_efficiency: How effectively the intercooler can cool the charge air back to ambient temperature. Expressed as a percentage (0-100%), where 100% represents perfect cooling to ambient conditions. Typical values range from 75-95% depending on intercooler design and airflow.
+intercooler_pressure_drop: The boost pressure loss across the intercooler due to air flowing through the core. Typical values range from 2-5 psi depending on intercooler core design, fin density, and air velocity. Higher values indicate greater restriction and cooling efficiency trade-off.
+compressor_efficiency: The isentropic efficiency of the turbocharger compressor, obtained from the demand line on the compressor map. Expressed as a percentage (0-100%), where higher values indicate less energy loss during compression. Typical values range from 70-85% depending on compressor design and operating point.
+turbine_efficiency: The isentropic efficiency of the turbocharger turbine, which converts exhaust gas energy into mechanical power to drive the compressor. Expressed as a percentage (0-100%), where higher values indicate better energy conversion. Typical values range from 60-80% depending on turbine design and operating point.<br>This is rarely published by manufacturers, so use conservative estimates unless you have specific data.
+exhaust_backpressure: The pressure resistance of the entire turbo-back exhaust system measured at the turbine inlet. Lower values occur with straight pipe systems (typically 2-5 psi), while higher values occur with restrictive components like catalytic converters and mufflers (5-15+ psi). Affects turbine performance and engine scavenging efficiency.
+air_fuel_ratio: "The target air-to-fuel ratio for combustion. The stoichiometric ratio (complete combustion with no excess air or fuel) varies by fuel type: Gasoline 14.7:1, Diesel 14.5:1, E85 9.8:1, E100 9.0:1, M1 6.5:1. Boosted engines typically run richer (lower ratios) than stoichiometric for safety, cooling, and power."
+turbine_expansion_ratio: The ratio of exhaust pressure at the turbine inlet to the outlet pressure, which determines the energy available to drive the turbine. Affects turbine performance and wastegate duty cycle. Tune this parameter to ensure the wastegating percentage remains reasonable (typically 5-25%) across the operating range.
+wastegating_amount: The percentage of exhaust gas that bypasses the turbine through the wastegate to maintain the target boost pressure. Expressed as a percentage (0-100%), where higher values indicate more exhaust is diverted. Typical values range from 5-25% across the operating range. Lower wastegating allows more exhaust energy to drive the turbine, while higher wastegating reduces turbine speed and boost pressure.
