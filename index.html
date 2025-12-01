@@ -59,18 +59,22 @@ js:
                                 <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-2">
+                            <label># Cylinders:</label>
+                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <label>Type:</label>
+                            <select class="form-select form-select-sm" data-bind="value: engineType, options: engineTypeList, optionsText: 'name'"></select>
+                        </div>
+                        <div class="col-12 col-md-2">
                             <label>Fuel:</label>
                             <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
                         </div>
                         <div class="col-12 col-md-3">
-                            <label># Cylinders:</label>
-                            <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
-                        </div>
-                        <div class="col-12 col-md-3">
                             <label>Min. Injector Size:</label>
                             <span class="input-group input-group-sm">
-                                <input class="form-control form-control-sm" type="number" data-bind="value: minInjectorSize" readonly disabled>
+                                <input class="form-control form-control-sm" type="text" data-bind="value: minInjectorSize" readonly disabled>
                                 <input class="form-control form-control-sm" type="text" value="cc/min" readonly disabled />
                             </span>
                         </div>

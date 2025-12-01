@@ -11,6 +11,11 @@ const FUEL_TYPES = [
   { name: "M1", density__kg_L: 0.793, stoich: 6.5 },
 ]
 
+const ENGINE_TYPES = [
+  { name: "Four-Stroke", rpm_factor: 0.5 },
+  { name: "Two-Stroke", rpm_factor: 1 },
+];
+
 class ViewModel extends BaseModel {
   constructor() {
     super();
@@ -18,11 +23,13 @@ class ViewModel extends BaseModel {
 
     self.turboList = TURBOS.filter(e => e.map_range.length);
     self.fuelTypeList = FUEL_TYPES;
+    self.engineTypeList = ENGINE_TYPES;
 
     // Turbo Selection
     self.turbo = ko.observable(self.turboList[0]);
     self.numberOfTurbos = ko.observable(1);
     // Engine Specs
+    self.engineType = ko.observable(ENGINE_TYPES[0]);
     self.engineDisplacementRaw = ko.observable(2.5);
     self.engineDisplacementUnit = ko.observable("L");
     self.engineDisplacement_L = ko.computed(() => {
@@ -223,7 +230,7 @@ class ViewModel extends BaseModel {
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
 
         let intakeAirPressure__Pa = ambientPressure__Pa - intakeRestriction__Pa;
-        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm / 2 * (volumetricEfficiency / 100);
+        let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm * (volumetricEfficiency / 100) * self.engineType().rpm_factor;
         let compOutletPressure__Pa = intakeAirPressure__Pa + boostPressure__Pa;
         let compPressureRatio = compOutletPressure__Pa / intakeAirPressure__Pa;
         let compOutletTemp__K = (ambientTemp__K * Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - ambientTemp__K) / compressorEfficiency + ambientTemp__K;
@@ -338,6 +345,7 @@ class ViewModel extends BaseModel {
       let params = new URLSearchParams();
       params.set("tn", self.turbo().name);
       params.set("nt", self.numberOfTurbos());
+      params.set("et", self.engineType().name);
       params.set("ed", self.engineDisplacementRaw());
       params.set("edu", self.engineDisplacementUnit());
       params.set("nc", self.numberOfCylinders());
@@ -363,18 +371,23 @@ class ViewModel extends BaseModel {
     self.loadFromUrlParams = function () {
       let params = new URLSearchParams(window.location.search);
       if (params.has("tn")) {
-        let turboName = params.get("tn");
-        let turbo = self.turboList.find(t => t.name == turboName);
-        if (turbo) self.turbo(turbo);
+        let name = params.get("tn");
+        let val = self.turboList.find(t => t.name == name);
+        if (val) self.turbo(val);
       }
       if (params.has("nt")) self.numberOfTurbos(parseInt(params.get("nt")));
+      if (params.has("et")) {
+        let name = params.get("et");
+        let val = self.engineTypeList.find(t => t.name == name);
+        if (val) self.engineType(val);
+      }
       if (params.has("ed")) self.engineDisplacementRaw(parseFloat(params.get("ed")));
       if (params.has("edu")) self.engineDisplacementUnit(params.get("edu"));
       if (params.has("nc")) self.numberOfCylinders(parseInt(params.get("nc")));
       if (params.has("ft")) {
-        let ftName = params.get("ft");
-        let ft = self.fuelTypeList.find(f => f.name == ftName);
-        if (ft) self.fuelType(ft);
+        let name = params.get("ft");
+        let val = self.fuelTypeList.find(f => f.name == name);
+        if (val) self.fuelType(val);
       }
       if (params.has("alt")) self.altitudeRaw(parseFloat(params.get("alt")));
       if (params.has("altu")) self.altitudeUnit(params.get("altu"));
@@ -423,6 +436,7 @@ class ViewModel extends BaseModel {
 
     // Setup Subscriptions
     [
+      self.engineType,
       self.engineDisplacementRaw,
       self.engineDisplacementUnit,
       self.numberOfTurbos,
