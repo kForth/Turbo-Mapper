@@ -21,6 +21,11 @@ class ViewModel {
     // Turbo Selection
     self.turbo = ko.observable(self.turboList[0]);
     self.numberOfTurbos = ko.observable(1);
+    self.getTurboName = function(e) {
+      if (e.manufacturer)
+        return `${e.manufacturer} | ${e.name}`;
+      return e.name;
+    };
 
     // Engine Specs
     self.engineDisplacementRaw = ko.observable(2.5);
