@@ -110,3 +110,6 @@ $('.collapse').on('show.bs.collapse', function () {
 $('.collapse').on('hide.bs.collapse', function () {
   $(`*[data-bs-target="#${$(this).attr("id")}"] .caret`).addClass("flip");
 });
+
+// Enable Bootstrap Tooltips
+$(() => $('[data-bs-toggle="tooltip"]').tooltip());

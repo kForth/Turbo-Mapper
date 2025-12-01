@@ -1,0 +1,12 @@
+engine_speed: The rotational speed of the engine, in revolutions per minute.
+boost_pressure: Desired pressure increase over ambient from turbocharger.
+volumetric_efficiency: Fill percentage of each cylinder on the intake stroke. Likely less than 100% at low RPMs and possibly over 100% at higher RPMs due to air inertia and exhaust scavenging.
+intake_restriction: Approximate restriction from the intake air filter, likely less than 1psi.
+intercooler_efficiency: How effectively the intercooler can cool the charge air back to ambient temperature.
+intercooler_pressure_drop: The boost pressure loss across the intercooler.
+compressor_efficiency: The compressor efficiency from the demand line on the compressor map.
+turbine_efficiency: The turbine efficiency, not often published by manufacturers.<br>Leave these values alone unless you know what you're doing.
+exhaust_backpressure: The backpressure of the entire turbo-back exhaust system. Will be fairly low for a straight pipe system, and higher for one with a catalytic converter.
+air_fuel_ratio: The target air-to-fuel ratio, likely richer than the ideal stoichiometric ratio.
+turbine_expansion_ratio: The turbine expansion ratio is the inverse of a pressure ratio, should be tuned to make sure the wastegating percentage is reasonble.
+wastegating_amount: The amount of exhaust gas that need to bypass the turbine, thru the wastegate, to create the required amount of boost.
