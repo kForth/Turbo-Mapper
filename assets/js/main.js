@@ -246,20 +246,24 @@ class ViewModel extends BaseModel {
         let approxPower__hp = _convert(compAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
 
-        //https://www.grc.nasa.gov/www/k-12/airplane/compth.html
+        // Calculate the power required to compress the air to a given pressure ratio
         let compressorShaftPower__kW =
           _convert(compAirMassFlow__lb_min, "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_AIR *
           ambientTemp__K *
           (Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1) /
           compressorEfficiency;
 
+        // Calculate the maximum power the turbine can generate at full exchaust flow
         let turbineShaftPower__kW =
           _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
           exhGasTemp_K *
           (Math.pow(1 / turbineExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH) - 1) *
           turbineEfficiency * -1;
 
+        // Calculate precentage of exchaust flow that needs to bypass the turbine to generate only the required compressor power
         let wastegateFlowPercent = (turbineShaftPower__kW - compressorShaftPower__kW) / turbineShaftPower__kW * 100;
+
+        // Calculate turbine swallowing parameter and corrected exhaust gas mass flowrate
         let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
         let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
         let exhaustManifoldPressure_Pa = (exhaustBackpressure__Pa + ambientPressure__Pa) * turbineExpansionRatio;
