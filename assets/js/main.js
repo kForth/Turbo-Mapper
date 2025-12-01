@@ -220,7 +220,7 @@ class ViewModel extends BaseModel {
         let rpm = pt.rpm();
         let boostPressure__Pa = _convert(pt.boost(), self.inputBoostPressureUnit().value, "Pa");
         let volumetricEfficiency = pt.ve();
-        let turbineExpansionRatio = pt.ter();
+        let wastegateFlowPercent = pt.wg() / 100;
         let intakeRestriction__Pa = _convert(pt.ir(), self.inputRestrictionPressureUnit().value, "Pa");
         let intercoolerEfficiency = pt.ie() / 100;
         let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit().value, "Pa");
@@ -252,6 +252,9 @@ class ViewModel extends BaseModel {
         let injectorVolFlowRate__L_hr = fuelVolFlowRate__L_hr / self.numberOfCylinders();
         let approxPower__hp = _convert(compAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
+        let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
+        let wastegateMassFlow__kg_s = wastegateFlowPercent * exhaustMassFlow__kg_s;
+        let turbineMassFlow__kg_s = exhaustMassFlow__kg_s - wastegateMassFlow__kg_s;
 
         // Calculate the power required to compress the air to a given pressure ratio
         let compressorShaftPower__kW =
@@ -260,19 +263,12 @@ class ViewModel extends BaseModel {
           (Math.pow(compPressureRatio, (HEAT_CAPACITY_RATIO_AIR - 1) / HEAT_CAPACITY_RATIO_AIR) - 1) /
           compressorEfficiency;
 
-        // Calculate the maximum power the turbine can generate at full exchaust flow
-        let turbineShaftPower__kW =
-          _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s") * SPECIFIC_HEAT_CAPACITY_EXH *
-          exhGasTemp_K *
-          (Math.pow(1 / turbineExpansionRatio, (HEAT_CAPACITY_RATIO_EXH - 1) / HEAT_CAPACITY_RATIO_EXH) - 1) *
-          turbineEfficiency * -1;
-
-        // Calculate precentage of exchaust flow that needs to bypass the turbine to generate only the required compressor power
-        let wastegateFlowPercent = (turbineShaftPower__kW - compressorShaftPower__kW) / turbineShaftPower__kW * 100;
+        // Calculate required turbine expansion ratio for the given compressor shaft power
+        let turbineExpansionRatio = 1 / Math.exp(HEAT_CAPACITY_RATIO_EXH * Math.log((
+          -compressorShaftPower__kW / turbineMassFlow__kg_s / SPECIFIC_HEAT_CAPACITY_EXH / exhGasTemp_K / turbineEfficiency
+        ) + 1) / (HEAT_CAPACITY_RATIO_EXH - 1));
 
         // Calculate turbine swallowing parameter and corrected exhaust gas mass flowrate
-        let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
-        let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
         let exhaustManifoldPressure_Pa = (exhaustBackpressure__Pa + ambientPressure__Pa) * turbineExpansionRatio;
         let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
         let correctedGasFlow__kg_s = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K / 298.15) * (101325 / exhaustManifoldPressure_Pa);
@@ -306,10 +302,10 @@ class ViewModel extends BaseModel {
           approxTorque__ftlb: approxTorque__ftlb,
 
           compressorShaftPower__kW: compressorShaftPower__kW,
-          turbineShaftPower__kW: turbineShaftPower__kW,
           exhaustManifoldPressure_Pa: exhaustManifoldPressure_Pa,
           correctedGasFlow__kg_s: correctedGasFlow__kg_s,
-          wastegateFlowPercent: wastegateFlowPercent,
+          exhaustMassFlow__kg_s: exhaustMassFlow__kg_s,
+          wastegateMassFlow__kg_s: wastegateMassFlow__kg_s,
           phi: phi,
         });
       }
@@ -323,13 +319,13 @@ class ViewModel extends BaseModel {
     }
 
     // Boost Curve Helper
-    self._newBoostDataPoint = function (rpm, boost, ve, afr, ter, ir, ie, ipd, ce, te, ebp) {
+    self._newBoostDataPoint = function (rpm, boost, ve, afr, wg, ir, ie, ipd, ce, te, ebp) {
       let pt = {
         rpm: ko.observable(rpm),
         boost: ko.observable(boost),
         ve: ko.observable(ve),
         afr: ko.observable(afr),
-        ter: ko.observable(ter),
+        wg: ko.observable(wg),
         ir: ko.observable(ir),
         ie: ko.observable(ie),
         ipd: ko.observable(ipd),
@@ -358,7 +354,7 @@ class ViewModel extends BaseModel {
       params.set("bp", self.inputData().map(pt => pt.boost()).join(" "));
       params.set("ve", self.inputData().map(pt => pt.ve()).join(" "));
       params.set("afr", self.inputData().map(pt => pt.afr()).join(" "));
-      params.set("ter", self.inputData().map(pt => pt.ter()).join(" "));
+      params.set("wg", self.inputData().map(pt => pt.wg()).join(" "));
       params.set("ir", self.inputData().map(pt => pt.ir()).join(" "));
       params.set("ie", self.inputData().map(pt => pt.ie()).join(" "));
       params.set("ipd", self.inputData().map(pt => pt.ipd()).join(" "));
@@ -398,7 +394,7 @@ class ViewModel extends BaseModel {
       let bps = params.has("bp") ? params.get("bp").split(" ").map(v => parseFloat(v)) : [];
       let ves = params.has("ve") ? params.get("ve").split(" ").map(v => parseFloat(v)) : [];
       let afrs = params.has("afr") ? params.get("afr").split(" ").map(v => parseFloat(v)) : [];
-      let ters = params.has("ter") ? params.get("ter").split(" ").map(v => parseFloat(v)) : [];
+      let wgs = params.has("wg") ? params.get("wg").split(" ").map(v => parseFloat(v)) : [];
       let irs = params.has("ir") ? params.get("ir").split(" ").map(v => parseFloat(v)) : [];
       let ies = params.has("ie") ? params.get("ie").split(" ").map(v => parseFloat(v)) : [];
       let ipds = params.has("ipd") ? params.get("ipd").split(" ").map(v => parseFloat(v)) : [];
@@ -412,7 +408,7 @@ class ViewModel extends BaseModel {
         if (bps && bps[i] !== undefined) pt.boost(bps[i]);
         if (ves && ves[i] !== undefined) pt.ve(ves[i]);
         if (afrs && afrs[i] !== undefined) pt.afr(afrs[i]);
-        if (ters && ters[i] !== undefined) pt.ter(ters[i]);
+        if (wgs && wgs[i] !== undefined) pt.wg(wgs[i]);
         if (irs && irs[i] !== undefined) pt.ir(irs[i]);
         if (ies && ies[i] !== undefined) pt.ie(ies[i]);
         if (ipds && ipds[i] !== undefined) pt.ipd(ipds[i]);
@@ -425,12 +421,12 @@ class ViewModel extends BaseModel {
 
     // Initialize Boost Curve
     self.inputData([
-      self._newBoostDataPoint(2000, 5, 85, 12.2, 1.21, 0.50, 99, 0.2, 60, 75, 0.5),
-      self._newBoostDataPoint(3000, 10, 95, 12.2, 1.45, 0.52, 95, 0.2, 65, 73, 1.2),
-      self._newBoostDataPoint(4000, 14, 100, 12.2, 1.71, 0.58, 95, 0.3, 70, 72, 2.1),
-      self._newBoostDataPoint(5000, 16, 100, 12.2, 1.87, 0.68, 92, 0.4, 75, 71, 3.3),
-      self._newBoostDataPoint(6000, 16, 105, 12.2, 1.94, 0.82, 90, 0.5, 80, 70, 4.8),
-      self._newBoostDataPoint(7000, 16, 105, 12.2, 2.05, 1.0, 90, 0.6, 75, 70, 6.5),
+      self._newBoostDataPoint(2000, 5, 85, 12.2, 13.0, 0.50, 99, 0.2, 60, 75, 0.5),
+      self._newBoostDataPoint(3000, 10, 95, 12.2, 20.5, 0.52, 95, 0.2, 65, 73, 1.2),
+      self._newBoostDataPoint(4000, 14, 100, 12.2, 30.0, 0.58, 95, 0.3, 70, 72, 2.1),
+      self._newBoostDataPoint(5000, 16, 100, 12.2, 35.5, 0.68, 92, 0.4, 75, 71, 3.3),
+      self._newBoostDataPoint(6000, 16, 105, 12.2, 41.5, 0.82, 90, 0.5, 80, 70, 4.8),
+      self._newBoostDataPoint(7000, 16, 105, 12.2, 41.5, 1.0, 90, 0.6, 75, 70, 6.5),
     ]);
     self.loadFromUrlParams();
 
