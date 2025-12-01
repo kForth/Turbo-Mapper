@@ -16,6 +16,28 @@ const ENGINE_TYPES = [
   { name: "Two-Stroke", rpm_factor: 1 },
 ];
 
+const DEFAULTS = {
+  turbo: TURBOS[0],
+  numberOfTurbos: 1,
+  engineType: ENGINE_TYPES[0],
+  engineDisplacementRaw: 2.5,
+  engineDisplacementUnit: "L",
+  numberOfCylinders: 5,
+  fuelType: FUEL_TYPES[0],
+  altitudeRaw: 0,
+  altitudeUnit: "m",
+  ambientTempRaw: 30,
+  ambientTempUnit: "degC",
+  inputData: [
+    { rpm: 2000, boost: 5, ve: 85, afr: 12.2, wg: 13.0, ir: 0.50, ie: 99, ipd: 0.2, ce: 60, te: 75, ebp: 0.5 },
+    { rpm: 3000, boost: 10, ve: 95, afr: 12.2, wg: 20.5, ir: 0.52, ie: 95, ipd: 0.2, ce: 65, te: 73, ebp: 1.2 },
+    { rpm: 4000, boost: 14, ve: 100, afr: 12.2, wg: 30.0, ir: 0.58, ie: 95, ipd: 0.3, ce: 70, te: 72, ebp: 2.1 },
+    { rpm: 5000, boost: 16, ve: 100, afr: 12.2, wg: 35.5, ir: 0.68, ie: 92, ipd: 0.4, ce: 75, te: 71, ebp: 3.3 },
+    { rpm: 6000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8 },
+    { rpm: 7000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5 },
+  ],
+};
+
 class ViewModel extends BaseModel {
   constructor() {
     super();
@@ -26,26 +48,26 @@ class ViewModel extends BaseModel {
     self.engineTypeList = ENGINE_TYPES;
 
     // Turbo Selection
-    self.turbo = ko.observable(self.turboList[0]);
-    self.numberOfTurbos = ko.observable(1);
+    self.turbo = ko.observable(DEFAULTS.turbo);
+    self.numberOfTurbos = ko.observable(DEFAULTS.numberOfTurbos);
     // Engine Specs
-    self.engineType = ko.observable(ENGINE_TYPES[0]);
-    self.engineDisplacementRaw = ko.observable(2.5);
-    self.engineDisplacementUnit = ko.observable("L");
+    self.engineType = ko.observable(DEFAULTS.engineType);
+    self.engineDisplacementRaw = ko.observable(DEFAULTS.engineDisplacementRaw);
+    self.engineDisplacementUnit = ko.observable(DEFAULTS.engineDisplacementUnit);
     self.engineDisplacement_L = ko.computed(() => {
       return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
     });
-    self.numberOfCylinders = ko.observable(5);
-    self.fuelType = ko.observable(self.fuelTypeList[0])
+    self.numberOfCylinders = ko.observable(DEFAULTS.numberOfCylinders);
+    self.fuelType = ko.observable(DEFAULTS.fuelType)
 
     // Environment
-    self.altitudeRaw = ko.observable(0);
-    self.altitudeUnit = ko.observable("m");
+    self.altitudeRaw = ko.observable(DEFAULTS.altitudeRaw);
+    self.altitudeUnit = ko.observable(DEFAULTS.altitudeUnit);
     self.altitude_m = ko.computed(() => {
       return _convert(self.altitudeRaw(), self.altitudeUnit(), 'm');
     });
-    self.ambientTempRaw = ko.observable(30);
-    self.ambientTempUnit = ko.observable("degC");
+    self.ambientTempRaw = ko.observable(DEFAULTS.ambientTempRaw);
+    self.ambientTempUnit = ko.observable(DEFAULTS.ambientTempUnit);
     self.ambientTemp_K = ko.computed(() => {
       return _convert(self.ambientTempRaw(), self.ambientTempUnit(), 'K');
     });
@@ -209,8 +231,6 @@ class ViewModel extends BaseModel {
     };
 
     self.updateCompressorMapPoints = function () {
-      self.updateUrlParams();
-
       var i_ = 0;
       let pts = [];
       let ambientTemp__K = self.ambientTemp_K();
@@ -318,49 +338,44 @@ class ViewModel extends BaseModel {
       self.flowImg.src = self.turbo().flow_img;
     }
 
-    // Boost Curve Helper
-    self._newBoostDataPoint = function (rpm, boost, ve, afr, wg, ir, ie, ipd, ce, te, ebp) {
-      let pt = {
-        rpm: ko.observable(rpm),
-        boost: ko.observable(boost),
-        ve: ko.observable(ve),
-        afr: ko.observable(afr),
-        wg: ko.observable(wg),
-        ir: ko.observable(ir),
-        ie: ko.observable(ie),
-        ipd: ko.observable(ipd),
-        ce: ko.observable(ce),
-        te: ko.observable(te),
-        ebp: ko.observable(ebp),
-      };
-      return pt;
-    };
-
     // URL Parameters
     self.updateUrlParams = function () {
       let params = new URLSearchParams();
-      params.set("tn", self.turbo().name);
-      params.set("nt", self.numberOfTurbos());
-      params.set("et", self.engineType().name);
-      params.set("ed", self.engineDisplacementRaw());
-      params.set("edu", self.engineDisplacementUnit());
-      params.set("nc", self.numberOfCylinders());
-      params.set("ft", self.fuelType().name);
-      params.set("alt", self.altitudeRaw());
-      params.set("altu", self.altitudeUnit());
-      params.set("at", self.ambientTempRaw());
-      params.set("atu", self.ambientTempUnit());
-      params.set("rpm", self.inputData().map(pt => pt.rpm()).join(" "));
-      params.set("bp", self.inputData().map(pt => pt.boost()).join(" "));
-      params.set("ve", self.inputData().map(pt => pt.ve()).join(" "));
-      params.set("afr", self.inputData().map(pt => pt.afr()).join(" "));
-      params.set("wg", self.inputData().map(pt => pt.wg()).join(" "));
-      params.set("ir", self.inputData().map(pt => pt.ir()).join(" "));
-      params.set("ie", self.inputData().map(pt => pt.ie()).join(" "));
-      params.set("ipd", self.inputData().map(pt => pt.ipd()).join(" "));
-      params.set("ce", self.inputData().map(pt => pt.ce()).join(" "));
-      params.set("te", self.inputData().map(pt => pt.te()).join(" "));
-      params.set("ebp", self.inputData().map(pt => pt.ebp()).join(" "));
+      if(self.turbo().name != DEFAULTS.turbo.name) params.set("tn", self.turbo().name);
+      if(self.engineType().name != DEFAULTS.engineType.name) params.set("et", self.engineType().name);
+      if(self.fuelType().name != DEFAULTS.fuelType.name) params.set("ft", self.fuelType().name);
+
+      function setIfChanged(key, accessor) {
+        const current = accessor(self)();
+        const def = accessor(DEFAULTS);
+        if (current != def) params.set(key, current);
+      }
+      setIfChanged("nt", e => e.numberOfTurbos);
+      setIfChanged("ed", e => e.engineDisplacementRaw);
+      setIfChanged("edu", e => e.engineDisplacementUnit);
+      setIfChanged("nc", e => e.numberOfCylinders);
+      setIfChanged("alt", e => e.altitudeRaw);
+      setIfChanged("altu", e => e.altitudeUnit);
+      setIfChanged("at", e => e.ambientTempRaw);
+      setIfChanged("atu", e => e.ambientTempUnit);
+
+      function setIfParamsChanged(key, accessor) {
+        const current = self.inputData().map(e => accessor(e)()).join(" ");
+        const def = DEFAULTS.inputData.map(accessor).join(" ");
+        if (current != def) params.set(key, current);
+      }
+      setIfParamsChanged("rpm", pt => pt.rpm);
+      setIfParamsChanged("bp", pt => pt.boost);
+      setIfParamsChanged("ve", pt => pt.ve);
+      setIfParamsChanged("afr", pt => pt.afr);
+      setIfParamsChanged("wg", pt => pt.wg);
+      setIfParamsChanged("ir", pt => pt.ir);
+      setIfParamsChanged("ie", pt => pt.ie);
+      setIfParamsChanged("ipd", pt => pt.ipd);
+      setIfParamsChanged("ce", pt => pt.ce);
+      setIfParamsChanged("te", pt => pt.te);
+      setIfParamsChanged("ebp", pt => pt.ebp);
+
       history.replaceState(null, "", "?" + params.toString());
     };
 
@@ -420,17 +435,28 @@ class ViewModel extends BaseModel {
     };
 
     // Initialize Boost Curve
-    self.inputData([
-      self._newBoostDataPoint(2000, 5, 85, 12.2, 13.0, 0.50, 99, 0.2, 60, 75, 0.5),
-      self._newBoostDataPoint(3000, 10, 95, 12.2, 20.5, 0.52, 95, 0.2, 65, 73, 1.2),
-      self._newBoostDataPoint(4000, 14, 100, 12.2, 30.0, 0.58, 95, 0.3, 70, 72, 2.1),
-      self._newBoostDataPoint(5000, 16, 100, 12.2, 35.5, 0.68, 92, 0.4, 75, 71, 3.3),
-      self._newBoostDataPoint(6000, 16, 105, 12.2, 41.5, 0.82, 90, 0.5, 80, 70, 4.8),
-      self._newBoostDataPoint(7000, 16, 105, 12.2, 41.5, 1.0, 90, 0.6, 75, 70, 6.5),
-    ]);
+    self.inputData(DEFAULTS.inputData.map(pt => {
+      return {
+        rpm: ko.observable(pt.rpm),
+        boost: ko.observable(pt.boost),
+        ve: ko.observable(pt.ve),
+        afr: ko.observable(pt.afr),
+        wg: ko.observable(pt.wg),
+        ir: ko.observable(pt.ir),
+        ie: ko.observable(pt.ie),
+        ipd: ko.observable(pt.ipd),
+        ce: ko.observable(pt.ce),
+        te: ko.observable(pt.te),
+        ebp: ko.observable(pt.ebp),
+      }
+    }));
     self.loadFromUrlParams();
 
     // Setup Subscriptions
+    self.update = function() {
+      self.updateUrlParams();
+      self.updateCompressorMap()
+    };
     [
       self.engineType,
       self.engineDisplacementRaw,
@@ -447,10 +473,10 @@ class ViewModel extends BaseModel {
       self.inputRestrictionPressureUnit,
       self.inputIntercoolerPressureUnit,
       self.inputBackpressureUnit,
-    ].forEach(e => e.subscribe(() => self.updateCompressorMap()));
-    self.inputData.subscribe(() => self.updateCompressorMap(), self, "arrayChange");
+    ].forEach(e => e.subscribe(() => self.update()));
+    self.inputData.subscribe(() => self.update(), self, "arrayChange");
     ko.utils.arrayForEach(self.inputData(), (item) => {
-      Object.values(item).forEach(e => e.subscribe(() => self.updateCompressorMap()));
+      Object.values(item).forEach(e => e.subscribe(() => self.update()));
     });
     self.turbo.subscribe(self.updateMapBgs);
 
