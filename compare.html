@@ -18,7 +18,7 @@ js:
         <!-- ko foreach: turboList -->
         <div class="form-check">
             <input class="form-check-input" type="checkbox"  data-bind="click: $root.toggleSelected, attr: { id: 'select_' + $index() }, checked: $root.selected().indexOf($data) >= 0">
-            <label class="form-check-label" data-bind="text: name, attr: { for: 'select_' + $index() }"></label>
+            <label class="form-check-label" data-bind="text: $root.getTurboName($data), attr: { for: 'select_' + $index() }"></label>
         </div>
         <!-- /ko -->
     </div>
