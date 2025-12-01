@@ -1,3 +1,15 @@
+class BaseModel {
+  constructor(){
+    var self = this;
+
+    self.getTurboName = function(e) {
+      if (e.manufacturer)
+        return `${e.manufacturer} | ${e.name}`;
+      return e.name;
+    };
+  }
+}
+
 ko.bindingHandlers.fileUpload = {
   init: function (element, valueAccessor) {
     $(element).on("change", function () {

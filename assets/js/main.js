@@ -11,8 +11,9 @@ const FUEL_TYPES = [
   { name: "M1", density__kg_L: 0.793, stoich: 6.5 },
 ]
 
-class ViewModel {
+class ViewModel extends BaseModel {
   constructor() {
+    super();
     var self = this;
 
     self.turboList = TURBOS.filter(e => e.map_range.length);
@@ -21,12 +22,6 @@ class ViewModel {
     // Turbo Selection
     self.turbo = ko.observable(self.turboList[0]);
     self.numberOfTurbos = ko.observable(1);
-    self.getTurboName = function(e) {
-      if (e.manufacturer)
-        return `${e.manufacturer} | ${e.name}`;
-      return e.name;
-    };
-
     // Engine Specs
     self.engineDisplacementRaw = ko.observable(2.5);
     self.engineDisplacementUnit = ko.observable("L");
