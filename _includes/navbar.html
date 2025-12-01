@@ -10,7 +10,7 @@
       <ul class="nav col-12 col-lg-auto me-lg-auto mt-1 justify-content-center mb-lg-0">
         {%- for item in site.data.navbar %}
         <li {%- if item.dropdown %} class="dropdown"{% endif %}>
-          <a {%- if item.href %} href="{{ site.baseurl }}{{ item.href }}"{% endif %} class="nav-link px-2 text-{% if item.href == page.permalink %}secondary{% else %}body{% endif %} {%- if item.dropdown %} dropdown-toggle{% endif %}" {% if item.dropdown %}  data-bs-toggle="dropdown" aria-expanded="false" {% endif %}>
+          <a {%- if item.href %} href="{{ site.baseurl }}{{ item.href }}"{% endif %} class="nav-link px-2 text-{% if item.href == page.permalink or (item.href == '/' and page.permalink == None) %}secondary{% else %}body{% endif %} {%- if item.dropdown %} dropdown-toggle{% endif %}" {% if item.dropdown %}  data-bs-toggle="dropdown" aria-expanded="false" {% endif %}>
             {{ item.title }}
           </a>
           {%- if item.dropdown %}
