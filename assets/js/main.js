@@ -376,7 +376,8 @@ class ViewModel extends BaseModel {
       setIfParamsChanged("te", pt => pt.te);
       setIfParamsChanged("ebp", pt => pt.ebp);
 
-      history.replaceState(null, "", "?" + params.toString());
+      const paramStr = params.toString();
+      history.replaceState(null, "", paramStr.length ? ("?" + paramStr) : window.location.pathname);
     };
 
     self.loadFromUrlParams = function () {
