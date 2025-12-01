@@ -27,21 +27,21 @@ class ViewModel extends BaseModel {
     self.engineDisplacementUnit = ko.observable("L");
     self.engineDisplacement_L = ko.computed(() => {
       return _convert(self.engineDisplacementRaw(), self.engineDisplacementUnit(), 'L');
-    }); // L
+    });
     self.numberOfCylinders = ko.observable(5);
     self.fuelType = ko.observable(self.fuelTypeList[0])
 
-    /// Environment
+    // Environment
     self.altitudeRaw = ko.observable(0);
     self.altitudeUnit = ko.observable("m");
     self.altitude_m = ko.computed(() => {
       return _convert(self.altitudeRaw(), self.altitudeUnit(), 'm');
-    }); // m
+    });
     self.ambientTempRaw = ko.observable(30);
     self.ambientTempUnit = ko.observable("degC");
     self.ambientTemp_K = ko.computed(() => {
       return _convert(self.ambientTempRaw(), self.ambientTempUnit(), 'K');
-    }); // K
+    });
     self.ambientPressure_Pa = ko.computed(() => {
       return (0.0004 * self.altitude_m()^2) - (12.217 * self.altitude_m()) + 101338
     });
@@ -216,7 +216,7 @@ class ViewModel extends BaseModel {
         let turbineExpansionRatio = pt.ter();
         let intakeRestriction__Pa = _convert(pt.ir(), self.inputRestrictionPressureUnit().value, "Pa");
         let intercoolerEfficiency = pt.ie() / 100;
-        let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit().value, "Pa"); // TODO
+        let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit().value, "Pa");
         let compressorEfficiency = pt.ce() / 100;
         let turbineEfficiency = pt.te() / 100;
         let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit().value, "Pa");
@@ -264,7 +264,6 @@ class ViewModel extends BaseModel {
         let turbineMassFlow__kg_s = (1 - wastegateFlowPercent / 100) * exhaustMassFlow__kg_s;
         let exhaustManifoldPressure_Pa = (exhaustBackpressure__Pa + ambientPressure__Pa) * turbineExpansionRatio;
         let phi = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K) / (exhaustManifoldPressure_Pa / 1000);
-
         let correctedGasFlow__kg_s = turbineMassFlow__kg_s * Math.sqrt(exhGasTemp_K / 298.15) * (101325 / exhaustManifoldPressure_Pa);
 
         pts.push({
