@@ -364,17 +364,7 @@ class ViewModel extends BaseModel {
         const def = DEFAULTS.inputData.map(accessor).join(" ");
         if (current != def) params.set(key, current);
       }
-      setIfParamsChanged("rpm", pt => pt.rpm);
-      setIfParamsChanged("bp", pt => pt.boost);
-      setIfParamsChanged("ve", pt => pt.ve);
-      setIfParamsChanged("afr", pt => pt.afr);
-      setIfParamsChanged("wg", pt => pt.wg);
-      setIfParamsChanged("ir", pt => pt.ir);
-      setIfParamsChanged("ie", pt => pt.ie);
-      setIfParamsChanged("ipd", pt => pt.ipd);
-      setIfParamsChanged("ce", pt => pt.ce);
-      setIfParamsChanged("te", pt => pt.te);
-      setIfParamsChanged("ebp", pt => pt.ebp);
+      Object.keys(DEFAULTS.inputData[0]).forEach(e => setIfParamsChanged(e, pt => pt[e]))
 
       const paramStr = params.toString();
       history.replaceState(null, "", paramStr.length ? ("?" + paramStr) : window.location.pathname);
@@ -406,31 +396,15 @@ class ViewModel extends BaseModel {
       if (params.has("at")) self.ambientTempRaw(parseFloat(params.get("at")));
       if (params.has("atu")) self.ambientTempUnit(params.get("atu"));
 
-      let rpms = params.has("rpm") ? params.get("rpm").split(" ").map(v => parseFloat(v)) : [];
-      let bps = params.has("bp") ? params.get("bp").split(" ").map(v => parseFloat(v)) : [];
-      let ves = params.has("ve") ? params.get("ve").split(" ").map(v => parseFloat(v)) : [];
-      let afrs = params.has("afr") ? params.get("afr").split(" ").map(v => parseFloat(v)) : [];
-      let wgs = params.has("wg") ? params.get("wg").split(" ").map(v => parseFloat(v)) : [];
-      let irs = params.has("ir") ? params.get("ir").split(" ").map(v => parseFloat(v)) : [];
-      let ies = params.has("ie") ? params.get("ie").split(" ").map(v => parseFloat(v)) : [];
-      let ipds = params.has("ipd") ? params.get("ipd").split(" ").map(v => parseFloat(v)) : [];
-      let ces = params.has("ce") ? params.get("ce").split(" ").map(v => parseFloat(v)) : [];
-      let tes = params.has("te") ? params.get("te").split(" ").map(v => parseFloat(v)) : [];
-      let ebps = params.has("ebp") ? params.get("ebp").split(" ").map(v => parseFloat(v)) : [];
       let newinputData = self.inputData();
+      let data = {};
+      Object.keys(newinputData[0]).forEach(e =>
+        data[e] = params.has(e) ? params.get(e).split(" ").map(v => parseFloat(v)) : []
+      );
       for (let i = 0; i < newinputData.length; i++) {
-        let pt = newinputData[i];
-        if (rpms && rpms[i] !== undefined) pt.rpm(rpms[i]);
-        if (bps && bps[i] !== undefined) pt.boost(bps[i]);
-        if (ves && ves[i] !== undefined) pt.ve(ves[i]);
-        if (afrs && afrs[i] !== undefined) pt.afr(afrs[i]);
-        if (wgs && wgs[i] !== undefined) pt.wg(wgs[i]);
-        if (irs && irs[i] !== undefined) pt.ir(irs[i]);
-        if (ies && ies[i] !== undefined) pt.ie(ies[i]);
-        if (ipds && ipds[i] !== undefined) pt.ipd(ipds[i]);
-        if (ces && ces[i] !== undefined) pt.ce(ces[i]);
-        if (tes && tes[i] !== undefined) pt.te(tes[i]);
-        if (ebps && ebps[i] !== undefined) pt.ebp(ebps[i]);
+        Object.keys(newinputData[i]).forEach(e => {
+          if (data[e] && data[e][i] !== undefined) newinputData[i][e](data[e][i]);
+        });
       }
       self.inputData(newinputData);
     };
