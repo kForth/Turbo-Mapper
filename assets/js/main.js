@@ -84,9 +84,13 @@ class ViewModel extends BaseModel {
 
     // Result Data
     self.compressorData = ko.observableArray([]);
-    self.minInjectorSize = ko.computed(() => {
+    self.minInjectorSize__cc_m = ko.computed(() => {
       let minFlow = Math.max(...self.compressorData().map(pt => pt.injectorVolFlowRate__L_hr)) / 0.8;
       return Math.ceil(_convert(minFlow, "L/hr", "cm^3/min") / 50) * 50
+    });
+    self.minFuelPumpSize__L_hr = ko.computed(() => {
+      let minFlow = Math.max(...self.compressorData().map(pt => pt.fuelVolFlowRate__L_hr)) / 0.8;
+      return Math.ceil(minFlow / 5) * 5
     });
 
     // Input Table Units

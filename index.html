@@ -68,22 +68,31 @@ js:
                                 <select class="input-group-text btn-secondary" data-bind="value: engineDisplacementUnit, options: UNITS.volume, optionsText: 'label', optionsValue: 'value'"></select>
                             </span>
                         </div>
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-3">
                             <label># Cylinders:</label>
                             <input class="form-control form-control-sm" type="number" data-bind="value: numberOfCylinders" min="1" step="1">
                         </div>
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-3">
                             <label>Type:</label>
                             <select class="form-select form-select-sm" data-bind="value: engineType, options: engineTypeList, optionsText: 'name'"></select>
                         </div>
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-3">
                             <label>Fuel:</label>
                             <select class="form-select form-select-sm" data-bind="value: fuelType, options: fuelTypeList, optionsText: 'name'"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <label>Min. Fuel Pump Size: {% include tooltip.html text=site.data.tooltips.min_fuel_pump_size %}</label>
+                            <span class="input-group input-group-sm">
+                                <input class="form-control form-control-sm" type="text" data-bind="value: minFuelPumpSize__L_hr" readonly disabled>
+                                <input class="form-control form-control-sm" type="text" value="L/hr" readonly disabled />
+                            </span>
                         </div>
                         <div class="col-12 col-md-3">
                             <label>Min. Injector Size: {% include tooltip.html text=site.data.tooltips.min_injector_size %}</label>
                             <span class="input-group input-group-sm">
-                                <input class="form-control form-control-sm" type="text" data-bind="value: minInjectorSize" readonly disabled>
+                                <input class="form-control form-control-sm" type="text" data-bind="value: minInjectorSize__cc_m" readonly disabled>
                                 <input class="form-control form-control-sm" type="text" value="cc/min" readonly disabled />
                             </span>
                         </div>
