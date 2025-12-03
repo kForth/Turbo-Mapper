@@ -57,6 +57,7 @@ class ViewModel extends BaseModel {
     // Turbo Selection
     self.turbo = ko.observable(DEFAULTS.turbo);
     self.numberOfTurbos = ko.observable(DEFAULTS.numberOfTurbos);
+
     // Engine Specs
     self.engineType = ko.observable(DEFAULTS.engineType);
     self.engineDisplacementRaw = ko.observable(DEFAULTS.engineDisplacementRaw);
