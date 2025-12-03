@@ -29,12 +29,12 @@ const DEFAULTS = {
   ambientTempRaw: 30,
   ambientTempUnit: "degC",
   inputData: [
-    { rpm: 2000, boost: 5, ve: 85, afr: 0.83, wg: 13.0, ir: 0.50, ie: 99, ipd: 0.2, ce: 60, te: 75, ebp: 0.5 },
-    { rpm: 3000, boost: 10, ve: 95, afr: 0.83, wg: 20.5, ir: 0.52, ie: 95, ipd: 0.2, ce: 65, te: 73, ebp: 1.2 },
-    { rpm: 4000, boost: 14, ve: 100, afr: 0.83, wg: 30.0, ir: 0.58, ie: 95, ipd: 0.3, ce: 70, te: 72, ebp: 2.1 },
-    { rpm: 5000, boost: 16, ve: 100, afr: 0.83, wg: 35.5, ir: 0.68, ie: 92, ipd: 0.4, ce: 75, te: 71, ebp: 3.3 },
-    { rpm: 6000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8 },
-    { rpm: 7000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5 },
+    { rpm: 2000, boost: 5, ve: 85, afr: 0.83, wg: 13.0, ir: 0.50, ie: 99, ipd: 0.2, ce: 60, te: 75, ebp: 0.5, egt: 1100 },
+    { rpm: 3000, boost: 10, ve: 95, afr: 0.83, wg: 20.5, ir: 0.52, ie: 95, ipd: 0.2, ce: 65, te: 73, ebp: 1.2, egt: 1100 },
+    { rpm: 4000, boost: 14, ve: 100, afr: 0.83, wg: 30.0, ir: 0.58, ie: 95, ipd: 0.3, ce: 70, te: 72, ebp: 2.1, egt: 1100 },
+    { rpm: 5000, boost: 16, ve: 100, afr: 0.83, wg: 35.5, ir: 0.68, ie: 92, ipd: 0.4, ce: 75, te: 71, ebp: 3.3, egt: 1100 },
+    { rpm: 6000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8, egt: 1100 },
+    { rpm: 7000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5, egt: 1100 },
   ],
 
   ambientPressureDisplayUnit: UNITS.pressure.find(e => e.default),
@@ -42,6 +42,7 @@ const DEFAULTS = {
   inputRestrictionPressureUnit: UNITS.pressure.find(e => e.default).value,
   inputIntercoolerPressureUnit: UNITS.pressure.find(e => e.default).value,
   inputBackpressureUnit: UNITS.pressure.find(e => e.default).value,
+  inputExhaustTemperatureUnit: UNITS.temperature.find(e => e.value == "K").value,
   inputAirFuelRatioUnit: UNITS.airFuelRatio.find(e => e.default).value,
 };
 
@@ -100,6 +101,7 @@ class ViewModel extends BaseModel {
     self.inputRestrictionPressureUnit = ko.observable(DEFAULTS.inputRestrictionPressureUnit);
     self.inputIntercoolerPressureUnit = ko.observable(DEFAULTS.inputIntercoolerPressureUnit);
     self.inputBackpressureUnit = ko.observable(DEFAULTS.inputBackpressureUnit);
+    self.inputExhaustTemperatureUnit = ko.observable(DEFAULTS.inputExhaustTemperatureUnit);
     self.inputAirFuelRatioUnit = ko.observable(DEFAULTS.inputAirFuelRatioUnit);
 
     // Result Table Units
@@ -293,7 +295,7 @@ class ViewModel extends BaseModel {
         let turbineEfficiency = pt.te() / 100;
         let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit(), "Pa");
         let airFuelRatio = self.inputAirFuelRatioUnit() == "lambda" ? (pt.afr() * self.fuelType().stoich) : pt.afr();
-        let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
+        let exhGasTemp_K = _convert(pt.egt(), self.inputExhaustTemperatureUnit(), "K");
 
         let intakeAirPressure__Pa = ambientPressure__Pa - intakeRestriction__Pa;
         let airFlow__cfm = _convert(self.engineDisplacement_L(), "L", "cuft") * rpm * (volumetricEfficiency / 100) * self.engineType().rpm_factor;
@@ -462,6 +464,7 @@ class ViewModel extends BaseModel {
       self.inputRestrictionPressureUnit,
       self.inputIntercoolerPressureUnit,
       self.inputBackpressureUnit,
+      self.inputExhaustTemperatureUnit,
       self.inputAirFuelRatioUnit,
     ].forEach(e => e.subscribe(() => self.update()));
     self.inputData.subscribe(() => self.update(), self, "arrayChange");

@@ -220,6 +220,13 @@ js:
                                 <!-- /ko -->
                             </tr>
                             <tr>
+                                <td class="table-title-col">Exhaust Gas Temperature {% include tooltip.html text=site.data.tooltips.comp_outlet_temperature %}</td>
+                                <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputExhaustTemperatureUnit, options: UNITS.temperature, optionsText: 'label', optionsValue: 'value'"></select></td>
+                                <!-- ko foreach: inputData -->
+                                <td><input class="form-control form-control-sm" data-bind="value: egt" type="number" min="0" step="10" /></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
                                 <td class="table-title-col">Air-to-Fuel Ratio {% include tooltip.html text=site.data.tooltips.air_fuel_ratio %}</td>
                                 <td class="table-unit-col"><select class="form-select form-select-sm" data-bind="value: inputAirFuelRatioUnit, options: UNITS.airFuelRatio, optionsText: 'label', optionsValue: 'value'"></select></td>
                                 <!-- ko foreach: inputData -->
