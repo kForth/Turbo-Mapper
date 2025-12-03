@@ -108,8 +108,8 @@ class ViewModel extends BaseModel {
     self.resultAirMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
     self.resultFuelMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
-    self.resultInjectorFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
-    self.resultFuelPumpFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
+    self.resultFuelPumpFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.value == "L/h"));
+    self.resultInjectorFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.value == "cm^3/min"));
     self.resultExhGasMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultPowerUnit = ko.observable(UNITS.power.find(e => e.default));
     self.resultTorqueUnit = ko.observable(UNITS.torque.find(e => e.default));
