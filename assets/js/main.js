@@ -231,6 +231,37 @@ class ViewModel extends BaseModel {
       }
     };
 
+    // Data Verification
+    self.warnings = ko.computed(() => {
+      let turbo = self.turbo();
+      let input = self.inputData();
+      // let data = self.compressorData();
+      let compPts = self.compressorChartPts();
+      let flowPts = self.exhaustFlowPts();
+      let warnings = [];
+
+      for (let i = 1; i < input.length; i++) {
+        if (input[i-1].rpm() > input[i].rpm()) {
+          warnings.push("RPMs should be increasing");
+          break;
+        }
+      }
+      if (input.filter(pt => input.filter(e => e.rpm() == pt.rpm()).length > 1).length)
+        warnings.push("Duplicate RPM points in input data!")
+      if (compPts.filter(pt => pt.x > turbo.map_range[1]).length)
+        warnings.push("Air flow exceeds turbo compressor map!")
+      if (compPts.filter(pt => pt.y > turbo.map_range[3]).length)
+        warnings.push("Pressure ratio exceeds turbo compressor map!")
+      if (turbo.flow_range) {
+        if (flowPts.filter(pt => pt.x > turbo.flow_range[1]).length)
+          warnings.push("Exhaust pressure exceeds turbine map!")
+        if (flowPts.filter(pt => pt.y > turbo.flow_range[3]).length)
+          warnings.push("Exhaust flow exceeds turbine map! ")
+      }
+
+      return warnings;
+    });
+
     // Main Update Functions
     self.updateCompressorMap = function () {
       self.compressorData(self.updateCompressorMapPoints());

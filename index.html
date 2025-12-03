@@ -129,6 +129,14 @@ js:
                     Input Values
                     <i class="caret bi bi-chevron-up fs-5"></i>
                 </a>
+                <div class="mt-1" data-bind="css: {'d-none': warnings().length == 0}">
+                    <div class="alert alert-danger" role="alert">
+                        Errors:
+                        <ul class="mb-0" data-bind="foreach: warnings">
+                            <li data-bind="text: $data"></li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="mb-2 pb-1 overflow-x-scroll collapse show" id="input-collapse">
                     <table class="table table-sm data-table">
                         <thead><tr>
