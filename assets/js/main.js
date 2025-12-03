@@ -29,12 +29,12 @@ const DEFAULTS = {
   ambientTempRaw: 30,
   ambientTempUnit: "degC",
   inputData: [
-    { rpm: 2000, boost: 5, ve: 85, afr: 12.2, wg: 13.0, ir: 0.50, ie: 99, ipd: 0.2, ce: 60, te: 75, ebp: 0.5 },
-    { rpm: 3000, boost: 10, ve: 95, afr: 12.2, wg: 20.5, ir: 0.52, ie: 95, ipd: 0.2, ce: 65, te: 73, ebp: 1.2 },
-    { rpm: 4000, boost: 14, ve: 100, afr: 12.2, wg: 30.0, ir: 0.58, ie: 95, ipd: 0.3, ce: 70, te: 72, ebp: 2.1 },
-    { rpm: 5000, boost: 16, ve: 100, afr: 12.2, wg: 35.5, ir: 0.68, ie: 92, ipd: 0.4, ce: 75, te: 71, ebp: 3.3 },
-    { rpm: 6000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8 },
-    { rpm: 7000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5 },
+    { rpm: 2000, boost: 5, ve: 85, afr: 0.83, wg: 13.0, ir: 0.50, ie: 99, ipd: 0.2, ce: 60, te: 75, ebp: 0.5 },
+    { rpm: 3000, boost: 10, ve: 95, afr: 0.83, wg: 20.5, ir: 0.52, ie: 95, ipd: 0.2, ce: 65, te: 73, ebp: 1.2 },
+    { rpm: 4000, boost: 14, ve: 100, afr: 0.83, wg: 30.0, ir: 0.58, ie: 95, ipd: 0.3, ce: 70, te: 72, ebp: 2.1 },
+    { rpm: 5000, boost: 16, ve: 100, afr: 0.83, wg: 35.5, ir: 0.68, ie: 92, ipd: 0.4, ce: 75, te: 71, ebp: 3.3 },
+    { rpm: 6000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8 },
+    { rpm: 7000, boost: 16, ve: 105, afr: 0.83, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5 },
   ],
 
   ambientPressureDisplayUnit: UNITS.pressure.find(e => e.default),

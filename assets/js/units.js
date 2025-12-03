@@ -76,7 +76,7 @@ const UNITS = {
     { value: "m^3/s", label: "m³/s", precision: 3 },
   ],
   airFuelRatio: [
-    { value: "ratio", label: "N:1", precision: 1, default: true },
-    { value: "lambda", label: "λ", precision: 2 }
+    { value: "ratio", label: "N:1", precision: 1 },
+    { value: "lambda", label: "λ", precision: 2, default: true }
   ],
 };
