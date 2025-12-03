@@ -1339,7 +1339,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 6258 (62K80)",
-    description: "",
+    description: "225 - 450 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/62k80.jpg",
     map_range: [-0.032324621733149934, 0.5178817056396148, 0.7006681514476615, 3.8374164810690417],
     map_unit: "kg/s",
@@ -1351,7 +1351,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 6758 (67X80)",
-    description: "",
+    description: "250 - 500 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/67x80.jpg",
     map_range: [-0.032280219780219783, 0.5171703296703297, 0.6993288590604028, 3.850111856823266],
     map_unit: "kg/s",
@@ -1363,7 +1363,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 7064 (70S75)",
-    description: "",
+    description: "300 - 550 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/70s75.jpg",
     map_range: [-0.032280219780219783, 0.5171703296703297, 0.5716186252771618, 5.255875831485588],
     map_unit: "kg/s",
@@ -1375,7 +1375,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 7163 (71X80)",
-    description: "",
+    description: "300 - 550 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/71x80.jpg",
     map_range: [-0.02914490033581612, 0.4889866611898038, 0.6204292768561104, 4.477883637637566],
     map_unit: "kg/s",
@@ -1387,7 +1387,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 7670 (76S75)",
-    description: "",
+    description: "375 - 650 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/76s75.jpg",
     map_range: [-0.032333645735707586, 0.5170259484645912, 0.565893887606534, 5.25655958071622],
     map_unit: "kg/s",
@@ -1399,7 +1399,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 8374 (83S75)",
-    description: "",
+    description: "475 - 750 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/83s75.jpg",
     map_range: [-0.049144151898507474, 0.7873520506292794, 0.5511262797873858, 5.263210537705793],
     map_unit: "kg/s",
@@ -1423,7 +1423,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "EFR 9180 & EFR 9174 (91S74)",
-    description: "",
+    description: "600 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/91s74.jpg",
     map_range: [-0.04767790262172284, 0.7865668204661165, 0.5588618601218702, 5.256645407090599],
     map_unit: "kg/s",
@@ -1459,7 +1459,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S200SX (76S73)",
-    description: "",
+    description: "220 - 580 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/76s73.jpg",
     map_range: [-0.028458836349229855, 0.48897455181858573, 0.5735433263102855, 4.9074844216174025],
     map_unit: "kg/s",
@@ -1471,7 +1471,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S200SX-E (70S75)",
-    description: "",
+    description: "300 - 650 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e70s75.jpg",
     map_range: [-0.02536824840778797, 0.4466959460202559, 0.6065573770491803, 5.080145719489982],
     map_unit: "kg/s",
@@ -1483,7 +1483,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S200SX-E (76S75)",
-    description: "",
+    description: "300 - 650 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e76s75.jpg",
     map_range: [-0.023595405280830047, 0.5296382164056885, 0.5711711911663082, 5.100900317140433],
     map_unit: "kg/s",
@@ -1507,7 +1507,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX (83S74)",
-    description: "",
+    description: "320 - 800 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/83s74.jpg",
     map_range: [-0.0358785648574057, 0.6112235735179967, 0.501813425873645, 5.564722274399305],
     map_unit: "kg/s",
@@ -1519,7 +1519,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX (91S72)",
-    description: "",
+    description: "320 - 800 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/91s72.jpg",
     map_range: [-0.04014746543778802, 0.6729769832769299, 0.5011579172234786, 5.5707284879182515],
     map_unit: "kg/s",
@@ -1531,7 +1531,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX-E (83S74)",
-    description: "",
+    description: "320 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e83s74.jpg",
     map_range: [-0.03798882681564245, 0.616946019007507, 0.46153846153846145, 5.246875462741621],
     map_unit: "kg/s",
@@ -1543,7 +1543,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX-E (87S72)",
-    description: "",
+    description: "320 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e87s72.jpg",
     map_range: [-0.038273921200750474, 0.6215760078931168, 0.5403902236729452, 5.089121110202055],
     map_unit: "kg/s",
@@ -1555,7 +1555,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX-E (87S74)",
-    description: "",
+    description: "320 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e87s74.jpg",
     map_range: [-0.04090656799259945, 0.6748566390892403, 0.621241850011489, 5.091664941790328],
     map_unit: "kg/s",
@@ -1567,7 +1567,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX-E (91S72)",
-    description: "",
+    description: "320 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e91s72.jpg",
     map_range: [-0.04293577981651376, 0.7314495681622706, 0.6532035883325731, 5.100662214253316],
     map_unit: "kg/s",
@@ -1579,7 +1579,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S300SX-E (91S75)",
-    description: "",
+    description: "320 - 1000 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e91s75.jpg",
     map_range: [-0.04992578849721707, 0.7983302706292034, 0.6006552206503379, 5.10508007167274],
     map_unit: "kg/s",
@@ -1615,7 +1615,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (91S74)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/701008.jpg",
     map_range: [-0.045587769747209725, 0.7641707745247595, 0.5011579172234786, 5.5707284879182515],
     map_unit: "kg/s",
@@ -1627,7 +1627,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (100S71)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100s71.jpg",
     map_range: [-0.04853260869565217, 0.7775543478260869, 0.4725581395348837, 5.7372093023255815],
     map_unit: "kg/s",
@@ -1639,7 +1639,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (100S74)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100s74.jpg",
     map_range: [-0.058505278566778375, 0.9815885626203926, 0.4419942675402223, 5.865418404079114],
     map_unit: "kg/s",
@@ -1651,7 +1651,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (105S72)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/105s72.jpg",
     map_range: [-0.050229990800367975, 0.8557130029251954, 0.49629437199716653, 5.559203220522827],
     map_unit: "kg/s",
@@ -1663,7 +1663,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (110S73)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110s73.jpg",
     map_range: [-0.05967567567567567, 0.9781621621621622, 0.4972972972972973, 5.572972972972973],
     map_unit: "kg/s",
@@ -1675,7 +1675,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX (110S75)",
-    description: "",
+    description: "400 - 1300 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110s75.jpg",
     map_range: [-0.05855822550831793, 0.9815896849006469, 0.44110581818350114, 5.856897080407889],
     map_unit: "kg/s",
@@ -1687,7 +1687,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX-E (96X75)",
-    description: "",
+    description: "500 - 1200 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/e96x75.jpg",
     map_range: [-0.048999999999999995, 0.8628148464626736, 0.6502784601543854, 5.063739054080518],
     map_unit: "kg/s",
@@ -1699,7 +1699,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX-E (100X76)",
-    description: "",
+    description: "500 - 1200 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100X76.jpg",
     map_range: [-0.06786050895381715, 0.9928746833765316, 0.4351752021563342, 5.5534689557263155],
     map_unit: "kg/s",
@@ -1711,7 +1711,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX-E (110X73)",
-    description: "",
+    description: "500 - 1200 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X73.jpg",
     map_range: [-0.0777485928705441, 1.1539712747713418, 0.3798657718120805, 6.007065967124581],
     map_unit: "kg/s",
@@ -1723,7 +1723,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S400SX-E (110X80)",
-    description: "",
+    description: "500 - 1200 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X80.jpg",
     map_range: [-0.09494382022471912, 1.3320537324255328, 0.44558823529411773, 5.626267336677102],
     map_unit: "kg/s",
@@ -1735,7 +1735,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S500SX (120S73)",
-    description: "",
+    description: "900 - 1575 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/120s73.jpg",
     map_range: [-0.06822867853795687, 1.1623368124707123, 0.46773788285515794, 5.81593736645584],
     map_unit: "kg/s",
@@ -1747,7 +1747,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S500SX (120S75)",
-    description: "",
+    description: "900 - 1575 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/120s75.jpg",
     map_range: [-0.07850467289719627, 1.2362617278767525, 0.46018693870473126, 5.604210481732806],
     map_unit: "kg/s",
@@ -1759,7 +1759,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S500SX (132S72)",
-    description: "",
+    description: "900 - 1575 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/132s72.jpg",
     map_range: [-0.07929759704251386, 1.329236031636293, 0.4459904641999306, 5.869193505046862],
     map_unit: "kg/s",
@@ -1771,7 +1771,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S500SX-E (120X73)",
-    description: "",
+    description: "900 - 1875 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/120X73.jpg",
     map_range: [-0.08094795539033456, 1.3354399500283167, 0.45511288180610887, 5.481511683976983],
     map_unit: "kg/s",
@@ -1783,7 +1783,7 @@ const TURBOS = [
   {
     manufacturer: "BorgWarner",
     name: "AirWerks S500SX-E (120X78)",
-    description: "",
+    description: "900 - 1875 HP",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/120X78.jpg",
     map_range: [-0.11320754716981134, 1.5457547745614684, 0.4321138211382114, 5.534464495072196],
     map_unit: "kg/s",
