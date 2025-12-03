@@ -436,21 +436,7 @@ class ViewModel extends BaseModel {
     };
 
     // Initialize Boost Curve
-    self.inputData(DEFAULTS.inputData.map(pt => {
-      return {
-        rpm: ko.observable(pt.rpm),
-        boost: ko.observable(pt.boost),
-        ve: ko.observable(pt.ve),
-        afr: ko.observable(pt.afr),
-        wg: ko.observable(pt.wg),
-        ir: ko.observable(pt.ir),
-        ie: ko.observable(pt.ie),
-        ipd: ko.observable(pt.ipd),
-        ce: ko.observable(pt.ce),
-        te: ko.observable(pt.te),
-        ebp: ko.observable(pt.ebp),
-      }
-    }));
+    self.inputData(DEFAULTS.inputData.map(pt => ko.mapping.fromJS(pt)));
     self.loadFromUrlParams();
 
     // Setup Subscriptions
@@ -477,7 +463,7 @@ class ViewModel extends BaseModel {
     ].forEach(e => e.subscribe(() => self.update()));
     self.inputData.subscribe(() => self.update(), self, "arrayChange");
     ko.utils.arrayForEach(self.inputData(), (item) => {
-      Object.values(item).forEach(e => e.subscribe(() => self.update()));
+        Object.values(item).forEach(e => e instanceof Function ? e.subscribe(() => self.update()) : null);
     });
     self.turbo.subscribe(self.updateMapBgs);
 
