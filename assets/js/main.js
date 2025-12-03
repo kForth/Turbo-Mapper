@@ -42,6 +42,7 @@ const DEFAULTS = {
   inputRestrictionPressureUnit: UNITS.pressure.find(e => e.default).value,
   inputIntercoolerPressureUnit: UNITS.pressure.find(e => e.default).value,
   inputBackpressureUnit: UNITS.pressure.find(e => e.default).value,
+  inputAirFuelRatioUnit: UNITS.airFuelRatio.find(e => e.default).value,
 };
 
 class ViewModel extends BaseModel {
@@ -98,6 +99,7 @@ class ViewModel extends BaseModel {
     self.inputRestrictionPressureUnit = ko.observable(DEFAULTS.inputRestrictionPressureUnit);
     self.inputIntercoolerPressureUnit = ko.observable(DEFAULTS.inputIntercoolerPressureUnit);
     self.inputBackpressureUnit = ko.observable(DEFAULTS.inputBackpressureUnit);
+    self.inputAirFuelRatioUnit = ko.observable(DEFAULTS.inputAirFuelRatioUnit);
 
     // Result Table Units
     self.resultPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
@@ -106,7 +108,8 @@ class ViewModel extends BaseModel {
     self.resultAirMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultAirVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
     self.resultFuelMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
-    self.resultFuelVolFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
+    self.resultInjectorFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
+    self.resultFuelPumpFlowUnit = ko.observable(UNITS.volumetricFlow.find(e => e.default));
     self.resultExhGasMassFlowUnit = ko.observable(UNITS.massFlow.find(e => e.default));
     self.resultPowerUnit = ko.observable(UNITS.power.find(e => e.default));
     self.resultTorqueUnit = ko.observable(UNITS.torque.find(e => e.default));
@@ -288,6 +291,7 @@ class ViewModel extends BaseModel {
         let compressorEfficiency = pt.ce() / 100;
         let turbineEfficiency = pt.te() / 100;
         let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit(), "Pa");
+        let airFuelRatio = self.inputAirFuelRatioUnit() == "lambda" ? (pt.afr() * self.fuelType().stoich) : pt.afr();
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
 
         let intakeAirPressure__Pa = ambientPressure__Pa - intakeRestriction__Pa;
@@ -308,12 +312,12 @@ class ViewModel extends BaseModel {
         let manifoldPressureRatio = manifoldAbosultePressure__Pa / intakeAirPressure__Pa;
         let manifoldAirDensity__lb_cuft = _convert(manifoldAbosultePressure__Pa / 287.055 / manifoldAirTemp__K, "kg/m^3", "lb/ft^3");
 
-        let fuelMassFlowRate__lb_min = compAirMassFlow__lb_min / pt.afr();
+        let fuelMassFlowRate__lb_min = compAirMassFlow__lb_min / airFuelRatio;
         let fuelVolFlowRate__L_hr = _convert(fuelMassFlowRate__lb_min, "lb/min", "kg/hr") / self.fuelType().density__kg_L;
         let injectorVolFlowRate__L_hr = fuelVolFlowRate__L_hr / self.numberOfCylinders();
         let approxPower__hp = _convert(compAirMassFlow__lb_min, "lb/min", "g/s") * 1.25;
         let approxTorque__ftlb = rpm == 0 ? 0 : approxPower__hp * 5252 / rpm;
-        let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / pt.afr()), "lb/min", "kg/s");
+        let exhaustMassFlow__kg_s = _convert(compAirMassFlow__lb_min * (1 + 1 / airFuelRatio), "lb/min", "kg/s");
         let wastegateMassFlow__kg_s = wastegateFlowPercent * exhaustMassFlow__kg_s;
         let turbineMassFlow__kg_s = exhaustMassFlow__kg_s - wastegateMassFlow__kg_s;
 
@@ -361,6 +365,8 @@ class ViewModel extends BaseModel {
           injectorVolFlowRate__L_hr: injectorVolFlowRate__L_hr,
           approxPower__hp: approxPower__hp,
           approxTorque__ftlb: approxTorque__ftlb,
+          airFuelRatio: airFuelRatio,
+          airFuelLambda: airFuelRatio / self.fuelType().stoich,
 
           compressorShaftPower__kW: compressorShaftPower__kW,
           exhaustManifoldPressure_Pa: exhaustManifoldPressure_Pa,
@@ -455,6 +461,7 @@ class ViewModel extends BaseModel {
       self.inputRestrictionPressureUnit,
       self.inputIntercoolerPressureUnit,
       self.inputBackpressureUnit,
+      self.inputAirFuelRatioUnit,
     ].forEach(e => e.subscribe(() => self.update()));
     self.inputData.subscribe(() => self.update(), self, "arrayChange");
     ko.utils.arrayForEach(self.inputData(), (item) => {

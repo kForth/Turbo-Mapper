@@ -28,6 +28,7 @@ function updateUrlFromModel (model) {
   setIfChanged("iru", e => e.inputRestrictionPressureUnit);
   setIfChanged("ipu", e => e.inputIntercoolerPressureUnit);
   setIfChanged("bpu", e => e.inputBackpressureUnit);
+  setIfChanged("iar", e => e.inputAirFuelRatioUnit);
 
   function setIfParamsChanged(key, accessor) {
     const current = model.inputData().map(e => accessor(e)()).join(" ");
@@ -71,6 +72,7 @@ function updateFromUrlParams (model) {
   updateParam("iru", model.inputRestrictionPressureUnit);
   updateParam("ipu", model.inputIntercoolerPressureUnit);
   updateParam("bpu", model.inputBackpressureUnit);
+  updateParam("iar", model.inputAirFuelRatioUnit);
 
   let newinputData = model.inputData();
   let data = {};
@@ -104,6 +106,7 @@ function modelToJSON (model) {
     inputRestrictionPressureUnit: model.inputRestrictionPressureUnit(),
     inputIntercoolerPressureUnit: model.inputIntercoolerPressureUnit(),
     inputBackpressureUnit: model.inputBackpressureUnit(),
+    inputAirFuelRatioUnit: model.inputAirFuelRatioUnit(),
     resultPressureUnit: model.resultPressureUnit().value,
     resultAirTemperatureUnit: model.resultAirTemperatureUnit().value,
     resultAirDensityUnit: model.resultAirDensityUnit().value,
@@ -147,6 +150,7 @@ function updateFromJSON (model, json) {
   updateIfSet("inputRestrictionPressureUnit");
   updateIfSet("inputIntercoolerPressureUnit");
   updateIfSet("inputBackpressureUnit");
+  updateIfSet("inputAirFuelRatioUnit");
   updateIfSet("resultPressureUnit");
   updateIfSet("resultAirTemperatureUnit");
   updateIfSet("resultAirDensityUnit");

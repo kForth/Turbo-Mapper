@@ -66,13 +66,17 @@ const UNITS = {
     { value: "lb/min", label: "lb/min", precision: 1 },
     { value: "lb/hr", label: "lb/hr", precision: 1 },
     { value: "kg/s", label: "kg/s", precision: 3, default: true },
-    { value: "kg/h", label: "kg/h", precision: 3, default: true },
+    { value: "kg/h", label: "kg/h", precision: 3 },
   ],
   volumetricFlow: [
-    { value: "ft^3/min", label: "CFM", precision: 1,default: true },
+    { value: "ft^3/min", label: "CFM", precision: 1, default: true },
     { value: "L/h", label: "Lph", precision: 0 },
-    { value: "in^3/sec", label: "in³/s", precision: 0,default: true },
+    { value: "in^3/sec", label: "in³/s", precision: 0},
     { value: "cm^3/min", label: "cm³/m", precision: 0 },
     { value: "m^3/s", label: "m³/s", precision: 3 },
+  ],
+  airFuelRatio: [
+    { value: "ratio", label: "N:1", precision: 1, default: true },
+    { value: "lambda", label: "λ", precision: 2 }
   ],
 };
