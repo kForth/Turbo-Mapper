@@ -36,6 +36,12 @@ const DEFAULTS = {
     { rpm: 6000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 0.82, ie: 90, ipd: 0.5, ce: 80, te: 70, ebp: 4.8 },
     { rpm: 7000, boost: 16, ve: 105, afr: 12.2, wg: 41.5, ir: 1.0, ie: 90, ipd: 0.6, ce: 75, te: 70, ebp: 6.5 },
   ],
+
+  ambientPressureDisplayUnit: UNITS.pressure.find(e => e.default),
+  inputBoostPressureUnit: UNITS.pressure.find(e => e.default).value,
+  inputRestrictionPressureUnit: UNITS.pressure.find(e => e.default).value,
+  inputIntercoolerPressureUnit: UNITS.pressure.find(e => e.default).value,
+  inputBackpressureUnit: UNITS.pressure.find(e => e.default).value,
 };
 
 class ViewModel extends BaseModel {
@@ -74,7 +80,7 @@ class ViewModel extends BaseModel {
     self.ambientPressure_Pa = ko.computed(() => {
       return (0.0004 * self.altitude_m()^2) - (12.217 * self.altitude_m()) + 101338
     });
-    self.ambientPressureDisplayUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.ambientPressureDisplayUnit = ko.observable(DEFAULTS.ambientPressureDisplayUnit);
 
     // Result Data
     self.compressorData = ko.observableArray([]);
@@ -84,10 +90,10 @@ class ViewModel extends BaseModel {
     });
 
     // Input Table Units
-    self.inputBoostPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
-    self.inputRestrictionPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
-    self.inputIntercoolerPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
-    self.inputBackpressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
+    self.inputBoostPressureUnit = ko.observable(DEFAULTS.inputBoostPressureUnit);
+    self.inputRestrictionPressureUnit = ko.observable(DEFAULTS.inputRestrictionPressureUnit);
+    self.inputIntercoolerPressureUnit = ko.observable(DEFAULTS.inputIntercoolerPressureUnit);
+    self.inputBackpressureUnit = ko.observable(DEFAULTS.inputBackpressureUnit);
 
     // Result Table Units
     self.resultPressureUnit = ko.observable(UNITS.pressure.find(e => e.default));
@@ -189,7 +195,7 @@ class ViewModel extends BaseModel {
         maintainAspectRatio: false,
         scales: {
           x: { min: 0, startAtZero: true, title: { display: true, text: 'RPM' } },
-          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: () => `Boost [${self.inputBoostPressureUnit().label}]` } },
+          y: { min: 0, max: () => parseInt(Math.max(...self.boostCurvePts().map(pt => pt.y))) + 2, startAtZero: true, title: { display: true, text: () => `Boost [${self.inputBoostPressureUnit()}]` } },
           y2: { min: 0, max: () => parseInt(Math.max(100 / 1.1, ...self.veCurvePts().map(pt => pt.y)) * 1.1), startAtZero: true, title: { display: true, text: 'Volumetric Efficiency [%]' }, position: 'right' },
           y3: { min: 0, max: parseInt(Math.max(...self.airMassFlowPts().map(pt => pt.y)) + 5), startAtZero: true, title: { display: true, text: 'Air Flow [lb/min]' }, position: 'right' },
         },
@@ -238,15 +244,15 @@ class ViewModel extends BaseModel {
 
       for (let pt of self.inputData()) {
         let rpm = pt.rpm();
-        let boostPressure__Pa = _convert(pt.boost(), self.inputBoostPressureUnit().value, "Pa");
+        let boostPressure__Pa = _convert(pt.boost(), self.inputBoostPressureUnit(), "Pa");
         let volumetricEfficiency = pt.ve();
         let wastegateFlowPercent = pt.wg() / 100;
-        let intakeRestriction__Pa = _convert(pt.ir(), self.inputRestrictionPressureUnit().value, "Pa");
+        let intakeRestriction__Pa = _convert(pt.ir(), self.inputRestrictionPressureUnit(), "Pa");
         let intercoolerEfficiency = pt.ie() / 100;
-        let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit().value, "Pa");
+        let intercoolerPressureDrop__Pa = _convert(pt.ipd(), self.inputIntercoolerPressureUnit(), "Pa");
         let compressorEfficiency = pt.ce() / 100;
         let turbineEfficiency = pt.te() / 100;
-        let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit().value, "Pa");
+        let exhaustBackpressure__Pa = _convert(pt.ebp(), self.inputBackpressureUnit(), "Pa");
         let exhGasTemp_K = 1100; // TODO: Estimate based on fuel type and AFR?
 
         let intakeAirPressure__Pa = ambientPressure__Pa - intakeRestriction__Pa;
@@ -338,84 +344,63 @@ class ViewModel extends BaseModel {
       self.flowImg.src = self.turbo().flow_img;
     }
 
-    // URL Parameters
-    self.updateUrlParams = function () {
-      let params = new URLSearchParams();
-      if(self.turbo().name != DEFAULTS.turbo.name) params.set("tn", self.turbo().name);
-      if(self.engineType().name != DEFAULTS.engineType.name) params.set("et", self.engineType().name);
-      if(self.fuelType().name != DEFAULTS.fuelType.name) params.set("ft", self.fuelType().name);
-
-      function setIfChanged(key, accessor) {
-        const current = accessor(self)();
-        const def = accessor(DEFAULTS);
-        if (current != def) params.set(key, current);
-      }
-      setIfChanged("nt", e => e.numberOfTurbos);
-      setIfChanged("ed", e => e.engineDisplacementRaw);
-      setIfChanged("edu", e => e.engineDisplacementUnit);
-      setIfChanged("nc", e => e.numberOfCylinders);
-      setIfChanged("alt", e => e.altitudeRaw);
-      setIfChanged("altu", e => e.altitudeUnit);
-      setIfChanged("at", e => e.ambientTempRaw);
-      setIfChanged("atu", e => e.ambientTempUnit);
-
-      function setIfParamsChanged(key, accessor) {
-        const current = self.inputData().map(e => accessor(e)()).join(" ");
-        const def = DEFAULTS.inputData.map(accessor).join(" ");
-        if (current != def) params.set(key, current);
-      }
-      Object.keys(DEFAULTS.inputData[0]).forEach(e => setIfParamsChanged(e, pt => pt[e]))
-
-      const paramStr = params.toString();
-      history.replaceState(null, "", paramStr.length ? ("?" + paramStr) : window.location.pathname);
+    // Config File Buttons
+    self.exportConfig = function () {
+      const data = modelToJSON(self);
+      const dataStr = JSON.stringify(data, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "config.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
     };
-
-    self.loadFromUrlParams = function () {
-      let params = new URLSearchParams(window.location.search);
-      if (params.has("tn")) {
-        let name = params.get("tn");
-        let val = self.turboList.find(t => t.name == name);
-        if (val) self.turbo(val);
-      }
-      if (params.has("nt")) self.numberOfTurbos(parseInt(params.get("nt")));
-      if (params.has("et")) {
-        let name = params.get("et");
-        let val = self.engineTypeList.find(t => t.name == name);
-        if (val) self.engineType(val);
-      }
-      if (params.has("ed")) self.engineDisplacementRaw(parseFloat(params.get("ed")));
-      if (params.has("edu")) self.engineDisplacementUnit(params.get("edu"));
-      if (params.has("nc")) self.numberOfCylinders(parseInt(params.get("nc")));
-      if (params.has("ft")) {
-        let name = params.get("ft");
-        let val = self.fuelTypeList.find(f => f.name == name);
-        if (val) self.fuelType(val);
-      }
-      if (params.has("alt")) self.altitudeRaw(parseFloat(params.get("alt")));
-      if (params.has("altu")) self.altitudeUnit(params.get("altu"));
-      if (params.has("at")) self.ambientTempRaw(parseFloat(params.get("at")));
-      if (params.has("atu")) self.ambientTempUnit(params.get("atu"));
-
-      let newinputData = self.inputData();
-      let data = {};
-      Object.keys(newinputData[0]).forEach(e =>
-        data[e] = params.has(e) ? params.get(e).split(" ").map(v => parseFloat(v)) : []
+    self.loadFromConfig = function (e) {
+      const reader = new FileReader();
+      reader.onload = (e) => updateFromJSON(self, JSON.parse(e.target.result));
+      reader.readAsText(e);
+    };
+    const configFileUploadButton = $("#configFileUploadButton")
+    configFileUploadButton.on("click", () =>
+      $("#configFileUpload").trigger('click')
+    ).on("drop", (e) => {
+      self.loadFromConfig(e.originalEvent.dataTransfer.items[0].getAsFile());
+    }).on("dragover", (e) => {
+      const fileItems = [...e.originalEvent.dataTransfer.items].filter(
+        (item) => item.kind === "file",
       );
-      for (let i = 0; i < newinputData.length; i++) {
-        Object.keys(newinputData[i]).forEach(e => {
-          if (data[e] && data[e][i] !== undefined) newinputData[i][e](data[e][i]);
-        });
+      if (fileItems.length == 1) {
+        e.preventDefault();
+        if (fileItems[0].type == "application/json") {
+          e.originalEvent.dataTransfer.dropEffect = "copy";
+        } else {
+          e.originalEvent.dataTransfer.dropEffect = "none";
+        }
       }
-      self.inputData(newinputData);
-    };
+    });
+    $(window).on("drop", (e) => {
+      if ([...e.originalEvent.dataTransfer.items].some((item) => item.kind === "file")) {
+        e.preventDefault();
+      }
+    }).on("dragover", (e) => {
+      const fileItems = [...e.originalEvent.dataTransfer.items].filter(
+        (item) => item.kind === "file",
+      );
+      if (fileItems.length > 0) {
+        e.preventDefault();
+        if (!configFileUploadButton[0].contains(e.target)) {
+          e.originalEvent.dataTransfer.dropEffect = "none";
+        }
+      }
+    });
 
     // Initialize Boost Curve
     self.inputData(DEFAULTS.inputData.map(pt => ko.mapping.fromJS(pt)));
-    self.loadFromUrlParams();
+    updateFromUrlParams(self);
 
     // Setup Subscriptions
     self.update = function() {
-      self.updateUrlParams();
+      updateUrlFromModel(self);
       self.updateCompressorMap()
     };
     [
@@ -430,6 +415,7 @@ class ViewModel extends BaseModel {
       self.altitudeUnit,
       self.ambientTempRaw,
       self.ambientTempUnit,
+      self.ambientPressureDisplayUnit,
       self.inputBoostPressureUnit,
       self.inputRestrictionPressureUnit,
       self.inputIntercoolerPressureUnit,
