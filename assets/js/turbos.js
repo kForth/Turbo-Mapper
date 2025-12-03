@@ -1875,7 +1875,7 @@ const TURBOS = [
     description: "",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/precision/68mm.jpg",
     map_range: [-20.419235511713936,129.71640251714706,0.1735876051046079,6.82407334106139],
-    map_unit: "kg/s",
+    map_unit: "lb/min",
     flow_img: undefined,
     flow_range: undefined,
     flow_unit: undefined,
