@@ -1346,7 +1346,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-6258-a.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1358,7 +1358,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-6758-a.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1370,7 +1370,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-7064-b.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1382,7 +1382,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-7163-f.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1394,7 +1394,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-7670-b.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1406,7 +1406,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-8374-b.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1430,7 +1430,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/efr-9180-b.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1466,7 +1466,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s200sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1478,7 +1478,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s200sxe.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1490,7 +1490,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s200sxe.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1514,7 +1514,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx3.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1526,7 +1526,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx3.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1538,7 +1538,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1550,7 +1550,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1562,7 +1562,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1574,7 +1574,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1586,7 +1586,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s300sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1614,6 +1614,18 @@ const TURBOS = [
   },
   {
     manufacturer: "BorgWarner",
+    name: "AirWerks S400SX (91S74)",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/701008.jpg",
+    map_range: [-0.045587769747209725, 0.7641707745247595, 0.5011579172234786, 5.5707284879182515],
+    map_unit: "kg/s",
+    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
+    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
+    flow_unit: "phi",
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
+  },
+  {
+    manufacturer: "BorgWarner",
     name: "AirWerks S400SX (100S71)",
     description: "",
     map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100s71.jpg",
@@ -1622,7 +1634,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1634,7 +1646,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1646,7 +1658,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1658,7 +1670,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1670,55 +1682,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
-  },
-  {
-    manufacturer: "BorgWarner",
-    name: "AirWerks S400SX (91S74)",
-    description: "",
-    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/701008.jpg",
-    map_range: [-0.045587769747209725, 0.7641707745247595, 0.5011579172234786, 5.5707284879182515],
-    map_unit: "kg/s",
-    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
-    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
-    flow_unit: "phi",
-    product_url: ""
-  },
-  {
-    manufacturer: "BorgWarner",
-    name: "AirWerks S400SX-E (100X76)",
-    description: "",
-    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100X76.jpg",
-    map_range: [-0.06786050895381715, 0.9928746833765316, 0.4351752021563342, 5.5534689557263155],
-    map_unit: "kg/s",
-    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
-    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
-    flow_unit: "phi",
-    product_url: ""
-  },
-  {
-    manufacturer: "BorgWarner",
-    name: "AirWerks S400SX-E (110X73)",
-    description: "",
-    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X73.jpg",
-    map_range: [-0.0777485928705441, 1.1539712747713418, 0.3798657718120805, 6.007065967124581],
-    map_unit: "kg/s",
-    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
-    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
-    flow_unit: "phi",
-    product_url: ""
-  },
-  {
-    manufacturer: "BorgWarner",
-    name: "AirWerks S400SX-E (110X80)",
-    description: "",
-    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X80.jpg",
-    map_range: [-0.09494382022471912, 1.3320537324255328, 0.44558823529411773, 5.626267336677102],
-    map_unit: "kg/s",
-    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
-    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
-    flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1730,7 +1694,43 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx-e.pdf"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "AirWerks S400SX-E (100X76)",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/100X76.jpg",
+    map_range: [-0.06786050895381715, 0.9928746833765316, 0.4351752021563342, 5.5534689557263155],
+    map_unit: "kg/s",
+    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
+    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
+    flow_unit: "phi",
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx-e.pdf"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "AirWerks S400SX-E (110X73)",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X73.jpg",
+    map_range: [-0.0777485928705441, 1.1539712747713418, 0.3798657718120805, 6.007065967124581],
+    map_unit: "kg/s",
+    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
+    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
+    flow_unit: "phi",
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx-e.pdf"
+  },
+  {
+    manufacturer: "BorgWarner",
+    name: "AirWerks S400SX-E (110X80)",
+    description: "",
+    map_img: "/Turbo-Mapper/assets/img/maps/comp/borgwarner/110X80.jpg",
+    map_range: [-0.09494382022471912, 1.3320537324255328, 0.44558823529411773, 5.626267336677102],
+    map_unit: "kg/s",
+    flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
+    flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
+    flow_unit: "phi",
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s400sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1742,7 +1742,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s500sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1754,7 +1754,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s500sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1766,7 +1766,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s500sx.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1778,7 +1778,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s500sx-e.pdf"
   },
   {
     manufacturer: "BorgWarner",
@@ -1790,7 +1790,7 @@ const TURBOS = [
     flow_img: "/Turbo-Mapper/assets/img/maps/flow/borgwarner/turbinemap.jpg",
     flow_range: [0.4159370346477226, 4.695415202232532, -0.010088201069852103, 0.09817730887665728],
     flow_unit: "phi",
-    product_url: ""
+    product_url: "https://www.borgwarner.com/docs/default-source/iam/boosting-technologies/s500sx-e.pdf"
   },
   // Borgwarner (KKK)
   {
