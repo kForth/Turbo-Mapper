@@ -20,6 +20,8 @@ Turbo-Mapper is a tool to help you select the right turbocharger for your applic
 Inspired by [BorgWarner's Matchbot](https://www.borgwarner.com/matchbot/) tool, I wanted to create my own version in order to compare turbos from other manufacturers. \
 Result values may vary slightly due to differences in calculation methods.
 
+### Sample
+<img style="width: 100%; max-width: 750px" src="assets/img/sample.png" title="Site screenshot">
 
 ### Resources
 
