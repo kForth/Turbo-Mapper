@@ -3,7 +3,7 @@ layout: default
 permalink: /about
 ---
 
-# Turbo-Mapper
+# <img width="48" height="48" src="assets/img/icon/icon.svg"> Turbo-Mapper
 
 [![GitHub](https://img.shields.io/badge/github-repo-blue?logo=github)](https://github.com/kForth/Turbo-Mapper)
 [![GitHub License](https://img.shields.io/github/license/kforth/Turbo-Mapper)](https://github.com/kForth/Turbo-Mapper/blob/main/LICENSE)
