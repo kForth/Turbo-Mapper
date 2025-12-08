@@ -18,7 +18,7 @@
     {%- endfor %}
     <link href="{{ site.baseurl }}/assets/css/style.css" rel="stylesheet" />
   </head>
-  <body class="d-flex flex-column vh-100 mx-auto">
+  <body class="d-flex flex-column vh-100 mx-auto {{ page.body_class }}">
     {% include color_mode_svg.html %}
 
     {% include navbar.html %}

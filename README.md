@@ -1,6 +1,7 @@
 ---
 layout: default
 permalink: /about
+body_class: overflow-scroll pb-3
 ---
 
 # <img width="48" height="48" src="assets/img/icon/icon.svg"> Turbo-Mapper
