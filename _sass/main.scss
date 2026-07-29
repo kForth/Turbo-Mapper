@@ -6,18 +6,16 @@ html, body {
 
 main {
   height: calc(100% - 56px);
+  overflow: scroll;
 }
 
-@media (max-width: 1575px) {
-  main {
-    overflow: scroll;
-  }
+.config-col {
+  height: 300px;
 }
 
-@media (min-width: 1575px) {
-  .config-col, .graph-col {
-    height: 100%;;
-    overflow-y: scroll;
+@media (min-width: 992px) {
+  .graph-col, .config-col {
+    height: 100%;
   }
 }
 
