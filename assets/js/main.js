@@ -81,7 +81,7 @@ class ViewModel extends BaseModel {
       return _convert(self.ambientTempRaw(), self.ambientTempUnit(), 'K');
     });
     self.ambientPressure_Pa = ko.computed(() => {
-      return (0.0004 * self.altitude_m()^2) - (12.217 * self.altitude_m()) + 101338
+      return (0.0004 * self.altitude_m() ** 2) - (12.217 * self.altitude_m()) + 101338
     });
     self.ambientPressureDisplayUnit = ko.observable(DEFAULTS.ambientPressureDisplayUnit);
 
